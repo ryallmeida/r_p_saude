@@ -9,7 +9,7 @@ Repositório dos códigos utilizados no "Curso: R para Saúde" realizado pela pa
 * Some real applications and Case Studies
 * Installation  of R, and development environment (RStudio/IDE)
 
-## CLASS 2: PACKAGES, VACTORS AND FUNCTIONS: THE ENGINEERING OF R THINKING
+## CLASS 2: PACKAGES, VECTORS AND FUNCTIONS: THE ENGINEERING OF R THINKING
 
 * PACKAGES
 * FUNCTIONS
@@ -30,4 +30,4 @@ Repositório dos códigos utilizados no "Curso: R para Saúde" realizado pela pa
 
 ## CLASS 5: MOST COMMOON HYPOTHESIS TEST
 
-# REFERÊNCIAS
+# REFERENCES
