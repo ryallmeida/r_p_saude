@@ -494,7 +494,73 @@ plot(as.factor(dados$NObeyesdad))
 levels(factor(dados$NObeyesdad))
 
 # ---------------------------------------------------
-# ----------------------------------------- g
+# ALTERAÇÕES PARA O POST DO INSTAGRAM
+# ---------------------------------------------------
+Height_z <- scale(dados$Height)
+Weight_z <- scale(dados$Weight)
 
 
+p3_instagram <- ggplot(dados) +
+  # Altura padronizada (cima)
+  geom_density(aes(x = Height_z, 
+                   y = after_stat(density)/max(after_stat(density)), 
+                   fill = Gender),
+               alpha = 0.7, 
+               color = NA) +
+  # Peso padronizado (baixo, espelhado)
+  geom_density(aes(x = Weight_z, 
+                   y = -after_stat(density)/max(after_stat(density)), 
+                   fill = Gender),
+               alpha = 0.7, 
+               color = NA) + 
+  # Cores manuais
+  scale_fill_manual(values = c("Female" = "#575b21", "Male" = "#d85102")) +
+  
+  # Anotações
+  annotate("label",
+           x = 4.5,
+           y = 0.25,
+           label = "Altura",
+           color = "black", 
+           hjust = 1) +
+  annotate("label",
+           x = 4.5,
+           y = -0.25,
+           label = "Peso",
+           color = "black", 
+           hjust = 1) +
+  
+  # Linha horizontal
+  geom_hline(yintercept = 0) +
+  
+  # Títulos e temas
+  labs(title = "", 
+       x = "Valores padronizados (Zscore)",
+       y = "Densidade normalizada") +
+  theme_minimal()
 
+print(p3_instagram)
+
+# ggsave("C:/Users/Notebook/Downloads/densidade_instagram.png", plot = p3_instagram, width = 10, height = 6, dpi = 300)
+
+p4_instagram <- dados %>%
+  ggplot( aes(x= Gender, 
+              y= FCVC, 
+              fill= Gender)) +
+  geom_violin(alpha = 0.2, 
+              scale = "width") +
+  geom_boxplot(alpha = 0.7) +
+  scale_fill_manual(values = c("Female" = "#575b21", 
+                               "Male" = "#d85102")) +
+  geom_jitter(color="black", 
+              size=0.2, 
+              alpha=0.5,
+              width = 0.4,
+              shape = 10) +
+  labs(title = "",
+       y = "Frequency of Comsumption of Vegetables") +
+  theme_minimal()
+
+print(p4_instagram)
+
+# ggsave("C:/Users/Notebook/Downloads/boxplot1_instagram.png", plot = p4_instagram, width = 10, height = 6, dpi = 300)
