@@ -54,8 +54,7 @@ alturas_sujas <- sapply(alturas_m, function(x) {
 dados_altura <- data.frame(id = 1:n, altura = alturas_sujas)
 head(dados_altura, 10)
 
-write.csv(dados_altura, 
-          file = "C:/Users/Admin/Documents/RYAN/R_P_SAUDE/desafios/desafio1/dados_sujos.csv")
+# write.csv(dados_altura, file = "C:/Users/Notebook/Desktop/R PARA SAUDE/r_p_saude/desafios/dados_sujos.csv")
 
 dados <- dados_altura %>%
   mutate(
