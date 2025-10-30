@@ -11,7 +11,7 @@ Repositório dos códigos utilizados no "Curso: R para Saúde" realizado pela pa
 
 ### Class References
 
-[A importância da Bioestatística na formação de um profissional de Saúde](https://doi.org/10.5935/0034-7280.20210016)
+[A importância da Bioestatística na formação de um profissional de Saúde]([https://doi.org/10.5935/0034-7280.20210016](https://www.scielo.br/j/rbof/a/ZnvJ63VgxhbhWthX9nVBWgg/?format=html&lang=pt))
 
 [ANJOS, Adilson dos. Estatística básica com uso do software R. Curitiba: Departamento de Estatística – UFPR, 2010.](https://docs.ufpr.br/~aanjos/TRI/R/rbasico.pdf)
 
