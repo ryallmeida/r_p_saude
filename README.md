@@ -58,4 +58,10 @@ Repositório dos códigos utilizados no "Curso: R para Saúde" realizado pela pa
 
 [Curso: Ciência de Dados em R](https://livro.curso-r.com/index.html)
 
+[Wickham H (2014). Dados organizados. Journal of Statistical Software. Volume 59, Edição 10.](https://vita.had.co.nz/papers/tidy-data.pdf)
+
+[Hadley Wickham (2010): Uma gramática em camadas de gráficos, Journal of Computational and Graphical Statistics](https://byrneslab.net/classes/biol607/readings/wickham_layered-grammar.pdf)
+
 [Wickham, Hadley, Mine Çetinkaya-Rundel, and Garrett Grolemund. R für Data Science: Daten importieren, bereinigen, umformen und visualisieren. O'Reilly, 2024.](https://pt.r4ds.hadley.nz/)
+
+Mais informações podem ser encontradas em [tidyverse.org](https://tidyverse.org/)
