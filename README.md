@@ -27,6 +27,7 @@ Repositório dos códigos utilizados no "Curso: R para Saúde" realizado pela pa
 
 ### Class References
 
+[LANDEIRO, Victor Lemes. Introdução ao uso do programa R. Manaus: Instituto Nacional de Pesquisas da Amazônia, Programa de Pós-Graduação em Ecologia](https://cran.r-project.org/doc/contrib/Landeiro-Introducao.pdf)
 
 ## CLASS 3: DATA HANDLING
 
@@ -53,6 +54,8 @@ Repositório dos códigos utilizados no "Curso: R para Saúde" realizado pela pa
 
 ### Class References
 
+[BOLFARINE, Heleno; SANDOVAL, Mônica Carneiro. Introdução à inferência estatística. São Paulo: Blucher, 2018.](https://docs.ufpr.br/~lucambio/CE210/LIVRO%20de%20infer%EAncia%20bolfarine.pdf)
+
 
 # OTHER REFERENCES
 
@@ -65,3 +68,5 @@ Repositório dos códigos utilizados no "Curso: R para Saúde" realizado pela pa
 [Wickham, Hadley, Mine Çetinkaya-Rundel, and Garrett Grolemund. R für Data Science: Daten importieren, bereinigen, umformen und visualisieren. O'Reilly, 2024.](https://pt.r4ds.hadley.nz/)
 
 Mais informações podem ser encontradas em [tidyverse.org](https://tidyverse.org/)
+
+[CASELLA, George; BERGER, Roger L. Statistical inference. 2nd ed. Belmont, CA: Duxbury Press, 2002.](https://www.amazon.com.br/Statistical-Inference-George-Casella/dp/1032593032/ref=sr_1_1?__mk_pt_BR=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=32UCM6L87P7E1&dib=eyJ2IjoiMSJ9.Ax3SRemiZDkg6JQcCEjJyvkHFeo9-o-Z8AwK3hLco-p9p1QN5dOVAGYp-1RLcf0wX5z0QLCKtHCJXsXauosVYrzAX5WOG4kYqeJPoTC-M9U8evy8ED_8XzKushqfNV4-0qSUPZJoSDMvHHf9QgkfYZfShcnEblFie46_09JPowIsR77rDAaw3oHsj0MwLZxl.G8t2XqvTavTKwvfQPgVAJ4QK2bSzEZiEhoypCq-SWDI&dib_tag=se&keywords=Statistical+Inference+ByGeorge+Casella%2C+Roger+Berger&qid=1761863452&sprefix=statistical+inference+bygeorge+casella+roger+berger%2Caps%2C229&sr=8-1&ufe=app_do%3Aamzn1.fos.4bddec23-2dcf-4403-8597-e1a02442043d)
