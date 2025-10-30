@@ -11,11 +11,11 @@ Repositório dos códigos utilizados no "Curso: R para Saúde" realizado pela pa
 
 ### Class References
 
-[A importância da Bioestatística na formação de um profissional de Saúde]([https://doi.org/10.5935/0034-7280.20210016](https://www.scielo.br/j/rbof/a/ZnvJ63VgxhbhWthX9nVBWgg/?format=html&lang=pt))
-
 [ANJOS, Adilson dos. Estatística básica com uso do software R. Curitiba: Departamento de Estatística – UFPR, 2010.](https://docs.ufpr.br/~aanjos/TRI/R/rbasico.pdf)
 
 [Curso: Ciência de Dados em R](https://livro.curso-r.com/index.html)
+
+[CHAOUBAH, A. A importância da Bioestatística na formação de um profissional de Saúde. Revista Brasileira de Oftalmologia](https://www.scielo.br/j/rbof/a/ZnvJ63VgxhbhWthX9nVBWgg/?format=html&lang=pt)
 
 [Wickham, Hadley, Mine Çetinkaya-Rundel, and Garrett Grolemund. R für Data Science: Daten importieren, bereinigen, umformen und visualisieren. O'Reilly, 2024.](https://pt.r4ds.hadley.nz/)
 
