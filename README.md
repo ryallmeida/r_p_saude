@@ -8,6 +8,8 @@ Repositório dos códigos utilizados no "Curso: R para Saúde" realizado pela pa
 * Motivation to learn R
 * Some real applications and Case Studies
 * Installation  of R, and development environment (RStudio/IDE)
+* Introduction to descriptive statistics
+* Main native plots in R
 
 ### Class References
 
@@ -33,7 +35,8 @@ Repositório dos códigos utilizados no "Curso: R para Saúde" realizado pela pa
 
 * Dataset: archives, matrix vs data.frame
 * Acess, modification and codification
-* Descriptive statistics
+* Descriptive statistics [continuation]
+* Logical tests and repetition structures
 
 ### Class References
 
