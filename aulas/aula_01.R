@@ -211,60 +211,6 @@ hist(glicemia, main = "Histograma de glicemia (mg/dL)",
 # COMO CRIAR FUNÇÕES NO R? 
 
 
-if(!require("MASS")) {
-  install.packages("MASS")
-}
 
-try(data(package = "MASS"), silent = TRUE)
-data(UScereal)
-
-
-
-if(!require("MASS")) {
-  install.packages("MASS")
-}
-
-try(data(package = "MASS"), silent = TRUE)
-data(UScereal)
-
-
-
-if(!require("NHANES")) {
-  install.packages("NHANES")
-}
-
-# PARA MAIS DATALHES SOBRE O BANCO DE DADOS. ACESSE:
-# https://www.cdc.gov/nchs/nhanes/about/
-
-data(NHANES)
-
-# PEÇA AJUDA AO SISTEMA ATRAVES DESSES CÓDIGOS
-help("NHANES", package = "NHANES")
-try(data(package = "NHANES"), silent = TRUE)
-
-# ==============================================================================
-
-if(!require("Epi")) {
-  install.packages("Epi")
-}
-
-try(data(package = "Epi"), silent = TRUE)
-
-data(DMepi)
-data(diet)
-
-# ==============================================================================
-
-if(!require("MASS")) {
-  install.packages("MASS")
-}
-
-try(data(package = "MASS"), silent = TRUE)
-
-data(anorexia)
-<<<<<<< HEAD
-
-=======
->>>>>>> 8afa98ee25c39cb19396f4cd6748f0da3c04f4ea
 
 
