@@ -53,11 +53,16 @@ Repositório dos códigos utilizados no "Curso: R para Saúde" realizado pela pa
 
 [Figueiredo Filho, Dalson, et al. "O que fazer e o que não fazer com a regressão: pressupostos e aplicações do modelo linear de Mínimos Quadrados Ordinários (MQO)." Revista Política Hoje 20.1 (2011): 44-99.](https://www.academia.edu/8169376/O_que_Fazer_e_o_que_N%C3%A3o_Fazer_com_a_Regress%C3%A3o_pressupostos_e_aplica%C3%A7%C3%B5es_do_modelo_linear_de_M%C3%ADnimos_Quadrados_Ordin%C3%A1rios_MQO)
 
+MARTIN, Peter. LINEAR REGRESSION: an introduction to statistical models. London: SAGE Publications, 2021. 978-1-5264-2417-4. (The SAGE Quantitative Research Kit).
+
 ## CLASS 5: MOST COMMOON HYPOTHESIS TEST
 
 ### Class References
 
 [BOLFARINE, Heleno; SANDOVAL, Mônica Carneiro. Introdução à inferência estatística. São Paulo: Blucher, 2018.](https://docs.ufpr.br/~lucambio/CE210/LIVRO%20de%20infer%EAncia%20bolfarine.pdf)
+
+JAMES, Gareth et al. An Introduction to Statistical Learning: with Applications in R. Second Edition. [S.l.]: [s.n.], 2023. 
+(https://www.statlearning.com/)
 
 
 # OTHER REFERENCES
