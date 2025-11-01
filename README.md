@@ -1,3 +1,4 @@
+
 # CURSO: R PARA SAÚDE   [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
 Repositório dos códigos utilizados no "Curso: R para Saúde" realizado pela parceria entre o Departamento de Ciência Política e o Programa de Pós-graduação em Nutrição da Universidade Federal de Pernambuco. Curso ministrado pelos docentes: Prof.ª Dr.ª Maria do Carmo e o Prof. Dr. Dalson Britto e monitorado por Ryan Almeida e Carla Cavalcante 
 
@@ -78,3 +79,15 @@ JAMES, Gareth et al. An Introduction to Statistical Learning: with Applications 
 Mais informações podem ser encontradas em [tidyverse.org](https://tidyverse.org/)
 
 [CASELLA, George; BERGER, Roger L. Statistical inference. 2nd ed. Belmont, CA: Duxbury Press, 2002.](https://www.amazon.com.br/Statistical-Inference-George-Casella/dp/1032593032/ref=sr_1_1?__mk_pt_BR=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=32UCM6L87P7E1&dib=eyJ2IjoiMSJ9.Ax3SRemiZDkg6JQcCEjJyvkHFeo9-o-Z8AwK3hLco-p9p1QN5dOVAGYp-1RLcf0wX5z0QLCKtHCJXsXauosVYrzAX5WOG4kYqeJPoTC-M9U8evy8ED_8XzKushqfNV4-0qSUPZJoSDMvHHf9QgkfYZfShcnEblFie46_09JPowIsR77rDAaw3oHsj0MwLZxl.G8t2XqvTavTKwvfQPgVAJ4QK2bSzEZiEhoypCq-SWDI&dib_tag=se&keywords=Statistical+Inference+ByGeorge+Casella%2C+Roger+Berger&qid=1761863452&sprefix=statistical+inference+bygeorge+casella+roger+berger%2Caps%2C229&sr=8-1&ufe=app_do%3Aamzn1.fos.4bddec23-2dcf-4403-8597-e1a02442043d)
+
+Mais informações sobre **Regressão Linear** na área de **Nutrição e Saúde** podem sem encontradas abaixo
+
+
+[Costa et tal. Evolução do excesso de peso e fatores associados em mulheres de 10 a 49 anos em Pernambuco, Nordeste, Brasil. Revista de Nutrição](https://www.scielo.br/j/rn/a/4SnTxv5qmCP4kjgPRNBN3QC/?lang=pt)
+
+[Pinho et tal. Excesso de peso em adultos do Estado de Pernambuco, Brasil: magnitude e fatores associados. Cadernos de Saúde Pública´](https://www.scielo.br/j/csp/a/yVJSvdS5Xptjh3dHZL4c7GS/?lang=pt)
+
+[Silva et tal. Situação de insegurança alimentar em domicílios de Pernambuco, Região Nordeste do Brasil: contribuições para discussão da violação do direito à alimentação. Saúde e Sociedade](https://www.scielo.br/j/sausoc/a/MJNKgg3CTPMLt8DMm3RwjQH/abstract/?lang=pt)
+
+
+
