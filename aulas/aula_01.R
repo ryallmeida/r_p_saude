@@ -128,6 +128,37 @@ log(dengue)     # logaritmo natural (base e)
 # O logaritmo é uma das transformações mais usadas em epidemiologia e bioestatística.Por exemplo, quando analisamos taxas de mortalidade ou incidência que variam muito entre regiões, o log ajuda a reduzir o impacto de valores extremos.
 
 # ==============================================================================
+# OPERADORES LÓGICOS
+# ==============================================================================
+
+x <- c(1,2,9,4,5)
+y <- c(1,2,6,7,8)
+# ------------------------------------
+x > y # Retorna TRUE para os maiores e FALSE para os menores
+x >= y
+x < y
+x == y # Retorna TRUE para os x que são iguais a y
+x != y # Retorna TRUE para os x que são diferentes de y
+
+
+# A função which funciona como se fosse a pergunta: Quais?
+a<-c(2,4,6,8,10,12,14,16,18,20)
+
+a > 10 # Retorna um vetor contendo TRUE se for maior e FALSE se for menor
+
+which(a>10) # Equivale a pergunta: "Quais valores de a são maiores que 10?". Note que a resposta é a posição dos valores (o sexto, o sétimo…) e não os valores que são maiores que 10.
+
+a[6] # selecionamos o sexto valor de a
+
+a[c(6:10)] # selecionamos do sexto ao décimo valor
+
+a[which(a>=14)] #???????
+
+
+
+
+
+# ==============================================================================
 # LISTAGEM E REMOÇÃO DE OBJETOS
 # ==============================================================================
 ls()
@@ -226,5 +257,40 @@ sort(exemplo, decreasing=TRUE) # para colocar em ordem decrescente
 order(exemplo) #r retorna a posição original de cada valor do objeto "exemplo" caso os valores do objeto "exemplo" sejam colocados em ordem
 
 rank(exemplo) # Para atribuir postos (ranks) aos valores do exemplo
+
+# ==============================================================================
+# ESTRUTURA DE REPETIÇÃO
+# ==============================================================================
+
+# IMPORTANDO DADOS
+
+df <- read.csv("https://raw.githubusercontent.com/ryallmeida/r_p_saude/refs/heads/main/database/dados_obesidade.csv")
+
+# Criando vetores vazios para armazenar resultados
+
+imc <- numeric(length(df$X))
+classificacao <- character(length(df$X))
+
+# Loop for: percorre cada linha do data frame
+
+for (i in 1:nrow(df)) {
+  # Cálculo do IMC
+  imc[i] <- df$Weight[i] / (df$Height[i]^2)
+  # Classificação
+  if (imc[i] < 18.5) {
+    classificacao[i] <- "Baixo peso"
+  } else if (imc[i] < 25) {
+    classificacao[i] <- "Eutrofia"
+  } else if (imc[i] < 30) {
+    classificacao[i] <- "Sobrepeso"
+  } else {
+    classificacao[i] <- "Obesidade"
+  }
+}
+
+# Adiciona os resultados ao data frame
+
+df$IMC <- round(imc, 2)
+df$Classificacao <- classificacao
 
 

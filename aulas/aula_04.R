@@ -32,6 +32,8 @@ bd <- read_csv(here("database/synthetic_health_data.csv"))
 
 # OU
 
+bd <- read.csv("https://raw.githubusercontent.com/ryallmeida/r_p_saude/refs/heads/main/database/synthetic_health_data.csv")
+
 # Plot inicial, sem linha de regressão
 plot(bd$Diet_Quality, bd$Health_Score, ylab = "Health score", xlab = "Indice qualidade da dieta")
 

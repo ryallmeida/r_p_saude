@@ -24,9 +24,11 @@ pacman::p_load(tidyverse)
 
 # HIPOTESE: QUAIS SÃO OS MELHORES GRÁFICOS APRA VISUALISAÇÃO DE DADOS QUALITATIVOS?
 
+# GRAFICO DE BARRAS
 example(barplot)
 barplot(sample(10:100,10))
 
+# GRAFICOS DE SETOR
 pie(c(1,5,7,10))
 example(pie)
 
@@ -62,9 +64,50 @@ stripchart(peso~sexo,
 
 # os pontos não estão mais totalmente sobrepostos, mas um símbolo ainda está sobre o outro. Usando o argumento offset conseguimos separá-los.
 
+# GRAFICO DE DISPERSÃO
+
+y <- c(110,120,90,70,50,80,40,40,50,30)
+x <- 1:10
+plot(x, y)
+
+# inserindo uma linha no gráfico acima 
+
+abline(h=mean(y), v=mean(x),col = c("red","blue"))
+
 
 # ==============================================================================
 # COMO CRIAR FUNÇÕES NO R? 
 # ==============================================================================
 
+# CRIAÇÃO DO CALCULO DE INDICE DE MASSA CORPORAL E SUA RESPECTIVA CLASSIFCAÇÃO SENSUNDO OMS
 
+
+
+IMC <- function(peso, altura) {
+  imc <- peso/(altura^2)
+
+  if(imc < 18.5) {
+    classificacao <- "Baixo Peso"
+  } else if (imc < 25) { 
+    classificacao <- "Eutrofia (peso adequado)"
+  } else if (imc < 30) {
+      classificacao <- "Sobrepeso"
+  } else {
+      classificacao < "Obesidade"
+  }
+  
+  cat("Avaliação do IMC\n")
+  cat("-----------------------------------------\n")
+  cat("Avaliação do IMC\n")
+  cat("Peso (Kg)", peso, "\n")
+  cat("Altura (m)", altura, "\n")
+  cat("IMC", round(imc, 2), "\n")
+  cat("Classificação", classificacao, "\n")
+  cat("-----------------------------------------\n")
+  
+  # função round( aproxima IMC para duas casas decimais)
+  return(list(IMC = imc, 
+              classificacao = classification))
+}
+
+IMC(70, 1.75)
