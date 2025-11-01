@@ -89,10 +89,90 @@ if(!require("tidyverse")) {
   install.packages("tidyverse")
 }
 
+# select() - seleciona colunas
+# arrange() - ordena a base
+# filter() - filtra linhas
+# mutate() - cria/modifica colunas
+# group_by() - agrupa a base
+# summarise() - sumariza a base
+
+coluna_gender <- dplyr::select(df, Gender)
+coluna <- dplyr::select(df, Gender:Weight)
+coluna <- dplyr::select(df, Gender, Age, Height)
+
+# o dplyr possui um conjunto de funções auxiliares muito úteis para seleção de colunas. As principais são:
+  
+# starts_with(): para colunas que começam com um texto padrão
+# ends_with(): para colunas que terminam com um texto padrão
+# contains(): para colunas que contêm um texto padrão
+
+select(df, starts_with("texto")) #textos em comum
+select(df, -starts_with("texto"))
+
+# ordenando base de dados via alguma coluna/variável
+
+data("UScereal")
+UScereal$mfr <- dplyr::arrange(UScereal, desc(mfr))
+UScereal <- dplyr::arrange(UScereal, desc(mfr), desc(calories))
 
 
+a <- UScereal %>% 
+  select(mft, calories) %>% 
+  arrange(mfr)
+View(a)
+
+# Para filtrar valores de uma coluna da base, utilizamos a função filter().
 
 
+# perguntar aos discentes parametros interessantes para realizar a filtragem
+# exemplo sodio altissimo, qual os parametros?
+b <- UScereal %>% filter(variavel > parametro)
+
+c <- UScereal %>% 
+  filter(variavel > parametro em comum) %>% 
+  select(variavel, variavel2)
+
+d <- df %>% filter(Gender == "Female", NObeyesdad == "Insufficient_Weight")
+# Podemos estender o filtro para duas ou mais colunas. Para isso, separamos cada operação por uma vírgula.
+
+# Também podemos fazer operações com as colunas da base dentro da função filter. O código abaixo devolve uma tabela apenas com os filmes que lucraram.
+
+e <- sqrt(df$Weight)
+mean(e)
+median(e)
+
+f <- df %>% filter(sqrt(Weight) > 9.196058)
+View(data.frame(f))
+
+g <- df %>% filter(MTRANS %in% c("Walking", "Bike"))
+View(data.frame(g))
+
+# ==============================================================================
+# MODIFICANDO OU CRIANDO NOVAS COLUNAS
+# ==============================================================================
+
+# PERCENTUAL DE CALORIAS VINDA DE AÇUCARES
+
+UScereal <- UScereal %>% mutate(cal_sugg = ((sugars*4)/calories)*100)
+
+# INTERPRETAÇÃO
+# < 20% CARBOIDRATOS PREDOMINAM A DIETA
+# 20% - 40% MODERADO
+# > 40% ALTA PROPORÇÃO DE AÇUCARES SIMPLES
+
+range(UScereal$cal_sugg)
+summary(UScereal$cal_sugg)
+hist(UScereal$cal_sugg)
+
+h <- df %>% 
+  filter(!is.na(SMOKE), !is.na(Weight))  %>% 
+  group_by(SMOKE) %>% 
+  summarise(peso_medio_fumante = mean(Weight, na.rm = TRUE))
+
+i <- df %>% 
+  group_by(MTRANS) %>% 
+  summarise(peso_medio = mean(Weight, na.rm = TRUE))
+View(i)
 
 
 if(!require("NHANES")) {
@@ -116,7 +196,10 @@ if(!require("Epi")) {
 
 try(data(package = "Epi"), silent = TRUE)
 
+help("DMepi", package = "Epi")
 data(DMepi)
+
+help("diet", package = "Epi")
 data(diet)
 
 # ==============================================================================
@@ -127,4 +210,5 @@ if(!require("MASS")) {
 
 try(data(package = "MASS"), silent = TRUE)
 
+help("anorexia", package = "MASS")
 data(anorexia)
