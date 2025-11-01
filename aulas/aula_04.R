@@ -27,7 +27,10 @@ pacman::p_load(tidyverse, ggplot2, here)
 
 # INTRODUÇÃO A ANÁLISE DE REGRESSÃO ---------------------------------------
 
-bd <- read_csv("Dia 4/synthetic_health_data.csv") #link para dowload: https://www.kaggle.com/datasets/pratikyuvrajchougule/health-and-lifestyle-data-for-regression?resource=download
+bd <- read_csv(here("database/synthetic_health_data.csv"))
+#link para dowload: https://www.kaggle.com/datasets/pratikyuvrajchougule/health-and-lifestyle-data-for-regression?resource=download
+
+# OU
 
 # Plot inicial, sem linha de regressão
 plot(bd$Diet_Quality, bd$Health_Score, ylab = "Health score", xlab = "Indice qualidade da dieta")

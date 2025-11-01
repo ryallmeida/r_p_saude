@@ -208,9 +208,23 @@ hist(glicemia, main = "Histograma de glicemia (mg/dL)",
 #rpois() → distribuição de Poisson (ex.: número de casos de doença rara em uma população);
 #rexp() → distribuição exponencial (ex.: tempo até um evento clínico).
 
-# COMO CRIAR FUNÇÕES NO R? 
+# ==============================================================================
+# FAZER A SELEÇÃO/CRIAÇÃO DE AMOSTRAS ALEATÓRIAS
+# ==============================================================================
 
+sample(x, size=1, replace = FALSE)# onde x é o conjunto de dados do qual asamostras serão retiradas, size é o número de amostras e replace é onde você indica se a amostra deve ser feita com reposição (TRUE) ou sem reposição (FALSE). 
 
+# ==============================================================================
+# ORDENAR DADOS E ATRIBUIÇÃO DE POSTOS
+# ==============================================================================
 
+exemplo<-sample(1:100,10)
+exemplo
+
+sort(exemplo) # para colocar em ordem crescente
+sort(exemplo, decreasing=TRUE) # para colocar em ordem decrescente
+order(exemplo) #r retorna a posição original de cada valor do objeto "exemplo" caso os valores do objeto "exemplo" sejam colocados em ordem
+
+rank(exemplo) # Para atribuir postos (ranks) aos valores do exemplo
 
 
