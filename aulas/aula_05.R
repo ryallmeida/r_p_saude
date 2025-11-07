@@ -98,7 +98,7 @@ t.test(df$Height, mu = 1.67)
 
 # ANOVA DE UMA VIA, PERMITE QUE COMPAREMOS MEDIAS DE MAIS DE UM GRUPO
 
-dados <- rio::import("C:/Users/Notebook/Desktop/R PARA SAUDE/r_p_saude/database/control_placebo.csv")
+dados <- rio::import("https://raw.githubusercontent.com/ryallmeida/r_p_saude/refs/heads/main/database/control_placebo.csv")
 # Fonte: Fernanda Peres
 
 # teste de normalidade agrupado
