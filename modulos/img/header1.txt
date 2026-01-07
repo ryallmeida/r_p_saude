@@ -1,0 +1,8 @@
+<link rel="shortcut icon" href="https://github.com/ryallmeida/r_p_saude/blob/main/modulos/img/fat_icon.png">
+
+<div class="header">
+  <img style="position:relative; top:20px; left:50%; padding:10px;"
+       src="https://github.com/ryallmeida/r_p_saude/blob/main/modulos/img/logo.png"
+       width="510"
+       height="150" />
+</div>
