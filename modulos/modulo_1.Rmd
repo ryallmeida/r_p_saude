@@ -1,0 +1,15 @@
+---
+title: 'MÓDULO I: CURSO "R PARA SAÚDE'
+author: Ryan Pablo Alves de Almeida Pires, Maria do Carmo Soares de Lima e Carla Vitória Alves Cavalcante
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+    html_document:
+       highlight: textmate
+       theme: flatly
+       number_sections: yes
+       toc: yes
+       toc_float:
+         collapsed: yes
+         smooth_scroll: no
+---
+
