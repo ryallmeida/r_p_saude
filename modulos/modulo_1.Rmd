@@ -16,7 +16,6 @@ output:
 ---
 
 
-
 # Sobre o curso e os autores
 
 Apostilas dos códigos utilizados nas aulas "Curso: R para Saúde" realizado em parceria entre o Departamento de Ciência Política e o Programa de Pós-graduação em Nutrição da Universidade Federal de Pernambuco. Curso ministrado pelos docentes: [Prof.ª Dr.ª Maria do Carmo](http://lattes.cnpq.br/6914758127566065) e o [Prof. Dalson Britto](http://lattes.cnpq.br/6683806605359913) e monitorado por [Ryan Almeida](https://github.com/ryallmeida) e [Carla Cavalcante](https://github.com/Carla-Cavalcante)
