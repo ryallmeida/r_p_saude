@@ -1,0 +1,901 @@
+---
+title: 'CURSO DE EXTENSÃO<br>
+"R PARA SAÚDE"'
+subtitle: |
+  INFORMÁTICA APLICADA<br>
+  À PESQUISA CIENTÍFICA [TURMA: PJ350-2025]
+author: Ryan Almeida, Maria Soares, Carla Cavalcante
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+    html_document:
+       highlight: textmate
+       includes:
+         in_header: "C:/Users/ryall/Desktop/R/r_p_saude/r_p_saude/modulos/img/header.html"
+       theme: united
+       number_sections: yes
+       toc: yes
+       toc_float:
+         collapsed: yes
+         smooth_scroll: no
+---
+<br>
+```{r normas de uso}
+
+# Aviso: Essas notas de aula são exclusivas para uso como guia do curso, porém não substituem as referências e materiais de apoio. Quaisquer erros são de responsabilidade dos autores. 
+# Esse material é protegido por ser propriedade intelectual.
+# Logo, reproduzir, divulgar ou distribuir somente com a autorização prévia.
+
+```
+
+```{r Carregamento dos Pacotes, echo=FALSE, message=FALSE, warning=FALSE}
+
+if(!require("pacman")) {
+  install.packages("pacman")
+}
+
+pacman::p_load(tidyverse, 
+               ggpubr, 
+               patchwork,
+               car,
+               rstatix,
+               emmeans,
+               knitr,
+               kableExtra,
+               htmltools,
+               rmarkdown)
+
+```
+
+# Sobre o curso e os autores
+
+Apostilas dos códigos utilizados nas aulas "Curso: R para Saúde" realizado em parceria entre o Departamento de Ciência Política e o Programa de Pós-graduação em Nutrição da Universidade Federal de Pernambuco. Curso ministrado pelos docentes: [Prof.ª Dr.ª Maria Soares](http://lattes.cnpq.br/6914758127566065) e o [Prof. Dalson Britto](http://lattes.cnpq.br/6683806605359913) e monitorado por [Ryan Almeida](https://github.com/ryallmeida) e [Carla Cavalcante](https://github.com/Carla-Cavalcante)
+
+
+## Maria Soares
+
+## Ryan Almeida
+
+## Carla Cavalcante 
+
+## Dalson Britto
+
+# Fundamentos em R
+
+## Por que programar? Por que codar exatamente em R? 
+
+Motivos para você escolher a Linguagem R
+
+* Linguagem com desenvolvimento comunitário. Logo, constatemente ela se reinventa e se adapta as possibilidades que ou a vida academica ou o mercado pedem.
+
+* Linguagem de programação aberta, então qualquer pessoa pode baixá-la e começar a codar imediatamente e de graça. Diferentemente de outros Softwares pagos comos SPPS ou STATA.
+
+* Mercado de trabalho tem deteminado algumas hardskills que você deve saber e grandes empresas estão cada vez mais interessados em profissionais que saibam usar R.
+
+Veja algumas aplicações com dados simulados.
+<br>
+<br>
+<br>
+<figure style="text-align: center;">
+  <figcaption>
+    **Figura:** Boxplots por grupo representando a distribuição e as estatísticas principais de três variáveis
+  </figcaption>
+</figure>
+```{r Boxplot, echo=FALSE, warning=FALSE, message=FALSE, fig.align="center"}
+
+if(!require("pacman")) {
+  install.packages("pacman")
+}
+
+pacman::p_load(tidyverse, 
+               ggpubr, 
+               patchwork)
+
+# library(ggpubr)    # para stat_summary/summary_fun (opcional)
+# library(patchwork) # para combinar plots
+
+set.seed(123)
+
+# --- 1. Simular dados de exemplo ---
+n <- 180
+dados <- tibble(
+  id = 1:n,
+  grupo = sample(c("Controle", 
+                   "Intervenção A", 
+                   "Intervenção B"), 
+                 n, 
+                 replace = TRUE),
+  sexo = sample(c("Feminino",
+                  "Masculino"), 
+                n, 
+                replace = TRUE),
+  idade = round(rnorm(n, 
+                      mean = 45, 
+                      sd = 12)),
+  energia_kcal = round(rnorm(n, 
+                             mean = 2200, 
+                             sd = 450)),
+  protein_g = round(rnorm(n,
+                          mean = 80, 
+                          sd = 20)),
+  fat_g = round(rnorm(n, 
+                      mean = 80, 
+                      sd = 25)),
+  carb_g = round(rnorm(n, 
+                       mean = 300, 
+                       sd = 70))
+)
+
+# Ajustes para criar diferenças entre grupos (apenas para a demo)
+dados <- dados %>%
+  mutate(
+    protein_g = case_when(
+      grupo == "Controle" ~ protein_g - 3,
+      grupo == "Intervenção A" ~ protein_g + 5,
+      grupo == "Intervenção B" ~ protein_g + 1
+    ),
+    energia_kcal = case_when(
+      grupo == "Controle" ~ energia_kcal,
+      grupo == "Intervenção A" ~ energia_kcal - 120,
+      grupo == "Intervenção B" ~ energia_kcal + 80
+    )
+  )
+
+# --- 2. Sumário para média e erro padrão (para plot A) ---
+resumo_protein <- dados %>%
+  group_by(grupo) %>%
+  summarise(
+    mean_protein = mean(protein_g),
+    sd_protein = sd(protein_g),
+    n = n(),
+    se_protein = sd_protein / sqrt(n)
+  )
+
+p1_instagram <- ggplot(dados, aes(x = grupo, y = protein_g, fill = grupo)) +
+  geom_boxplot(outlier.shape = NA, alpha = 0.4, width = 0.6) +
+  geom_jitter(width = 0.15, alpha = 0.6, size = 1.4) +
+  geom_point(data = resumo_protein, aes(x = grupo, y = mean_protein), color = "black", size = 3) +
+  geom_errorbar(data = resumo_protein,
+                aes(x = grupo, y = mean_protein, ymin = mean_protein - se_protein, ymax = mean_protein + se_protein),
+                width = 0.15, color = "black", size = 0.8) +
+  stat_summary(fun = median, geom = "point", shape = 95, size = 6, color = "white") +
+  labs(title = "",
+       x = "", y = "Proteína (g/dia)") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "none") +
+  scale_fill_manual(values = c("#d85102", "#575b21", "#985612"))
+
+print(p1_instagram)
+
+```
+<figure style="text-align: center;">
+  <figcaption>
+    Fonte: **Elaboração própria.** Pires, Soares & Cavalvante (2025).
+  </figcaption>
+</figure>
+<br>
+<br>
+<br>
+<figure style="text-align: center;">
+  <figcaption>
+    **Figura:** Gráfico de violino por gênero representando a distribuição da variável "peso" dado o grupo
+  </figcaption>
+</figure>
+```{r Violino, echo=FALSE, warning=FALSE, message=FALSE, fig.align="center"}
+
+df <- read.csv("https://raw.githubusercontent.com/ryallmeida/r_p_saude/refs/heads/main/database/dados_obesidade.csv")
+
+p1 <- df %>%
+  ggplot( aes(x= Gender, 
+              y= Height, 
+              fill= Gender)) +
+  geom_violin(alpha = 0.2, 
+              scale = "width") +
+  geom_boxplot() +
+  viridis::scale_fill_viridis(discrete = TRUE, 
+                              alpha=0.6) +
+  geom_jitter(color="black", 
+              size=0.2, 
+              alpha=0.7,
+              width = 0.4,
+              shape = 10) +
+  theme(
+    legend.position="none",
+    plot.title = element_text(size=11)
+  ) +
+  ggtitle("") +
+  xlab("") +
+    labs(title = "", 
+       x = "Sexo",
+       y = "Peso") +
+  theme_minimal(base_size = 14)+
+  scale_fill_manual(values = c("#d85102", "#575b21"))
+
+print(p1)
+
+```
+<figure style="text-align: center;">
+  <figcaption>
+    Fonte: **Elaboração própria.** Pires, Soares & Cavalvante (2025).
+  </figcaption>
+</figure>
+<br>
+<br>
+<br>
+<figure style="text-align: center;">
+  <figcaption>
+    **Figura:** Gráfico de densidade normalizada agrupado por sexo espelhado sob duas variáveis
+  </figcaption>
+</figure>
+
+```{r Densidade Normalizada, echo=FALSE, warning=FALSE, message=FALSE, fig.align="center"}
+
+if(!require("pacman")) {
+  install.packages("pacman")
+}
+
+pacman::p_load(tidyverse, 
+               psych, 
+               likert, 
+               table1, 
+               flextable, 
+               RColorBrewer, 
+               viridis)
+
+df <- read.csv("https://raw.githubusercontent.com/ryallmeida/r_p_saude/refs/heads/main/database/dados_obesidade.csv")
+
+Height_z <- scale(df$Height)
+Weight_z <- scale(df$Weight)
+
+
+p3 <- ggplot(df) +
+  # Altura padronizada (cima)
+  geom_density(aes(x = Height_z, 
+                   y = after_stat(density)/max(after_stat(density)), 
+                   fill = Gender),
+               alpha = 0.5, 
+               color = NA) +
+  viridis::scale_fill_viridis(discrete = TRUE, 
+                              alpha=0.6) +
+  annotate("label",
+           x = 4.5,
+           y = 0.25,
+           label = "Altura",
+           color = "black", 
+           hjust = 1) +
+  
+  # Peso padronizado (baixo, espelhado)
+  geom_density(aes(x = Weight_z, y = -after_stat(density)/max(after_stat(density)), fill = Gender),
+               alpha = 0.5, 
+               color = NA) + 
+  viridis::scale_fill_viridis(discrete = TRUE, 
+                              alpha=0.6) +
+  annotate("label",
+           x = 4.5,
+           y = -0.25,
+           label = "Peso",
+           color = "black", 
+           hjust = 1) +
+  geom_hline(yintercept = 0) +
+  labs(title = "", 
+       x = "Valores padronizados (Zscore)",
+       y = "Densidade normalizada") +
+  theme_minimal() +
+  scale_fill_manual(values = c("#d85102", "#575b21"))
+
+print(p3)
+
+```
+<figure style="text-align: center;">
+  <figcaption>
+    Fonte: **Elaboração própria.** Pires, Soares & Cavalvante (2025).
+  </figcaption>
+</figure>
+<br>
+<br>
+<br>
+<figure style="text-align: center;">
+  <figcaption>
+    **Figura:**Energia em função da proteína com ajuste linear por grupo
+  </figcaption>
+</figure>
+```{r Ajuste Linear, echo=FALSE, warning=FALSE, message=FALSE, fig.align="center"}
+
+p2_instagram <- ggplot(dados, aes(x = energia_kcal, y = protein_g, color = grupo)) +
+  geom_point(alpha = 0.7, size = 1.8) +
+  geom_smooth(method = "lm", se = TRUE, fullrange = FALSE) +
+  labs(
+    title = "",
+    x = "Energia (kcal/dia)",
+    y = "Proteína (g/dia)",
+    color = "Grupo"
+  ) +
+  theme_minimal(base_size = 14) +
+  scale_color_manual(values = c("#d85102", "#575b21", "#985612"))
+
+print(p2_instagram)
+
+```
+<figure style="text-align: center;">
+  <figcaption>
+    Fonte: **Elaboração própria.** Pires, Soares & Cavalvante (2025).
+  </figcaption>
+</figure>
+<br>
+<br>
+<br>
+
+## Preparação ambiental
+
+## Programação orientada à objetos
+
+## Tipos de variáveis em R
+
+```{r Tipo de Variáveis, echo=FALSE, warning=FALSE, message=FALSE, fig.align="center"}
+
+tipos_variaveis <- data.frame(
+  Tipo = c(
+    "Numéricas (numeric)",
+    "Datas (Date)",
+    "Categóricas (factor)",
+    "Categóricas ordenáveis (ordered)",
+    "Texto (character)",
+    "Booleanas (logical)"
+  ),
+  Descricao = c(
+    "Números inteiros ou reais, como idade, renda, número de filhos.",
+    "São um tipo especial de variável numérica.",
+    "Variáveis qualitativas para as quais não é possível atribuir um valor numérico, como sexo, religião, estado civil ou opinião.",
+    "Variáveis categóricas cujas categorias podem ser hierarquizadas, como grau de escolaridade ou respostas ordenadas.",
+    "Características puramente individuais que não podem ser utilizadas para categorizar os indivíduos, usadas em análises qualitativas.",
+    "Variáveis cujos valores podem ser VERDADEIRO ou FALSO; no R, TRUE ou FALSE."
+  ),
+  stringsAsFactors = FALSE
+)
+
+knitr::kable(head(tipos_variaveis, 10))
+
+
+```
+
+### Situação-problema
+
+Imagine que você coletou dados de 5 pessoas e, para cada uma, tem as seguintes variáveis:
+
+1. idade → é o número propriamente dito
+2. data da entrevista → data
+3. sexo → categórica (Femino, Masculino, Outro; Você tem três categorias aqui)
+4. escolaridade → categórica ordenável (Porque você nâo vira doutor sem antes ter se formado no ABC)
+5. opinião aberta → texto de um relato, por exemplo, o R vai entender como um character
+6. fumante → booleana, ou fuma ou não fuma, ou TRUE ou FALSE, ou SIM ou NÃO, note que só existe duas possibilidades e nada mais, essa é a essência de uma variável booleana
+
+
+## Operadores Lógico e Matemáticos 
+
+```{r Operadores, echo=FALSE, warning=FALSE, message=FALSE, fig.align="center"}
+
+# Criando um dataframe com operadores do R e seus significados
+operadores <- data.frame(
+  
+  operador = c("+", "-", "/", "*", "^",
+               ">", "<", ">=", "<=",
+               "==", "!=", "&", "|", "!"),
+  
+  significado = c(
+    "Soma",
+    "Subtração",
+    "Divisão",
+    "Multiplicação",
+    "Exponenciação",
+    "Maior que",
+    "Menor que",
+    "Maior ou igual a",
+    "Menor ou igual a",
+    "Igual a",
+    "Diferente de",
+    "E (AND lógico)",
+    "Ou (OR lógico)",
+    "Não (negação lógica)"
+  ),
+  
+  tipo = c(
+    rep("Aritmético", 5),
+    rep("Relacional", 6),
+    rep("Lógico", 3)
+  ),
+  
+  stringsAsFactors = FALSE
+)
+
+knitr::kable(head(operadores, 10))
+
+
+```
+
+
+### Atividade: "Use o R como calculadora"
+
+```{r, eval=FALSE}
+# DIGITE E VEJA O OUTPUT
+
+2 + 2
+4/2
+2 - 1
+4*2
+
+```
+
+```{r, eval=FALSE}
+# DIGITE E VEJA O OUTPUT
+# LEMBRE QUE O RESULTADO DE UM TESTE LÓGICO É SEMPRE UM OUTPUT BOOLEANO
+
+3 > 2
+5 < 2
+(6 > 5) & (7 > 8)
+(6 > 5) | (7 > 8)
+
+```
+
+# Plottagem no R Base
+
+A visualização de dados é uma etapa fundamental e crítica em diversas áreas de análise, como estatística, química, física e biologia.
+
+No contexto da estatística, a visualização é a chave para construir a intuição necessária sobre o conjunto de dados. É a partir dessa intuição visual que o analista pode escolher o teste estatístico ou modelo matemático mais adequado para resolver o problema em questão.
+
+As visualizações podem variar em complexidade, indo desde:
+
+* Medidas Resumo Simples: Como frequência, média, variância, desvio padrão, mínimo, máximo, entre outras.
+
+* Tabelas: Onde um conjunto dessas medidas é organizado de forma estruturada.
+
+* Gráficos: Representações visuais de (uma parte) dos dados, que permitem identificar padrões, outliers e distribuições.
+
+> Segundo o estatístico norte-americano Leland Wil-kinson, “um gráfico é o mapeamento dos dados a partir de atributos estéticos (como posição, cor, forma, tamanho) de objetos geométricos (pontos, linhas, barras, caixas)” (WILKINSON, 2005).
+
+## Gráfico de dispersão 
+
+No ambiente de programação R, o comando mais simples e básico para criar um gráfico a partir de dois objetos (ou variáveis a depender do contexto) do tipo numérico é o ```plot()```.
+
+Este tipo de representação gráfica é popularmente conhecido como gráfico de dispersão (ou `*scatter plot*`). Ele é ideal para visualizar a relação ou a correlação entre duas variáveis quantitativas. Faça o exemplo que segue no seu computador.
+
+```{r}
+# DIGITE
+
+x <- c(1, 5, 10, 15, 20, 25, 30, 35)
+y <- c(8, 16, 14, 21, 38, 25, 43, 39)
+
+```
+
+
+```{r, eval=FALSE, warning=FALSE, message=FALSE}
+
+?plot 
+
+# ISSO É VOCÊ PERINDO AJUDA PARA ENTENDER A FUNÇÃO. VOCÊ PODE FAZER ISSO SEMPRE QUE NÃO SE LEMBRAR DIREITO DE UM COMANDO. 
+# A PARTE RUIM É QUE VOCÊ TEM QUE SABER INGLÊS, JÁ A PARTE BOA É QUE VOCê APRENDE INGLÊS NO PROCESSO
+
+```
+
+```{r, fig.align="center"}
+
+# GRÁFICO DE DISPERSÃO 
+
+plot(y ~ x)
+
+```
+
+```{r, eval=FALSE, warning=FALSE, message=FALSE}
+
+plot(x, y) 
+
+# EM R, EXISTE INÚMERAS FORMAS DE FAZER O MESMO COMANDO. EXEMPLO DISSO É O CÓDIGO ACIMA QUE É EQUIVALENTE A FUNÇÃO SUPRACITADA
+
+```
+
+Conheça os principais argumentos da função ``plot()``, o que a literatura chama de "parâmetros de visualização gráfica"
+
+
+```{r Parametros, echo=FALSE, warning=FALSE, message=FALSE, fig.align="center"}
+
+# Criando um dataframe com parâmetros gráficos do R base
+parametros_graficos <- data.frame(
+  
+  parametro = c("col", "pch", "type", "cex", "lty",
+                "xlim", "ylim", "xlab", "ylab", "main"),
+  
+  descricao = c(
+    "Cor dos elementos do gráfico (nome, número ou rgb())",
+    "Tipo de caractere/símbolo dos pontos",
+    "Tipo de gráfico (pontos, linhas, ambos etc.)",
+    "Tamanho do caractere ou ponto",
+    "Tipo de linha",
+    "Limites do eixo x (horizontal)",
+    "Limites do eixo y (vertical)",
+    "Título do eixo x",
+    "Título do eixo y",
+    "Título principal do gráfico"
+  ),
+  
+  funcao_visual = c(
+    "Estética",
+    "Forma",
+    "Estrutura",
+    "Escala visual",
+    "Estilo",
+    "Escala do eixo",
+    "Escala do eixo",
+    "Rotulagem",
+    "Rotulagem",
+    "Narrativa"
+  ),
+  
+  stringsAsFactors = FALSE
+)
+
+knitr::kable(head(parametros_graficos, 10))
+
+
+```
+
+<br>
+
+Quando abrimos a função `plot()` no R e nos deparamos com argumentos como `col`, `pch`, `cex` ou `xlim`, a sensação inicial é quase sempre a de arbitrariedade: por que esses nomes? por que tão curtos? por que em inglês? A provocação que vale ser feita, no entanto, é outra: **e se esses parâmetros não forem meros atalhos técnicos, mas a materialização de uma gramática técnico-científica específica?** 
+
+Comecemos pela cor. `col`, abreviação de *color*, não é um detalhe estético secundário, mas um operador semântico. Ao escolher uma cor, o pesquisador estabelece hierarquias visuais, produz contrastes e direciona o olhar do leitor. A cor, portanto, não adorna o dado; ela o interpreta. O mesmo vale para `pch`, que vem de *plotting character*, um resquício histórico da época em que gráficos eram impressos com caracteres tipográficos. Ainda que hoje pareça anacrônico, o termo revela algo fundamental: cada ponto em um gráfico é um signo, um caractere que representa uma observação (ou amostra, a depender do contexto). Mudar o símbolo é mudar a forma como a observação se apresenta ao usuário/interlocutor.
+
+<br>
+<br>
+<figure style="text-align: center;">
+  <figcaption>
+    **Figura:** Signo e código dos plotting character no R 
+  </figcaption>
+</figure>
+```{r pch, echo=FALSE, warning=FALSE, message=FALSE, fig.align="center"}
+
+# Vetor com os valores de pch
+pch_vals <- 0:25
+
+# Coordenadas para posicionar os símbolos
+x <- rep(1:6, length.out = length(pch_vals))
+y <- rep(5:1, each = 6)[1:length(pch_vals)]
+
+# Criando o gráfico vazio
+plot(x, y,
+     type = "n",
+     axes = FALSE,
+     xlab = "",
+     ylab = "",
+     main = "")
+
+# Adicionando os símbolos
+points(x, y,
+       pch = pch_vals,
+       cex = 2)
+
+# Adicionando os rótulos com o número do pch
+text(x, y - 0.3,
+     labels = pch_vals,
+     cex = 0.9)
+
+
+
+```
+<figure style="text-align: center;">
+  <figcaption>
+    Fonte: **Elaboração própria.** Pires, Soares & Cavalvante (2025).
+  </figcaption>
+</figure>
+<br>
+<br>
+<br>
+
+A escolha do `type` (pontos, linhas ou ambos) explicita ainda mais essa dimensão ontológica da visualização. Pontos sugerem observações discretas; linhas insinuam continuidade, processo, trajetória. Trata-se de uma tomada de posição analítica: **o fenômeno que estou observando é pontual ou processual?** O R obriga o pesquisador a responder a essa pergunta, ainda que de forma implícita.
+
+<br>
+<br>
+<br>
+<figure style="text-align: center;">
+  <figcaption>
+    **Figura:** Signo e código do argumento type no R 
+  </figcaption>
+</figure>
+```{r type, echo=FALSE, warning=FALSE, message=FALSE, fig.align="center"}
+
+# Dados de exemplo
+x <- 1:10
+y <- c(2, 3, 5, 4, 6, 7, 8, 7, 9, 10)
+
+# Organizando a área gráfica
+par(mfrow = c(3, 3),     # 3 linhas x 3 colunas
+    mar = c(3, 3, 3, 1)) # margens mais compactas
+
+# 1. Pontos
+plot(x, y,
+     type = "p",
+     main = 'type = "p" (points)',
+     xlab = "", ylab = "",
+     pch = 16)
+
+# 2. Linhas
+plot(x, y,
+     type = "l",
+     main = 'type = "l" (lines)',
+     xlab = "", ylab = "")
+
+# 3. Ambos (pontos + linhas)
+plot(x, y,
+     type = "b",
+     main = 'type = "b" (both)',
+     xlab = "", ylab = "",
+     pch = 16)
+
+# 4. Apenas linhas (sem pontos visíveis)
+plot(x, y,
+     type = "c",
+     main = 'type = "c" (lines only)',
+     xlab = "", ylab = "")
+
+# 5. Pontos e linhas sobrepostos
+plot(x, y,
+     type = "o",
+     main = 'type = "o" (overplotted)',
+     xlab = "", ylab = "",
+     pch = 16)
+
+# 6. Linhas verticais
+plot(x, y,
+     type = "h",
+     main = 'type = "h" (vertical lines)',
+     xlab = "", ylab = "")
+
+# 7. Degraus (step function)
+plot(x, y,
+     type = "s",
+     main = 'type = "s" (steps)',
+     xlab = "", ylab = "")
+
+# 8. Degraus (variação)
+plot(x, y,
+     type = "S",
+     main = 'type = "S" (steps – alternative)',
+     xlab = "", ylab = "")
+
+# 9. Não plota pontos (gráfico vazio)
+plot(x, y,
+     type = "n",
+     main = 'type = "n" (no plotting)',
+     xlab = "", ylab = "")
+
+# Resetando o layout
+par(mfrow = c(1, 1))
+
+
+
+```
+<figure style="text-align: center;">
+  <figcaption>
+    Fonte: **Elaboração própria.** Pires, Soares & Cavalvante (2025).
+  </figcaption>
+</figure>
+<br>
+<br>
+<br>
+
+
+Outros parâmetros reforçam esse caráter decisório. `cex`, de *character expansion*, controla o tamanho dos símbolos e textos. Varia numa escala continua de zero a um determinado número muito grande, as referências indicam não colocar um valor maior que 3. Assim, ao ampliar ou reduzir um ponto, o pesquisador sinaliza relevância. O mesmo se aplica a `lty`, de *line type*: linhas contínuas, tracejadas ou pontilhadas comunicam distinções, comparações, cenários. 
+
+<br>
+<br>
+<br>
+<figure style="text-align: center;">
+  <figcaption>
+    **Figura:** Evidências de flutuações nos parâmetros do argumento cex no R 
+  </figcaption>
+</figure>
+```{r Ocex, echo=FALSE, warning=FALSE, message=FALSE, fig.align="center"}
+
+# Dados de exemplo
+x <- 1:10
+y <- x
+
+# Valores de cex a serem comparados
+cex_vals <- c(0.5, 0.8, 1, 1.5, 2, 3)
+
+# Organizando a área gráfica
+par(mfrow = c(2, 3),      # 2 linhas x 3 colunas
+    mar = c(3, 3, 3, 1))  # margens compactas
+
+# Loop para gerar os gráficos
+for (i in cex_vals) {
+  plot(x, y,
+       pch = 16,
+       cex = i,
+       main = paste("cex =", i),
+       xlab = "",
+       ylab = "")
+}
+
+# Resetando o layout
+par(mfrow = c(1, 1))
+
+
+
+```
+<figure style="text-align: center;">
+  <figcaption>
+    Fonte: **Elaboração própria.** Pires, Soares & Cavalvante (2025).
+  </figcaption>
+</figure>
+<br>
+<br>
+<br>
+
+Talvez onde essa dimensão política da visualização se torne mais evidente seja nos limites dos eixos. `xlim` e `ylim`, abreviações de *x limits* e *y limits*, definem onde a narrativa gráfica começa e termina. Controlar os limites é controlar a escala; controlar a escala é controlar a percepção. Um mesmo conjunto de dados pode parecer estável ou dramático dependendo desses parâmetros. O R, ao exigir que esses limites sejam explicitados quando necessário, expõe um ponto crucial: **não existe gráfico neutro**.
+
+```{r Experimento de visualização, echo=FALSE, warning=FALSE, message=FALSE, fig.align="center"}
+
+# Dados de exemplo: tendência suave e realista
+x <- 1:10
+y <- c(10, 11, 11.5, 12, 12.2, 12.5, 13, 13.2, 13.5, 14)
+
+# Organizando a área gráfica
+par(mfrow = c(1, 3),
+    mar = c(4, 4, 4, 1))
+
+# Gráfico HONESTO (escala adequada)
+plot(x, y,
+     type = "b",
+     pch = 16,
+     ylim = c(9, 15),
+     main = "Escala adequada",
+     xlab = "Tempo",
+     ylab = "Indicador")
+
+#  Gráfico EXAGERADO (ylim muito estreito)
+plot(x, y,
+     type = "b",
+     pch = 16,
+     ylim = c(12, 14),
+     main = "Escala comprimida\n(exagera a variação)",
+     xlab = "Tempo",
+     ylab = "Indicador")
+
+#  Gráfico DILUÍDO (ylim muito amplo)
+plot(x, y,
+     type = "b",
+     pch = 16,
+     ylim = c(0, 50),
+     main = "Escala ampliada\n(dilui a variação)",
+     xlab = "Tempo",
+     ylab = "Indicador")
+
+# Resetando o layout
+par(mfrow = c(1, 1))
+
+
+```
+<br><br>
+
+No gráfico acima, o que se faz é um **experimento controlado de visualização**: os dados permanecem rigorosamente os mesmos em todos os gráficos, e a única coisa que varia são os **limites do eixo y**, definidos pelo argumento `ylim`. Isso permite isolar o efeito da escala gráfica sobre a interpretação, mostrando que a mudança de leitura não vem dos números, mas da forma como eles são enquadrados.
+
+O primeiro bloco do código define os dados. O vetor `x` representa uma sequência temporal simples, enquanto `y` contém valores que crescem de maneira gradual e contínua. Não há saltos bruscos nem quebras estruturais; trata-se de uma tendência suave.
+
+No primeiro gráfico, o argumento `ylim = c(9, 15)` define um intervalo vertical ligeiramente maior do que o intervalo real dos dados. O resultado é uma visualização proporcional, em que o crescimento aparece de forma moderada e coerente com os valores observados. Esse gráfico funciona como um ponto de referência: ele mostra o fenômeno sem exageros nem minimizações, permitindo uma leitura equilibrada da tendência.
+
+No segundo gráfico, o `ylim` é comprimido para `c(12, 14)`. Como a variação dos dados ocupa quase todo o espaço vertical disponível, pequenas diferenças entre os valores são amplificadas visualmente. A curva parece íngreme, quase explosiva, mesmo que os incrementos reais sejam modestos. O código, portanto, demonstra como uma simples alteração de escala pode induzir uma interpretação alarmista, sem que nenhum dado tenha sido modificado.
+
+No terceiro gráfico, ocorre o movimento inverso. O `ylim = c(0, 50)` cria um eixo vertical excessivamente amplo em relação aos valores observados. Nesse contexto, a mesma tendência de crescimento praticamente desaparece: a linha parece quase horizontal, sugerindo estabilidade ou insignificância. Mais uma vez, os dados são idênticos; o que muda é apenas a moldura gráfica que os contém.
+
+Por fim, para finalizar essa parte dos parâmetros de visualização os rótulos e o título (`xlab`, `ylab` e `main`) só se usa quando necessário, visto que muitas vezes esses dados são inseridos diretamente nos artigos científicos.  
+
+### Atividade: "Faça seu próprio gráfico"
+
+```{r, eval=FALSE}
+# DIGITE O QUE SEGUE E TESTE DIFERENTES PARÂMETROS DE VISUALIZAÇÃO GRÁFICA
+
+plot(x, y,
+     col = "blue",
+     pch = 1,
+     type = "p",
+     cex = 1.0,
+     lty = 1,
+     xlim = c(0, 45),
+     ylim = c(0, 50),
+     xlab = "Variável X",
+     ylab = "Variável Y",
+     main = "Título que você desejar aqui"
+       )
+
+```
+
+
+## Boxplot
+
+Outro gráfico extremamente famoso é o boxplot, ou também conhecido como gráfico de caixas (tradução do termo anterior)
+
+<br><br><br>
+
+<figure style="text-align: center;">
+
+  <img 
+    src="https://fernandafperes.com.br/blog/interpretacao-boxplot/g2.png" 
+    alt="Boxplot mostrando a distribuição de dados."
+    style="width: 50%;">
+
+  <figcaption>
+    <strong>Figura:</strong> Boxplot representando a distribuição e as estatísticas principais de uma variável<br>
+    Fonte: <a href="https://fernandafperes.com.br/" target="_blank">Fernanda Peres</a>
+  </figcaption>
+
+</figure>
+
+<br><br><br>
+
+
+```{r, echo=FALSE}
+# DIGITE
+
+x <- c(1, 5, 10, 15, 20, 25, 30, 35)
+y <- c(8, 16, 14, 21, 38, 25, 43, 39)
+
+```
+
+```{r, eval=FALSE}
+
+# PARA PLOTAR UM BOXPLOT SEMELHANTE AO ACIMA USE O QUE SEGUE
+boxplot(y)
+
+```
+
+```{r, echo=FALSE, fig.align="center"}
+
+# PARA PLOTAR UM BOXPLOT SEMELHANTE AO ACIMA USE O QUE SEGUE
+
+boxplot(y)
+
+```
+
+
+
+# Referências e materiais de apoio
+
+1. [ANJOS, Adilson dos. Estatística básica com uso do software R. Curitiba: Departamento de Estatística – UFPR, 2010.](https://docs.ufpr.br/~aanjos/TRI/R/rbasico.pdf)
+
+2. [BOLFARINE, Heleno; SANDOVAL, Mônica Carneiro. Introdução à inferência estatística. São Paulo: Blucher, 2018.](https://docs.ufpr.br/~lucambio/CE210/LIVRO%20de%20infer%EAncia%20bolfarine.pdf)
+
+3. [CHAOUBAH, A. A importância da Bioestatística na formação de um profissional de Saúde. Revista Brasileira de Oftalmologia](https://www.scielo.br/j/rbof/a/ZnvJ63VgxhbhWthX9nVBWgg/?format=html&lang=pt)
+
+4. [CASELLA, George; BERGER, Roger L. Statistical inference. 2nd ed. Belmont, CA: Duxbury Press, 2002.](https://www.amazon.com.br/Statistical-Inference-George-Casella/dp/1032593032/ref=sr_1_1?__mk_pt_BR=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=32UCM6L87P7E1&dib=eyJ2IjoiMSJ9.Ax3SRemiZDkg6JQcCEjJyvkHFeo9-o-Z8AwK3hLco-p9p1QN5dOVAGYp-1RLcf0wX5z0QLCKtHCJXsXauosVYrzAX5WOG4kYqeJPoTC-M9U8evy8ED_8XzKushqfNV4-0qSUPZJoSDMvHHf9QgkfYZfShcnEblFie46_09JPowIsR77rDAaw3oHsj0MwLZxl.G8t2XqvTavTKwvfQPgVAJ4QK2bSzEZiEhoypCq-SWDI&dib_tag=se&keywords=Statistical+Inference+ByGeorge+Casella%2C+Roger+Berger&qid=1761863452&sprefix=statistical+inference+bygeorge+casella+roger+berger%2Caps%2C229&sr=8-1&ufe=app_do%3Aamzn1.fos.4bddec23-2dcf-4403-8597-e1a02442043d)
+
+5. [Curso: Ciência de Dados em R](https://livro.curso-r.com/index.html)
+
+6. [Figueiredo Filho, Dalson, et al. "O que fazer e o que não fazer com a regressão: pressupostos e aplicações do modelo linear de Mínimos Quadrados Ordinários (MQO)." Revista Política Hoje 20.1 (2011): 44-99.](https://www.academia.edu/8169376/O_que_Fazer_e_o_que_N%C3%A3o_Fazer_com_a_Regress%C3%A3o_pressupostos_e_aplica%C3%A7%C3%B5es_do_modelo_linear_de_M%C3%ADnimos_Quadrados_Ordin%C3%A1rios_MQO)
+
+7. [Grolemund, Garrett. Hands-on programming with R. " O'Reilly Media, Inc.", 2014.](https://rstudio-education.github.io/hopr/basics.html)
+
+8. [Hadley Wickham (2010): Uma gramática em camadas de gráficos, Journal of Computational and Graphical Statistics](https://byrneslab.net/classes/biol607/readings/wickham_layered-grammar.pdf)
+
+9. [JAMES, Gareth et al. An Introduction to Statistical Learning: with Applications in R. Second Edition. (S.l.): (s.n.), 2023.](https://www.statlearning.com/)
+
+10. [Kuhn, Max, and Julia Silge. Tidy modeling with R: A framework for modeling in the tidyverse. " O'Reilly Media, Inc.", 2022.](https://www.tmwr.org/)
+
+11. [LANDEIRO, Victor Lemes. Introdução ao uso do programa R. Manaus: Instituto Nacional de Pesquisas da Amazônia, Programa de Pós-Graduação em Ecologia](https://cran.r-project.org/doc/contrib/Landeiro-Introducao.pdf)
+
+12. MARTIN, Peter. Linear Regression: an introduction to statistical models. London: SAGE Publications, 2021. 978-1-5264-2417-4. (The SAGE Quantitative Research Kit).
+
+13. [The R Graph Gallery (Site para ver modelos de possíveis gráficos no R)](https://r-graph-gallery.com/index.html)
+
+14. [Wickham H (2014). Dados organizados. Journal of Statistical Software. Volume 59, Edição 10.](https://vita.had.co.nz/papers/tidy-data.pdf)
+
+15. [Wickham, Hadley, Mine Çetinkaya-Rundel, and Garrett Grolemund. R für Data Science: Daten importieren, bereinigen, umformen und visualisieren. O'Reilly, 2024.](https://pt.r4ds.hadley.nz/)
+
+16. Mais informações podem ser encontradas em [tidyverse.org](https://tidyverse.org/)
+
+Mais informações sobre **Regressão Linear** na área de **Nutrição e Saúde** podem sem encontradas abaixo
+
+17. [Costa et tal. Evolução do excesso de peso e fatores associados em mulheres de 10 a 49 anos em Pernambuco, Nordeste, Brasil. Revista de Nutrição](https://www.scielo.br/j/rn/a/4SnTxv5qmCP4kjgPRNBN3QC/?lang=pt)
+
+18. [Pinho et tal. Excesso de peso em adultos do Estado de Pernambuco, Brasil: magnitude e fatores associados. Cadernos de Saúde Pública´](https://www.scielo.br/j/csp/a/yVJSvdS5Xptjh3dHZL4c7GS/?lang=pt)
+
+19. [Silva et tal. Situação de insegurança alimentar em domicílios de Pernambuco, Região Nordeste do Brasil: contribuições para discussão da violação do direito à alimentação. Saúde e Sociedade](https://www.scielo.br/j/sausoc/a/MJNKgg3CTPMLt8DMm3RwjQH/abstract/?lang=pt)
+
+![](https://raw.githubusercontent.com/ryallmeida/r_p_saude/main/modulos/img/realizacao.png){width=544px, .center}
