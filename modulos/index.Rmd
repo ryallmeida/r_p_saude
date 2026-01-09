@@ -18,12 +18,27 @@ output:
          collapsed: yes
          smooth_scroll: no
 ---
+
+<a href="https://github.com/ryallmeida/r_p_saude?tab=MIT-1-ov-file" target="_blank" rel="noopener noreferrer">
+  <img 
+    src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/License_icon-mit-88x31-2.svg/250px-License_icon-mit-88x31-2.svg.png"
+    alt="MIT License"
+  >
+</a>
+
+
+
+
+![MIT License](https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/License_icon-mit-88x31-2.svg/250px-License_icon-mit-88x31-2.svg.png)
+
 <br>
 ```{r normas de uso}
 
 # Aviso: Essas notas de aula são exclusivas para uso como guia do curso, porém não substituem as referências e materiais de apoio. Quaisquer erros são de responsabilidade dos autores. 
 # Esse material é protegido por ser propriedade intelectual.
 # Logo, reproduzir, divulgar ou distribuir somente com a autorização prévia.
+
+# Caso encontre erros, contate os autores imediatamente. Via autor correspondente em ryallmeida@gmail.com
 
 ```
 
@@ -435,6 +450,93 @@ knitr::kable(head(operadores, 10))
 
 ```
 
+# Introdução à Estatística Descritiva
+
+O R nasce na área da estatística. O potencial do R está justamente em unir o Data Science com toda a teoria da estatística e realizar todos os calculos complexos adjacentes à ela. Então, não podemos ser omissos e deixar de revisar o básico da área. 
+
+## Mas para que serve a estatística afinal?
+
+Deste modo, podemos definir Estatística como sendo a ciência que se preocupa com a coleta, organização, apresentação, análise e interpretação de dados. Didaticamente, podemos dividir a estatística em duas partes: **a estatística descritiva e a inferência estatística.**
+
+A estatística descritiva se refere à maneira de apresentar um conjunto de dados em tabelas e gráficos, e ao modo de resumir as informações contidas nestes dados a algumas medidas. 
+
+Já a inferência estatística baseia-se na teoria das probabilidades para estabelecer conclusões sobre todo um grupo (chamado população), quando se observou apenas uma parte (amostra) desta população. 
+
+A esse ponto, como você já deve saber, as característica de uma população ou amostra são denominadas variáveis. (Em caso de dúvidas, visite a sessão anterior para revisar esses conceitos)
+
+## Medidas de Posição
+
+As principais medidas de posição são composta pelos "três Ms" da estatística, e certamente você ja ouviu falar deles na escola. Que são a média, mediana e a moda, também conhecidas como pedidas de tendência central (conceito sinônimo ao titulo da subssesão). Essas resumem um conjunto de dados em um único valor central que representa a "localização" ou o "ponto de equilíbrio" dos dados, podendo ser eles os quartis e percentis outros tipos de medidas de posição (tambem chamados de medidas separatrizes)
+
+Em geral, utiliza-se $\bar{x}$ para denotar a média amostral e $\mu$ para denotar a média populacional.
+
+No R, a média de uma amostra é obtida por meio da função `mean()`. A média é uma medida de posição que é muito afetada por **outliers**. Outliers são observações que não correspondem aos valores esperados de uma população ou amostra. Em geral, são valores que estão muito acima ou muito abaixo da maioria dos valores observados.
+
+Mas, quais são os critérios que se utilizam para definir se uma observação é um outlier ou não? No entanto, a  resposta é: Depende. A palavra final é sempre do pesquisador que conhece o fenômeno, e pode informar se a informação obtida é realmente aceitável ou não. Assim, de todo modo tanto na estatística descritiva quanto na inferencial é de suma importância entender "quem"" é essa observação fora da curva e ver o quanto ela muda o resultado de descrições e de modelos estatísticos. Guarde no seu coração essa essa pergunta: como flutuaria as medidas de posição com outlier e sem outlier? A resposta dessa pergunta determina os resultados da sua pesquisa. 
+
+Se você ainda não entendeu o que é outlier talvez essa metafora ajude: "Se uma pessoa estiver com os pés dentro de um forno com temperatura de 50 graus Celsius e a cabeça dentro de um freezer com temperatura de zero graus na média estará uma temperatura agradável?" Isso faz sentido pra você? Pois é, isso é um outlier. 
+
+Então, se isso é um problema tão grande, como confiar em pesquisas que usam unicamente da média para demonstrar o comportamento dos dados? Por esse motivo é importante que uma medida de posição sempre esteja acompanhada de uma medida de dispersão.
+
+Dá uma olhada nesse quadro de fichamento:
+
+```{r Medidas de Posição, echo=FALSE, warning=FALSE, message=FALSE, fig.align="center"}
+
+indicador_adequado <- data.frame(
+  Indicador_Adequado = c(
+    "Média",
+    "Mediana",
+    "Mediana", 
+    "Comparar Média e Mediana"
+  ),
+  Objetivo_da_Analise = c(
+    "Avaliar impacto total, média geral ou tendência global",
+    "Avaliar situação típica, comportamento comum, ou dados enviesados", 
+    "Evitar distorções causadas por outliers",
+    "Descrever heterogeneidade"
+  ),
+  stringsAsFactors = FALSE
+)
+
+knitr::kable(head(indicador_adequado, 10))
+
+
+```
+### Quartis
+
+Quartis podem ser compreendidos como “medidas que dividem os dados ordenados em quatro partes iguais: primeiro quartil (Q1), segundo quartil (Q2) e terceiro quartil (Q3).”
+
+Pode-se dizer que 25% dos valores estão abaixo de Q1 e 75% dos valores estão acima de Q1. O segundo quartil é exatamente igual à mediana e aritmeticamente falando a diferença entr Q3 e Q1 é chamada de amplitude interquartílica. 
+
+
+### Percentis
+
+O k-ésimo percentil, denotado por Pk,é o valor na posição, de forma que k% das
+medidas são menores que a posição Pk, ou seja, (100-k)% das observações são maiores
+que Pk. O k-ésimo percentil é determinado por: Pk =  é o valor do kn/100 − ésimo termo no conjunto de dados ordenados, onde
+k é o percentil e n é o tamanho da amostra.
+
+## Medidas de Dispersão
+
+### Amplitude
+
+> “Amplitude é a medida mais simples de dispersão e definida como sendo a diferença entre o maior e o menor valor entre os dados observados.”
+
+A amplitude é bastante influenciada por outliers. Por isso, não  é uma boa medida para dados que contenham outliers. Ainda, essa é uma medida de dispersão que utiliza somente 2 observações, independente do tamanho da amostra.
+
+### Variância
+
+### Desvio padrão
+
+### Assimetria
+
+### Curtose
+
+O desvio padrão fornece uma medida de dispersão das observações ao redor da
+média.  Um desvio padrão pequeno indica que os dados possuem uma amplitude pequena ao redor da média. 
+
+Já, um desvio padrão grande, indica que os dados possuem uma amplitude grande ao redor da média.
+
 # Plottagem no R Base
 
 A visualização de dados é uma etapa fundamental e crítica em diversas áreas de análise, como estatística, química, física e biologia.
@@ -491,7 +593,9 @@ plot(x, y)
 
 ```
 
-Conheça os principais argumentos da função ``plot()``, o que a literatura chama de "parâmetros de visualização gráfica"
+Conheça a seguir os principais argumentos da função ``plot()``, o que a literatura chama de "parâmetros de visualização gráfica"
+
+## Parâmetros de visualização da função plot
 
 
 ```{r Parametros, echo=FALSE, warning=FALSE, message=FALSE, fig.align="center"}
@@ -807,6 +911,51 @@ plot(x, y,
 
 ```
 
+## Parâmetros de visualização da função legend
+
+A função `legend()` funciona em conjunto com o com a função `plot()`
+
+```{r Parametros da fonte, echo=FALSE, warning=FALSE, message=FALSE, fig.align="center"}
+
+# Criando um dataframe com parâmetros gráficos do R base
+parametros_fonte <- data.frame(
+  
+  parametro = c("col", "pch", "type", "cex", "lty",
+                "xlim", "ylim", "xlab", "ylab", "main"),
+  
+  descricao = c(
+    "Cor dos elementos do gráfico (nome, número ou rgb())",
+    "Tipo de caractere/símbolo dos pontos",
+    "Tipo de gráfico (pontos, linhas, ambos etc.)",
+    "Tamanho do caractere ou ponto",
+    "Tipo de linha",
+    "Limites do eixo x (horizontal)",
+    "Limites do eixo y (vertical)",
+    "Título do eixo x",
+    "Título do eixo y",
+    "Título principal do gráfico"
+  ),
+  
+  funcao_visual = c(
+    "Estética",
+    "Forma",
+    "Estrutura",
+    "Escala visual",
+    "Estilo",
+    "Escala do eixo",
+    "Escala do eixo",
+    "Rotulagem",
+    "Rotulagem",
+    "Narrativa"
+  ),
+  
+  stringsAsFactors = FALSE
+)
+
+knitr::kable(head(parametros_fonte, 10))
+
+
+```
 
 ## Boxplot
 

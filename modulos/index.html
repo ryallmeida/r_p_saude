@@ -1496,10 +1496,18 @@ border-radius: 0px;
 </div>
 
 
+<p><a href="https://github.com/ryallmeida/r_p_saude?tab=MIT-1-ov-file" target="_blank" rel="noopener noreferrer">
+<img role="img" aria-label="MIT License" src="data:text/plain,Please%20set%20a%20user%2Dagent%20and%20respect%20our%20robot%20policy%20https%3A%2F%2Fw%2Ewiki%2F4wJS%2E%20See%20also%20https%3A%2F%2Fphabricator%2Ewikimedia%2Eorg%2FT400119%2E%0A" alt="MIT License"> </a></p>
+<div class="float">
+<img role="img" aria-label="MIT License" src="data:text/plain,Please%20set%20a%20user%2Dagent%20and%20respect%20our%20robot%20policy%20https%3A%2F%2Fw%2Ewiki%2F4wJS%2E%20See%20also%20https%3A%2F%2Fphabricator%2Ewikimedia%2Eorg%2FT400119%2E%0A" alt="MIT License" />
+<div class="figcaption">MIT License</div>
+</div>
 <p><br></p>
 <pre class="r"><code># Aviso: Essas notas de aula são exclusivas para uso como guia do curso, porém não substituem as referências e materiais de apoio. Quaisquer erros são de responsabilidade dos autores. 
 # Esse material é protegido por ser propriedade intelectual.
-# Logo, reproduzir, divulgar ou distribuir somente com a autorização prévia.</code></pre>
+# Logo, reproduzir, divulgar ou distribuir somente com a autorização prévia.
+
+# Caso encontre erros, contate os autores imediatamente. Via autor correspondente em ryallmeida@gmail.com</code></pre>
 <div id="sobre-o-curso-e-os-autores" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Sobre o curso e os
 autores</h1>
@@ -1757,8 +1765,158 @@ como calculadora”</h3>
 </div>
 </div>
 </div>
-<div id="plottagem-no-r-base" class="section level1" number="3">
-<h1><span class="header-section-number">3</span> Plottagem no R
+<div id="introdução-à-estatística-descritiva" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Introdução à
+Estatística Descritiva</h1>
+<p>O R nasce na área da estatística. O potencial do R está justamente em
+unir o Data Science com toda a teoria da estatística e realizar todos os
+calculos complexos adjacentes à ela. Então, não podemos ser omissos e
+deixar de revisar o básico da área.</p>
+<div id="mas-para-que-serve-a-estatística-afinal" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Mas para que serve a
+estatística afinal?</h2>
+<p>Deste modo, podemos definir Estatística como sendo a ciência que se
+preocupa com a coleta, organização, apresentação, análise e
+interpretação de dados. Didaticamente, podemos dividir a estatística em
+duas partes: <strong>a estatística descritiva e a inferência
+estatística.</strong></p>
+<p>A estatística descritiva se refere à maneira de apresentar um
+conjunto de dados em tabelas e gráficos, e ao modo de resumir as
+informações contidas nestes dados a algumas medidas.</p>
+<p>Já a inferência estatística baseia-se na teoria das probabilidades
+para estabelecer conclusões sobre todo um grupo (chamado população),
+quando se observou apenas uma parte (amostra) desta população.</p>
+<p>A esse ponto, como você já deve saber, as característica de uma
+população ou amostra são denominadas variáveis. (Em caso de dúvidas,
+visite a sessão anterior para revisar esses conceitos)</p>
+</div>
+<div id="medidas-de-posição" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Medidas de
+Posição</h2>
+<p>As principais medidas de posição são composta pelos “três Ms” da
+estatística, e certamente você ja ouviu falar deles na escola. Que são a
+média, mediana e a moda, também conhecidas como pedidas de tendência
+central (conceito sinônimo ao titulo da subssesão). Essas resumem um
+conjunto de dados em um único valor central que representa a
+“localização” ou o “ponto de equilíbrio” dos dados, podendo ser eles os
+quartis e percentis outros tipos de medidas de posição (tambem chamados
+de medidas separatrizes)</p>
+<p>Em geral, utiliza-se <span class="math inline">\(\bar{x}\)</span>
+para denotar a média amostral e <span class="math inline">\(\mu\)</span>
+para denotar a média populacional.</p>
+<p>No R, a média de uma amostra é obtida por meio da função
+<code>mean()</code>. A média é uma medida de posição que é muito afetada
+por <strong>outliers</strong>. Outliers são observações que não
+correspondem aos valores esperados de uma população ou amostra. Em
+geral, são valores que estão muito acima ou muito abaixo da maioria dos
+valores observados.</p>
+<p>Mas, quais são os critérios que se utilizam para definir se uma
+observação é um outlier ou não? No entanto, a resposta é: Depende. A
+palavra final é sempre do pesquisador que conhece o fenômeno, e pode
+informar se a informação obtida é realmente aceitável ou não. Assim, de
+todo modo tanto na estatística descritiva quanto na inferencial é de
+suma importância entender “quem”” é essa observação fora da curva e ver
+o quanto ela muda o resultado de descrições e de modelos estatísticos.
+Guarde no seu coração essa essa pergunta: como flutuaria as medidas de
+posição com outlier e sem outlier? A resposta dessa pergunta determina
+os resultados da sua pesquisa.</p>
+<p>Se você ainda não entendeu o que é outlier talvez essa metafora
+ajude: “Se uma pessoa estiver com os pés dentro de um forno com
+temperatura de 50 graus Celsius e a cabeça dentro de um freezer com
+temperatura de zero graus na média estará uma temperatura agradável?”
+Isso faz sentido pra você? Pois é, isso é um outlier.</p>
+<p>Então, se isso é um problema tão grande, como confiar em pesquisas
+que usam unicamente da média para demonstrar o comportamento dos dados?
+Por esse motivo é importante que uma medida de posição sempre esteja
+acompanhada de uma medida de dispersão.</p>
+<p>Dá uma olhada nesse quadro de fichamento:</p>
+<table>
+<colgroup>
+<col width="27%" />
+<col width="72%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Indicador_Adequado</th>
+<th align="left">Objetivo_da_Analise</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Média</td>
+<td align="left">Avaliar impacto total, média geral ou tendência
+global</td>
+</tr>
+<tr class="even">
+<td align="left">Mediana</td>
+<td align="left">Avaliar situação típica, comportamento comum, ou dados
+enviesados</td>
+</tr>
+<tr class="odd">
+<td align="left">Mediana</td>
+<td align="left">Evitar distorções causadas por outliers</td>
+</tr>
+<tr class="even">
+<td align="left">Comparar Média e Mediana</td>
+<td align="left">Descrever heterogeneidade</td>
+</tr>
+</tbody>
+</table>
+<div id="quartis" class="section level3" number="3.2.1">
+<h3><span class="header-section-number">3.2.1</span> Quartis</h3>
+<p>Quartis podem ser compreendidos como “medidas que dividem os dados
+ordenados em quatro partes iguais: primeiro quartil (Q1), segundo
+quartil (Q2) e terceiro quartil (Q3).”</p>
+<p>Pode-se dizer que 25% dos valores estão abaixo de Q1 e 75% dos
+valores estão acima de Q1. O segundo quartil é exatamente igual à
+mediana e aritmeticamente falando a diferença entr Q3 e Q1 é chamada de
+amplitude interquartílica.</p>
+</div>
+<div id="percentis" class="section level3" number="3.2.2">
+<h3><span class="header-section-number">3.2.2</span> Percentis</h3>
+<p>O k-ésimo percentil, denotado por Pk,é o valor na posição, de forma
+que k% das medidas são menores que a posição Pk, ou seja, (100-k)% das
+observações são maiores que Pk. O k-ésimo percentil é determinado por:
+Pk = é o valor do kn/100 − ésimo termo no conjunto de dados ordenados,
+onde k é o percentil e n é o tamanho da amostra.</p>
+</div>
+</div>
+<div id="medidas-de-dispersão" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Medidas de
+Dispersão</h2>
+<div id="amplitude" class="section level3" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> Amplitude</h3>
+<blockquote>
+<p>“Amplitude é a medida mais simples de dispersão e definida como sendo
+a diferença entre o maior e o menor valor entre os dados
+observados.”</p>
+</blockquote>
+<p>A amplitude é bastante influenciada por outliers. Por isso, não é uma
+boa medida para dados que contenham outliers. Ainda, essa é uma medida
+de dispersão que utiliza somente 2 observações, independente do tamanho
+da amostra.</p>
+</div>
+<div id="variância" class="section level3" number="3.3.2">
+<h3><span class="header-section-number">3.3.2</span> Variância</h3>
+</div>
+<div id="desvio-padrão" class="section level3" number="3.3.3">
+<h3><span class="header-section-number">3.3.3</span> Desvio padrão</h3>
+</div>
+<div id="assimetria" class="section level3" number="3.3.4">
+<h3><span class="header-section-number">3.3.4</span> Assimetria</h3>
+</div>
+<div id="curtose" class="section level3" number="3.3.5">
+<h3><span class="header-section-number">3.3.5</span> Curtose</h3>
+<p>O desvio padrão fornece uma medida de dispersão das observações ao
+redor da média. Um desvio padrão pequeno indica que os dados possuem uma
+amplitude pequena ao redor da média.</p>
+<p>Já, um desvio padrão grande, indica que os dados possuem uma
+amplitude grande ao redor da média.</p>
+</div>
+</div>
+</div>
+<div id="plottagem-no-r-base" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Plottagem no R
 Base</h1>
 <p>A visualização de dados é uma etapa fundamental e crítica em diversas
 áreas de análise, como estatística, química, física e biologia.</p>
@@ -1781,8 +1939,8 @@ permitem identificar padrões, outliers e distribuições.</p></li>
 cor, forma, tamanho) de objetos geométricos (pontos, linhas, barras,
 caixas)” (WILKINSON, 2005).</p>
 </blockquote>
-<div id="gráfico-de-dispersão" class="section level2" number="3.1">
-<h2><span class="header-section-number">3.1</span> Gráfico de
+<div id="gráfico-de-dispersão" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Gráfico de
 dispersão</h2>
 <p>No ambiente de programação R, o comando mais simples e básico para
 criar um gráfico a partir de dois objetos (ou variáveis a depender do
@@ -1806,8 +1964,13 @@ plot(y ~ x)</code></pre>
 <pre class="r"><code>plot(x, y) 
 
 # EM R, EXISTE INÚMERAS FORMAS DE FAZER O MESMO COMANDO. EXEMPLO DISSO É O CÓDIGO ACIMA QUE É EQUIVALENTE A FUNÇÃO SUPRACITADA</code></pre>
-<p>Conheça os principais argumentos da função <code>plot()</code>, o que
-a literatura chama de “parâmetros de visualização gráfica”</p>
+<p>Conheça a seguir os principais argumentos da função
+<code>plot()</code>, o que a literatura chama de “parâmetros de
+visualização gráfica”</p>
+</div>
+<div id="parâmetros-de-visualização-da-função-plot" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Parâmetros de
+visualização da função plot</h2>
 <table>
 <colgroup>
 <col width="12%" />
@@ -1875,7 +2038,7 @@ rgb())</td>
 </tr>
 </tbody>
 </table>
-<p><br> <br> <br></p>
+<p><br></p>
 <p>Quando abrimos a função <code>plot()</code> no R e nos deparamos com
 argumentos como <code>col</code>, <code>pch</code>, <code>cex</code> ou
 <code>xlim</code>, a sensação inicial é quase sempre a de
@@ -1895,7 +2058,7 @@ pareça anacrônico, o termo revela algo fundamental: cada ponto em um
 gráfico é um signo, um caractere que representa uma observação (ou
 amostra, a depender do contexto). Mudar o símbolo é mudar a forma como a
 observação se apresenta ao usuário/interlocutor.</p>
-<br> <br> <br>
+<br> <br>
 <figure style="text-align: center;">
 <figcaption>
 <strong>Figura:</strong> Signo e código dos plotting character no R
@@ -1999,8 +2162,8 @@ idênticos; o que muda é apenas a moldura gráfica que os contém.</p>
 rótulos e o título (<code>xlab</code>, <code>ylab</code> e
 <code>main</code>) só se usa quando necessário, visto que muitas vezes
 esses dados são inseridos diretamente nos artigos científicos.</p>
-<div id="atividade-faça-seu-próprio-gráfico" class="section level3" number="3.1.1">
-<h3><span class="header-section-number">3.1.1</span> Atividade: “Faça
+<div id="atividade-faça-seu-próprio-gráfico" class="section level3" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> Atividade: “Faça
 seu próprio gráfico”</h3>
 <pre class="r"><code># DIGITE O QUE SEGUE E TESTE DIFERENTES PARÂMETROS DE VISUALIZAÇÃO GRÁFICA
 
@@ -2018,8 +2181,81 @@ plot(x, y,
        )</code></pre>
 </div>
 </div>
-<div id="boxplot" class="section level2" number="3.2">
-<h2><span class="header-section-number">3.2</span> Boxplot</h2>
+<div id="parâmetros-de-visualização-da-função-legend" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> Parâmetros de
+visualização da função legend</h2>
+<p>A função <code>legend()</code> funciona em conjunto com o com a
+função <code>plot()</code></p>
+<table>
+<colgroup>
+<col width="12%" />
+<col width="67%" />
+<col width="19%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">parametro</th>
+<th align="left">descricao</th>
+<th align="left">funcao_visual</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">col</td>
+<td align="left">Cor dos elementos do gráfico (nome, número ou
+rgb())</td>
+<td align="left">Estética</td>
+</tr>
+<tr class="even">
+<td align="left">pch</td>
+<td align="left">Tipo de caractere/símbolo dos pontos</td>
+<td align="left">Forma</td>
+</tr>
+<tr class="odd">
+<td align="left">type</td>
+<td align="left">Tipo de gráfico (pontos, linhas, ambos etc.)</td>
+<td align="left">Estrutura</td>
+</tr>
+<tr class="even">
+<td align="left">cex</td>
+<td align="left">Tamanho do caractere ou ponto</td>
+<td align="left">Escala visual</td>
+</tr>
+<tr class="odd">
+<td align="left">lty</td>
+<td align="left">Tipo de linha</td>
+<td align="left">Estilo</td>
+</tr>
+<tr class="even">
+<td align="left">xlim</td>
+<td align="left">Limites do eixo x (horizontal)</td>
+<td align="left">Escala do eixo</td>
+</tr>
+<tr class="odd">
+<td align="left">ylim</td>
+<td align="left">Limites do eixo y (vertical)</td>
+<td align="left">Escala do eixo</td>
+</tr>
+<tr class="even">
+<td align="left">xlab</td>
+<td align="left">Título do eixo x</td>
+<td align="left">Rotulagem</td>
+</tr>
+<tr class="odd">
+<td align="left">ylab</td>
+<td align="left">Título do eixo y</td>
+<td align="left">Rotulagem</td>
+</tr>
+<tr class="even">
+<td align="left">main</td>
+<td align="left">Título principal do gráfico</td>
+<td align="left">Narrativa</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="boxplot" class="section level2" number="4.4">
+<h2><span class="header-section-number">4.4</span> Boxplot</h2>
 <p>Outro gráfico extremamente famoso é o boxplot, ou também conhecido
 como gráfico de caixas (tradução do termo anterior)</p>
 <p><br><br><br></p>
@@ -2038,8 +2274,8 @@ boxplot(y)</code></pre>
 <p><img role="img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABUAAAAPACAMAAADDuCPrAAAAyVBMVEUAAAAAADoAAGYAOjoAOmYAOpAAZrY6AAA6OgA6Ojo6OmY6OpA6ZmY6ZpA6ZrY6kNtmAABmOgBmOjpmZjpmZmZmZpBmkJBmkLZmkNtmtttmtv+QOgCQOjqQZgCQZjqQZmaQkLaQtraQttuQtv+Q29uQ2/+2ZgC2Zjq2kDq2kGa2kLa2tpC2tra2ttu227a229u22/+2///T09PbkDrbkGbbtmbbtpDbtrbb27bb29vb2//b////tmb/25D/27b/29v//7b//9v///9kDoKrAAAACXBIWXMAAB2HAAAdhwGP5fFlAAAgAElEQVR4nO3da3dU15Xv4RLByHR8w10JJ3bHp0MHaBLR4IMvYINC1ff/UKe2hC5oy2TtyZpdcynP8yJGNVp7MBj/+nVddu1abQEIWe37LwAwKgEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUICg2gFdAXTTP1Hdj9jRvv+1gZule6N6H7CnhP+HAfzLElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAIAFlMPv+ErGu9v2PyUcSUMay7+T1te9/TT6SgMKcodBEQGHOUGgioDBnKDQRUJgzFJoIKMwZCk0EFOYMhSYCCnOGQhMBhTlDoYmAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKMwZCk0EFOYMhSYCCnOGQhMBhTlDoYmAwpyh0ERAYc5QaCKgMGcoNBFQmDMUmggozBkKTQQUIEhAAYIEFCBIQAGCBBQgSEABggQUIGjAgG5e/Xx0dPT01a+B3xVQmhgKTUYL6MvvVhc+f7b0190vaGIoNBkroMf3Vu+7/XDZAdwvaGIoNBkqoK8Pp2jeXZ/6dPrh4JtFR3C/oImh0GSkgL79ahfMB5du+GkX1FvfLzmE+wVNDIUmIwX0xepqLqekfrnkEO4XNDEUmgwU0M23q9XVJ+yvV6tPlrwb735BE0OhyUAB3T3cnD1fv+62D3G/oImh0ERAYc5QaDJQQHdP4Q+unrXkKTywPwMFdPtoVsvpZdE7Sw4hoEA/IwX0zeGuoM8v3XC86+fsQekHCSjQz0gBnc5j2hVz/Zejyd9Pz6RfdBaTgAIdDRXQ7Y+HVz7KefCnZQcQUKCfsQK63Ty5nNCD+0uvyCSgQD+DBXRn8/LoyXq9vn/0LHA9OwEF+hkvoAusrrHvvxNDMBSaCCjMGQpNxg3o5uejp4ufxLtf0MRQaDJuQJd+ivOE+wVNDIUmAgpzhkKTkQL6j1eXvdwF9Nnuv78sOYT7BU0MhSYDBXS6evI1XI2J/gyFJgIKc4ZCk4ECevJBzoP1mX8/XB18tvvvH1zOju4MhSYjBfTk6ku3zy7H5E0kYM+GCuh2+8PuYef/Of2jgAJ7NlhAt8f3zq4JKqDAno0W0O3mv99dxE5AgT0bLqDb7Zvdg9DPfxVQYN8GDOh283j3IPSBgAJ7NmJAT09o+uxQQIG9GjOgJyc0rQSULIZCk0EDenJCk4CSxVBoMmxAt8f/d9mHkE64X9DEUGgybkBD3C9oYig0EVCYMxSaCCjMGQpNBBTmDIUmAgpzhkITAaWXa693TQH7XsYNJqB0su9K8Nv2vY2bS0DpZLX6f5Rk9XkElE4EtCqrzyOgdCKgVVl9HgGlEwGtyurzCCidCGhVVp9HQOlEQKuy+jwCSicCWpXV5xFQOhHQqqw+j4DSiYBWZfV5BJROBLQqq88joHQioFVZfR4BpRMBrcrq8wgonQhoVVafR0DpRECrsvo8AkonAlqV1ecRUDoR0KqsPo+A0omAVmX1eQSUTgS0KqvPI6B0IqBVWX0eAaUTAa3K6vMIKJ0IaFVWn0dA6URAq7L6PAJKJwJaldXnEVA6EdCqrD6PgNKJgFZl9XkElE4EtCqrzyOgdCKgVVl9HgGlEwGtyurzCCidCGhVVp9HQOlEQKuy+jwCSicCWpXV5xFQOhHQqqw+j4DSiYBWZfV5BJROBLQqq88joHQioFVZfR4BpRMBrcrq8wgonQhoVVafR0DpRECrsvo8owZ08/PR01+W/5op5RHQqqw+z0gB/cers2T+dG81Ofji14WHMKU8AlqV1ecZKKBvv1rd+n76w+bx6szBN8uOYUp5BLQqq88zYkAfTeX8bL3+ekrosoKaUh4Brcrq8wwY0Ne7bJ4+dz/+dvWuqa1MKY+AVmX1eQYM6O4B6J13N212Bf1yyTFMKY+AVmX1ecYL6BTN8+ftu0ejnyx5I8mU8ghoVVafZ7yAnr8Ueum2ZqaUR0Crsvo8AkonAlqV1ecZL6DbR6uDh2e3vTkU0CoEtCqrzzNWQA/+uj153fP8jSOvgdYhoFVZfZ6xArrzuz8++/P5Q9DpJu/CFyGgVVl9nuECeurkefvmh8OV80DLENCqrD7PQAHdFfPlk68PLwI6FfXi5dAmppRHQKuy+jxDBfTESUXPAnr7+bJfNqU8AlqV1ecZL6AXNn9bmE8BzSSgVVl9npED+k+trrHvv9PNJaBVWX0eAaUTAa3K6vOMG9CXkUvSm1IeAa3K6vMMF9BXJ+fNb56cvBt/+8HC3zalPAJaldXnGSugx99N1Xx4ek3lE18sO4Ap5RHQqqw+z1ABfXN6EujBw+mayv+2Xk8/LvogkoAmEtCqrD7PSAE9+SjS3U93j0HvnZ5AP3050rIz6U0pj4BWZfV5Rgroi9Xq1vN3j0NPL6nsivSFCGhVVp9noICeX4r+xcUlmFyNqQ4Brcrq8wwU0POLJ+8egt65elsjU8ojoFVZfZ4RA7r7g4DWI6BVWX2esQJ6+o7R5j/u/v7d83ZXpK9DQKuy+jwDBXQ6+fPqO0YvLr7iuIkp5RHQqqw+z0gBfT07aenYFenrENCqrD7PSAGd3oZf/f7iTfeTz3MuehNeQBMJaFVWn2ekgG7f3ltdfsnTFelLEdCqrD7PUAGdHnO+H1BXpK9DQKuy+jxjBfR9rkhfioBWZfV5Rg5ogCnlEdCqrD6PgNKJgFZl9XkElE4EtCqrzyOgdCKgVVl9HgGlEwGtyurzCCidCGhVVp9HQOlEQKuy+jwCSicCWpXV5xFQOhHQqqw+j4DSiYBWZfV5BJROBLQqq88joHQioFVZfR4BpRMBrcrq8wgonQhoVVafR0DpRECrsvo8AkonAlqV1ecRUDoR0KqsPo+A0omAVmX1eQSUTgS0KqvPI6B0IqBVWX0eAaUTAa3K6vMIKJ0IaFVWn0dA6URAq7L6PAJKJwJaldXnEVA6EdCqrD6PgNKJgFZl9XkElE4EtCqrzyOgdCKgVVl9HgGlEwGtyurzCCidCGhVVp9HQOlEQKuy+jwCSicCWpXV5xFQOhHQqqw+j4DSiYBWZfV5BJROBLQqq88joHQioFVZfR4BpRMBrcrq8wgonQhoVVafR0DpRECrsvo8AkonAlqV1ecRUDoR0KqsPo+A0omAVmX1eQSUTgS0KqvPI6B0IqBVWX0eAaUTAa3K6vMIKJ0IaFVWn2fAgG5e/Xx0dPT01a+B3zWlPAJaldXnGS2gL79bXfj82dJfN6U8AlqV1ecZK6DH91bvu/1w2QFMKY+AVmX1eYYK6OvDKZp316c+nX44+GbREUwpj4BWZfV5Rgro2692wXxw6YafdkG99f2SQ5hSHgGtyurzjBTQF6uruZyS+uWSQ5hSHgGtyurzDBTQzber1dUn7K9Xq0+WvBtvSnkEtCqrzzNQQHcPN2fP16+77UNMKY+AVmX1eQSUTgS0KqvPM1BAd0/hD66eteQpfB0CWpXV5xkooNtHs1pOL4veWXIIU8ojoFVZfZ6RAvrmcFfQ55duON71c/ag9INMKY+AVmX1eUYK6HQe066Y678cTf5+eib9orOYBDSRgFZl9XmGCuj2x8MrH+U8+NOyA5hSHgGtyurzjBXQ7ebJ5YQe3F96RSZTyiOgVVl9nsECurN5efRkvV7fP3oWuJ6dKeUR0KqsPs94AV1gdY19/51uLgGtyurzCCidCGhVVp9n3IC+PHr6y+JfMqU8AlqV1ecZLqCn3+Tx7s2k2w8W/rYp5RHQqqw+z1gBPf7u3VXoH509I/9i2QFMKY+AVmX1eYYK6JvTc5gOHr7e/e+/rdeHTqQvRECrsvo8IwV0unzy6u6nu8eg904/wbl57KOcdQhoVVafZ6SATlekf/7ucejplZWni4m4In0RAlqV1ecZKKDnV6R/cXFVJpezq0NAq7L6PAMF9PziybuHoHeu3tbIlPIIaFVWn2fEgO7+IKD1CGhVVp9nrICevmO0+Y+7v3/3vH33YFRAixDQqqw+z0ABnU7+vPqO0QtXpC9DQKuy+jwjBfT17KSlY98LX4eAVmX1eUYK6PQ2/Or3F2+6n3yec9Gb8AKaSECrsvo8IwV0+/be6vJLntOJ9cvOoxfQRAJaldXnGSqg02PO9wN6+/kH/q+vYUp5BLQqq88zVkDft/nbwnwKaCYBrcrq84wc0ABTyiOgVVl9HgGlEwGtyurzCCidCGhVVp9HQOlEQKuy+jwCSicCWpXV5xFQOhHQqqw+j4DSiYBWZfV5BJROBLQqq88joHQioFVZfR4BpRMBrcrq8wgonQhoVVafR0DpRECrsvo8AkonAlqV1ecRUDoR0KqsPo+A0omAVmX1eQSUTgS0KqvPI6B0IqBVWX0eAaUTAa3K6vMIKJ0IaFVWn0dA6URAq7L6PAJKJwJaldXnEVA6EdCqrD6PgNKJgFZl9XkElE4EtCqrzyOgdCKgVVl9HgGlEwGtyurzCCidCGhVVp9HQOlEQKuy+jwCSicCWpXV5xFQOhHQqqw+j4DSiYBWZfV5BJROBLQqq88joHQioFVZfR4BpRMBrcrq8wgonQhoVVafR0DpRECrsvo8AkonAlqV1ecRUDoR0KqsPo+A0omAVmX1eQSUTgS0KqvPI6B0IqBVWX0eAaUTAa3K6vMIKJ0IaFVWn0dA6URAq7L6PAJKJwJaldXnEVA6EdCqrD7PqAHd/Hz09Jflv2ZKeQS0KqvPM1JA//HqLJk/3VtNDr74deEhTCmPgFZl9XkGCujbr1a3vp/+sHm8OnPwzbJjmFIeAa3K6vOMGNBHUzk/W6+/nhK6rKCmlEdAq7L6PAMG9PUum6fP3Y+/Xb1raitTyiOgVVl9ngEDunsAeufdTZtdQb9ccgxTyiOgVVl9nvECOkXz/Hn77tHoJ0veSDKlPAJaldXnGS+g5y+FXrqtmSnlEdCqrD6PgNKJgFZl9XnGC+j20erg4dltbw4FtAoBrcrq84wV0IO/bk9e9zx/48hroHUIaFVWn2esgO787o/P/nz+EHS6ybvwRQhoVVafZ7iAnjp53r754XDlPNAyBLQqq88zUEB3xXz55OvDi4BORb14ObSJKeUR0KqsPs9QAT1xUtGzgN5+vuyXTSmPgFZl9XnGC+iFzd8W5lNAMwloVVafZ+SA/lOra+z773RzCWhVVp9HQOlEQKuy+jw3OqBzppRHQKuy+jyDBXTz5Ou7n/3nxanzPspZh4BWZfV5xgroD6cnMR3cP0uogNYhoFVZfZ6hAvri/JXMs89vCmgdAlqV1ecZKaBvdo8/bz949erJ9N/TbApoHQJaldXnGSmgL84eeR7fOyuogNYhoFVZfZ6BAnrpUvTTH09aKqB1CGhVVp9noIBejuVU0DtbAa1EQKuy+jyDBvTsQnYCWoeAVmX1eUYN6PSO0sFDAS1EQKuy+jwDBfS9r+M8uRj9recCWoeAVmX1eQYK6PQu/J33f7z1PwJahoBWZfV5RgrodB7o579c/Pz44trKrUwpj4BWZfV5RgroySeRLvfysYAWIqBVWX2eoQK6/fHKtxj/uPRLkUwpj4BWZfV5xgrodvPTH977FuPN40MBLUJAq7L6PIMF9GOZUh4Brcrq8wgonQhoVVafR0DpRECrsvo8AkonAlqV1ecRUDoR0KqsPo+A0omAVmX1eQSUTgS0KqvPI6B0IqBVWX0eAaUTAa3K6vMIKJ0IaFVWn0dA6URAq7L6PAJKJwJaldXnEVA6WVHWvrdxcwkonew7Evy2fW/j5hJQOtl3JPht+97GzSWgdLLvSPDb9r2Nm0tA6WTfkeC37XsbN5eA0sm+I8Fv2/c2bi4BpROnMVVl9XkElE4EtCqrzyOgdCKgVVl9HgGlEwGtyurzCCidCGhVVp9HQOlEQKuy+jwCSicCWpXV5xFQOhHQqqw+j4DSiYBWZfV5BJROBLQqq88joHQioFVZfR4BpRMBrcrq8wgonQhoVVafR0DpRECrsvo8AkonAlqV1ecRUDoR0KqsPo+A0omAVmX1eQSUTgS0KqvPI6B0IqBVWX0eAaUTAa3K6vMIKJ0IaFVWn0dA6URAq7L6PAJKJwJaldXnEVA6EdCqrD6PgNKJgFZl9XkElE4EtCqrzyOgdCKgVVl9HgGlEwGtyurzCCidCGhVVp9nwIBuXv18dHT09NWvgd81pTwCWpXV5xktoC+/W134/NnSXzelPAJaldXnGSugx/dW77v9cNkBTCmPgFZl9XmGCujrwymad9enPp1+OPhm0RFMKY+AVmX1eUYK6NuvdsF8cOmGn3ZBvfX9kkOYUh4Brcrq84wU0Berq7mckvrlkkOYUh4Brcrq8wwU0M23q9XVJ+yvV6tPlrwbb0p5BLQqq88zUEB3Dzdnz9evu+1DTCmPgFZl9XkElE4EtCqrzzNQQHdP4Q+unrXkKXwdAlqV1ecZKKDbR7NaTi+L3llyCFPKI6BVWX2ekQL65nBX0OeXbjje9XP2oPSDTCmPgFZl9XlGCuh0HtOumOu/HE3+fnom/aKzmAQ0kYBWZfV5hgro9sfDKx/lPPjTsgOYUh4Brcrq84wV0O3myeWEHtxfekUmU8ojoFVZfZ7BArqzeXn0ZL1e3z96FrienSnlEdCqrD7PeAFdYHWNff+dbi4Brcrq8wgonQhoVVaf50YHdM6U8ghoVVafZ7CAbp58ffez/7x48dNHOesQ0KqsPs9YAf3h8Mq77wJah4BWZfV5hgroi/NXMs8+0imgdQhoVVafZ6SATh/lvP3g1avpXNDbp9kU0DoEtCqrzzNSQF+cPfKcvlvutKACWoeAVmX1eQYK6KUr0k9/PGmpgNYhoFVZfZ6BAno5lmfXsRPQOgS0KqvPM2hAz75OTkDrENCqrD7PqAGd3lE6eCighQhoVVafZ6CAXvlWzter1a3nAlqHgFZl9XkGCuj0Lvyd93+89T8CWoaAVmX1eUYK6HQe6Oe/XPz8+OScegEtQkCrsvo8IwX05JNIl3v5WEALEdCqrD7PUAGdvtLjvV5OX/EhoEUIaFVWn2esgG43P/3hvevQbx4fCmgRAlqV1ecZLKAfy5TyCGhVVp9HQOlEQKuy+jwCSicCWpXV5xFQOhHQqqw+j4DSiYBWZfV5BJROBLQqq88joHQioFVZfR4BpRMBrcrq8wgonQhoVVafR0DpRECrsvo8AkonAlqV1ecRUDoR0KqsPo+A0omAVmX1eQSUTgS0KqvPI6B0IqBVWX0eAaUTAa3K6vMIKJ0IaFVWn0dA6URAq7L6PAJKJwJaldXnEVA6EdCqrD6PgNKJgFZl9XkElE4EtCqrzyOgdCKgVVl9HgGlEwGtyurzCCidCGhVVp9HQOlEQKuy+jwCSicCWpXV5xFQOhHQqqw+j4DSiYBWZfV5BJROBLQqq88joHQioFVZfR4BpRMBrcrq8wgonQhoVVafR0DpRECrsvo8AkonAlqV1ecRUDoR0KqsPo+A0omAVmX1eQSUTgS0KqvPI6B0IqBVWX0eAaUTAa3K6vMIKJ0IaFVWn0dA6URAq7L6PAJKJwJaldXnEVA6EdCqrD6PgNKJgFZl9XkElE4EtCqrzzNqQDc/Hz39ZfmvmVIeAa3K6vOMFNB/vDpL5k/3VpODL35deAhTyiOgVVl9noEC+var1a3vpz9sHq/OHHyz7BimlEdAq7L6PCMG9NFUzs/W66+nhC4rqCnlEdCqrD7PgAF9vcvm6XP3429X75raypTyCGhVVp9nwIDuHoDeeXfTZlfQL5ccw5TyCGhVVp9nvIBO0Tx/3r57NPrJkjeSTCmPgFZl9XnGC+j5S6GXbmtmSnkEtCqrzyOgdCKgVVl9nvECun20Onh4dtubQwGtQkCrsvo8YwX04K/bk9c9z9848hpoHQJaldXnGSugO7/747M/nz8EnW7yLnwRAlqV1ecZLqCnTp63b344XDkPtAwBrcrq8wwU0F0xXz75+vAioFNRL14ObWJKeQS0KqvPM1RAT5xU9Cygt58v+2VTyiOgVVl9nvECemHzt4X5FNBMAlqV1ecZOaD/1Ooa+/473VzX/WtTw763cXMJKJ38b0eBdvvexs11owM6Z0pAPwIKECSgAEECChAkoABBAwX08kc5L3E1JmBPBBQgaKCAbo/vCSj/OwyFJiMFdPl3yM24X9DEUGgyVEDf/0K5CPcLmhgKTcYK6OLvQLrK/YImhkKTwQL63vd5BLhf0MRQaDJaQHdP4j/mIaj7BU0MhSajBXT7Zr3+r/hvu1/QxFBoMlxAP477BU0MhSYCCnOGQhMBBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUJgzFJoIKMwZCk0EFOYMhSYCCnOGQhMBhTlDoYmAwpyh0ERAYc5QaCKgMGcoNBFQmDMUmggoQJCAAgQJKECQgAIECShAkIACBAkoQJCAwpyh0ERAYc5QaCKgMGcoNBFQmDMUmggozBkKTQQU5gyFJgIKc4ZCEwGFOUOhiYDCnKHQREABggQUIEhAAYIEFCBIQAGCBBQgSEABggQU5gyFJgIKc4ZCEwGFOUOhiYDCnKHQREBhzlBoIqAwZyg0EVCYMxSaDBjQzaufj46Onr76NfC77hc0MRSajBbQl9+tLnz+bOmvu1/QxFBoMlZAj++t3nf74bIDuF8A/QwV0NeHUzTvrk99Ov1w8M2iIwgo0M9IAX371S6YDy7d8NMuqLe+X3IIAQX6GSmgL1ZXczkl9cslhxBQoJ+BArr5drW6+oT99Wr1yZJ34wUU6GeggO4ebs6er19324cIKNCPgAIEDRTQ3VP4g6tnLXkKTwpDoclAAd0+mtVyeln0zpJDuF/QxFBoMlJA3xzuCvr80g3Hu37OHpR+kPsFTQyFJiMFdDqPaVfM9V+OJn8/PZN+0VlM7he0MRSaDBXQ7Y+HVz7KefCnZQdwv6CJodBkrIBuN08uJ/Tg/tIrMrlf0MRQaDJYQHc2L4+erNfr+0fPAtezc7+giaHQZLyALrC6xr7/TgzBUGgioDBnKDS50QGdc78A+hFQgCABBQgSUIAgAQUIGiig0+Xnr+FydsCeCChA0EABnX+psYCSxFBoMlJATy7/uezqS1e5X9DEUGgyVECv/V65RdwvaGIoNBkroIu/A+kq9wuaGApNBgvo9CVIH/Mk3v2CJoZCk9ECunsS/zEPQd0vaGIoNBktoNs36/V/xX/b/YImhkKT4QL6cdwvaGIoNBFQmDMUmggoQJCAAgQJKECQgAIECShAkIACBAkoQJCAwpyh0ERAYc5QaCKgMGcoNBFQmDMUmggozBkKTQQU5gyFJgIKc4ZCEwFlMNd9t/Ww9v2PyUcSUMay7+T1te9/TT6SgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBP3LBRSgn+6N6n3Anvb9jw3cLN0b1fuAAP8qBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQUIEhAAYIEFCBIQOX/7AsAAAB4SURBVAGCBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABgv4/iUIdinIB3WkAAAAASUVORK5CYII=" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>
-<div id="referências-e-materiais-de-apoio" class="section level1" number="4">
-<h1><span class="header-section-number">4</span> Referências e materiais
+<div id="referências-e-materiais-de-apoio" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Referências e materiais
 de apoio</h1>
 <ol style="list-style-type: decimal">
 <li><p><a href="https://docs.ufpr.br/~aanjos/TRI/R/rbasico.pdf">ANJOS,
