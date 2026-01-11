@@ -19,26 +19,20 @@ output:
          smooth_scroll: no
 ---
 
-<a href="https://github.com/ryallmeida/r_p_saude?tab=MIT-1-ov-file" target="_blank" rel="noopener noreferrer">
-  <img 
-    src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/License_icon-mit-88x31-2.svg/250px-License_icon-mit-88x31-2.svg.png"
-    alt="MIT License"
-  >
-</a>
 
-
-
-
-![MIT License](https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/License_icon-mit-88x31-2.svg/250px-License_icon-mit-88x31-2.svg.png)
-
-<br>
 ```{r normas de uso}
 
 # Aviso: Essas notas de aula são exclusivas para uso como guia do curso, porém não substituem as referências e materiais de apoio. Quaisquer erros são de responsabilidade dos autores. 
 # Esse material é protegido por ser propriedade intelectual.
-# Logo, reproduzir, divulgar ou distribuir somente com a autorização prévia.
+# Logo, ao reproduzir, divulgar ou distribuir notifique as autorias.
 
-# Caso encontre erros, contate os autores imediatamente. Via autor correspondente em ryallmeida@gmail.com
+# Caso encontre erros, contate os autores imediatamente. Via e-mail ryallmeida@gmail.com
+
+```
+
+```{r}
+
+# CODADO ORIGINALMENTE EM R, V. 4.5.2
 
 ```
 
@@ -61,10 +55,9 @@ pacman::p_load(tidyverse,
 
 ```
 
-# Sobre o curso e os autores
+# Sobre o curso e os autores {.tabset .tabset-fade}
 
 Apostilas dos códigos utilizados nas aulas "Curso: R para Saúde" realizado em parceria entre o Departamento de Ciência Política e o Programa de Pós-graduação em Nutrição da Universidade Federal de Pernambuco. Curso ministrado pelos docentes: [Prof.ª Dr.ª Maria Soares](http://lattes.cnpq.br/6914758127566065) e o [Prof. Dalson Britto](http://lattes.cnpq.br/6683806605359913) e monitorado por [Ryan Almeida](https://github.com/ryallmeida) e [Carla Cavalcante](https://github.com/Carla-Cavalcante)
-
 
 ## Maria Soares
 
@@ -86,15 +79,43 @@ Motivos para você escolher a Linguagem R
 
 * Mercado de trabalho tem deteminado algumas hardskills que você deve saber e grandes empresas estão cada vez mais interessados em profissionais que saibam usar R.
 
-Veja algumas aplicações com dados simulados.
-<br>
-<br>
-<br>
-<figure style="text-align: center;">
-  <figcaption>
-    **Figura:** Boxplots por grupo representando a distribuição e as estatísticas principais de três variáveis
-  </figcaption>
-</figure>
+Bizu da madrinha: presta atenção nesses atalhos que você certamente vai usar quando tiver codando
+
+```{r atalho_rstudio, echo=FALSE, warning=FALSE, message=FALSE, fig.align="center"}
+
+atalhos_rstudio <- data.frame(
+  Atalho = c(
+    "CTRL + ENTER",
+    "ALT + -",
+    "CTRL + SHIFT + M",
+    "CTRL + 1",
+    "CTRL + 2",
+    "CTRL + ALT + I",
+    "CTRL + SHIFT + K",
+    "ALT + SHIFT + K"
+  ),
+  Funcao = c(
+    "Executa a(s) linha(s) selecionada(s) no script",
+    "Insere o operador de atribuição (<-)",
+    "Insere o operador pipe (%>%)",
+    "Move o cursor para o script",
+    "Move o cursor para o console",
+    "Cria um chunk em um documento R Markdown",
+    "Compila (renderiza) um arquivo R Markdown",
+    "Abre a janela com todos os atalhos disponíveis"
+  ),
+  stringsAsFactors = FALSE
+)
+
+knitr::kable(head(atalhos_rstudio, 10))
+
+
+```
+
+# Aplicações com dados simulados {.tabset .tabset-fade}
+
+## Boxplots com estatísticas
+
 ```{r Boxplot, echo=FALSE, warning=FALSE, message=FALSE, fig.align="center"}
 
 if(!require("pacman")) {
@@ -105,12 +126,8 @@ pacman::p_load(tidyverse,
                ggpubr, 
                patchwork)
 
-# library(ggpubr)    # para stat_summary/summary_fun (opcional)
-# library(patchwork) # para combinar plots
-
 set.seed(123)
 
-# --- 1. Simular dados de exemplo ---
 n <- 180
 dados <- tibble(
   id = 1:n,
@@ -140,7 +157,6 @@ dados <- tibble(
                        sd = 70))
 )
 
-# Ajustes para criar diferenças entre grupos (apenas para a demo)
 dados <- dados %>%
   mutate(
     protein_g = case_when(
@@ -155,7 +171,6 @@ dados <- dados %>%
     )
   )
 
-# --- 2. Sumário para média e erro padrão (para plot A) ---
 resumo_protein <- dados %>%
   group_by(grupo) %>%
   summarise(
@@ -165,36 +180,50 @@ resumo_protein <- dados %>%
     se_protein = sd_protein / sqrt(n)
   )
 
-p1_instagram <- ggplot(dados, aes(x = grupo, y = protein_g, fill = grupo)) +
-  geom_boxplot(outlier.shape = NA, alpha = 0.4, width = 0.6) +
-  geom_jitter(width = 0.15, alpha = 0.6, size = 1.4) +
-  geom_point(data = resumo_protein, aes(x = grupo, y = mean_protein), color = "black", size = 3) +
+p1_instagram <- ggplot(dados, aes(x = grupo, 
+                                  y = protein_g, 
+                                  fill = grupo)) +
+  geom_boxplot(outlier.shape = NA, 
+               alpha = 0.4, 
+               width = 0.6) +
+  geom_jitter(width = 0.15, 
+              alpha = 0.6, 
+              size = 1.4) +
+  geom_point(data = resumo_protein, aes(x = grupo, 
+                                        y = mean_protein), 
+             color = "black", 
+             size = 3) +
   geom_errorbar(data = resumo_protein,
-                aes(x = grupo, y = mean_protein, ymin = mean_protein - se_protein, ymax = mean_protein + se_protein),
-                width = 0.15, color = "black", size = 0.8) +
-  stat_summary(fun = median, geom = "point", shape = 95, size = 6, color = "white") +
+                aes(x = grupo, 
+                    y = mean_protein, 
+                    ymin = mean_protein - se_protein, ymax = mean_protein + se_protein),
+                width = 0.15, 
+                color = "black", 
+                size = 0.8) +
+  stat_summary(fun = median, 
+               geom = "point", 
+               shape = 95, 
+               size = 6, 
+               color = "white") +
   labs(title = "",
-       x = "", y = "Proteína (g/dia)") +
+       x = "", 
+       y = "Proteína (g/dia)") +
   theme_minimal(base_size = 14) +
   theme(legend.position = "none") +
-  scale_fill_manual(values = c("#d85102", "#575b21", "#985612"))
+  scale_fill_manual(values = c("#d85102", 
+                               "#575b21", 
+                               "#985612"))
 
 print(p1_instagram)
 
 ```
-<figure style="text-align: center;">
-  <figcaption>
-    Fonte: **Elaboração própria.** Pires, Soares & Cavalvante (2025).
-  </figcaption>
-</figure>
-<br>
-<br>
-<br>
-<figure style="text-align: center;">
-  <figcaption>
-    **Figura:** Gráfico de violino por gênero representando a distribuição da variável "peso" dado o grupo
-  </figcaption>
-</figure>
+<figcaption style="text-align: center;">
+  <strong>Figura:</strong> Boxplots por grupo representando a distribuição e as estatísticas principais de três variáveis<br>
+  <strong>Elaboração própria.</strong> Pires, Soares &amp; Cavalvante (2025).
+</figcaption>
+
+## Gráfico de Violino 
+
 ```{r Violino, echo=FALSE, warning=FALSE, message=FALSE, fig.align="center"}
 
 df <- read.csv("https://raw.githubusercontent.com/ryallmeida/r_p_saude/refs/heads/main/database/dados_obesidade.csv")
@@ -228,19 +257,14 @@ p1 <- df %>%
 print(p1)
 
 ```
-<figure style="text-align: center;">
-  <figcaption>
-    Fonte: **Elaboração própria.** Pires, Soares & Cavalvante (2025).
-  </figcaption>
-</figure>
-<br>
-<br>
-<br>
-<figure style="text-align: center;">
-  <figcaption>
-    **Figura:** Gráfico de densidade normalizada agrupado por sexo espelhado sob duas variáveis
-  </figcaption>
-</figure>
+
+<figcaption style="text-align: center;">
+  <strong>Figura:</strong> Gráfico de violino por gênero representando a distribuição da variável peso dado o grupo<br>
+  <strong>Elaboração própria.</strong> Pires, Soares &amp; Cavalvante (2025).
+</figcaption>
+
+
+## Gráfico de Densidade 
 
 ```{r Densidade Normalizada, echo=FALSE, warning=FALSE, message=FALSE, fig.align="center"}
 
@@ -300,19 +324,15 @@ p3 <- ggplot(df) +
 print(p3)
 
 ```
-<figure style="text-align: center;">
-  <figcaption>
-    Fonte: **Elaboração própria.** Pires, Soares & Cavalvante (2025).
-  </figcaption>
-</figure>
-<br>
-<br>
-<br>
-<figure style="text-align: center;">
-  <figcaption>
-    **Figura:**Energia em função da proteína com ajuste linear por grupo
-  </figcaption>
-</figure>
+
+<figcaption style="text-align: center;">
+  <strong>Figura:</strong> Gráfico de densidade normalizada agrupado por sexo espelhado sob duas variáveis<br>
+  <strong>Elaboração própria.</strong> Pires, Soares &amp; Cavalvante (2025).
+</figcaption>
+
+
+## Ajuste linear por grupo
+
 ```{r Ajuste Linear, echo=FALSE, warning=FALSE, message=FALSE, fig.align="center"}
 
 p2_instagram <- ggplot(dados, aes(x = energia_kcal, y = protein_g, color = grupo)) +
@@ -330,18 +350,62 @@ p2_instagram <- ggplot(dados, aes(x = energia_kcal, y = protein_g, color = grupo
 print(p2_instagram)
 
 ```
-<figure style="text-align: center;">
-  <figcaption>
-    Fonte: **Elaboração própria.** Pires, Soares & Cavalvante (2025).
-  </figcaption>
-</figure>
-<br>
-<br>
-<br>
 
-## Preparação ambiental
+<figcaption style="text-align: center;">
+  <strong>Figura:</strong> Energia em função da proteína com ajuste linear por grupo<br>
+  <strong>Elaboração própria.</strong> Pires, Soares &amp; Cavalvante (2025).
+</figcaption>
+<br>
+  
+Esses são uns dos muitos pontenciais do R. Se te convencemos a gostar dessa liguagem, continua lendo essa apostila.
 
-## Programação orientada à objetos
+# Programação orientada à objetos
+
+A linguagem R, assim como outras existentes tem como possibilidade a criação de objetos. Vejamos alguns exemplos simples
+
+```{r}
+
+valor <- 10.5678
+conjunto <- c(1, 3, 5, 7)
+cores <- c("azul", "vermelho")
+
+```
+
+Em cada exemplo, usamos o símbolo de atribuição ("<-"). No R, também é possível usar '=' com a mesma função, mas não aconselhamos porque as vezes pode confundir quem está começando. 
+
+No primeiro exemplo, temos um objeto do tipo numérico. No segundo e terceiro temos um vetor, pois concatena informações. 
+
+É possível acessar os objetos criados no R. Basta usar o comando ``ls()``. E para removê-los caso precise desocupar slots de memória, use:
+
+```{r, eval=FALSE}
+
+# COLOQUE A OBJETO QUE VOCÊ QUER REMOVER DENTRO DO PARENTESES DA rm()
+
+rm(); gc()
+
+```
+
+Detalhe importante: o R é uma linguagem q-sensitiva, ou seja, "cores' é diferente de "Cores" (palavra com letra minúscula vs palavra com letra maiúscula). 
+
+Outro detalhe importante: comente seus códigos com #, converse consigo mesmo, pense no seu "eu do futuro" lendo um código escrito por você no passado. Somos muito incopetentes quando começamos algo novo, você pode cometer erros ao codar, e principalmente quando está balisando estatística e ciência de dados com programação. Sempre tente descrever brevemente o que está fazendo na linha de seu script. 
+
+Álém disso, também é possível acessar os objetos usando a função print()
+Note como funciona: 
+
+```{r}
+
+print(valor)
+
+# OU
+
+valor
+
+# OU
+
+print(valor, digits = 2)
+
+
+```
 
 ## Tipos de variáveis em R
 
@@ -372,17 +436,34 @@ knitr::kable(head(tipos_variaveis, 10))
 
 ```
 
-### Situação-problema
+Veja algumas situações-problemas, que talvez te ajudem a dar luz no seu cerébro caso não tenha entendido ainda. Imagine que você coletou dados de 5 pessoas e, para cada uma, tem as seguintes variáveis:
 
-Imagine que você coletou dados de 5 pessoas e, para cada uma, tem as seguintes variáveis:
+```{r situacao-problema, echo=FALSE, warning=FALSE, message=FALSE, fig.align="center"}
 
-1. idade → é o número propriamente dito
-2. data da entrevista → data
-3. sexo → categórica (Femino, Masculino, Outro; Você tem três categorias aqui)
-4. escolaridade → categórica ordenável (Porque você nâo vira doutor sem antes ter se formado no ABC)
-5. opinião aberta → texto de um relato, por exemplo, o R vai entender como um character
-6. fumante → booleana, ou fuma ou não fuma, ou TRUE ou FALSE, ou SIM ou NÃO, note que só existe duas possibilidades e nada mais, essa é a essência de uma variável booleana
+tipos_variaveis <- data.frame(
+  Variavel = c(
+    "idade",
+    "data de uma entrevista",
+    "sexo",
+    "escolaridade",
+    "relato de opinião",
+    "fumante"
+  ),
+  Descricao = c(
+    "é o número propriamente dito",
+    "data",
+    "categórica (Femino, Masculino, Outro; Você tem três categorias aqui)",
+    "categórica ordenável (Porque você nâo vira doutor sem antes ter se formado no ABC)",
+    "texto de um relato, por exemplo, o R vai entender como um character",
+    "booleana, ou fuma ou não fuma, ou TRUE ou FALSE, ou SIM ou NÃO, note que só existe duas possibilidades e nada mais, essa é a essência de uma variável booleana"
+  ),
+  stringsAsFactors = FALSE
+)
 
+knitr::kable(head(tipos_variaveis, 10))
+
+
+```
 
 ## Operadores Lógico e Matemáticos 
 
@@ -426,7 +507,6 @@ knitr::kable(head(operadores, 10))
 
 ```
 
-
 ### Atividade: "Use o R como calculadora"
 
 ```{r, eval=FALSE}
@@ -450,6 +530,33 @@ knitr::kable(head(operadores, 10))
 
 ```
 
+## Vetores, tabelas, matrizes e listas
+
+Em computação, é bastante comum lidar com conjuntos de valores, como notas, preços, nomes ou qualquer outro tipo de informação organizada. Para tornar essa manipulação possível de forma eficiente, utilizam-se estruturas de dados, que permitem armazenar e acessar múltiplos valores de maneira sistemática. Quando se trabalha com dados de um mesmo tipo, como números inteiros, valores reais ou cadeias de caracteres, uma das estruturas mais fundamentais é o vetor.
+
+Os vetores podem ser compreendidos como **agregados homogêneos unidimensionais**, isto é, estruturas que reúnem vários valores do mesmo tipo em uma única variável, organizados em uma única dimensão. Essa característica faz dos vetores a base para praticamente todas as demais estruturas de dados no R, funcionando como o elemento mais simples de organização da informação.
+
+As tabelas conhecidas no R como `data.frame` são estruturas particularmente importantes para a análise de dados. Uma tabela é composta por múltiplos vetores de mesmo comprimento, sendo que cada vetor representa uma variável. Diferentemente das matrizes, esses vetores podem ser de tipos distintos, como numéricos, lógicos ou caracteres. Essa flexibilidade torna as tabelas semelhantes a planilhas ou bases de dados, sendo ideais para representar dados experimentais ou observacionais. No R, a criação de tabelas é realizada por meio da função `data.frame()`, consolidando-as como a estrutura central para organização e análise de dados empíricos.
+
+As matrizes, por sua vez, podem ser entendidas como uma extensão dos vetores, pois mantêm a homogeneidade de tipo, mas permitem a organização dos dados em mais de uma dimensão. Diferentemente dos vetores unidimensionais, as matrizes possibilitam o acesso aos dados por meio de múltiplos índices, como linhas e colunas. Conceitualmente, uma matriz pode ser pensada como um vetor cujos elementos são, eles próprios, vetores, organizados de forma recursiva. Esse tipo de estrutura é especialmente útil em situações em que é necessário correlacionar informações, como em cálculos matemáticos ou análises estatísticas.
+
+Já as listas representam uma estrutura mais flexível. Uma lista é um objeto formado por uma coleção ordenada de componentes, nos quais cada elemento pode ser de um tipo diferente. Em uma mesma lista, é possível reunir vetores, valores lógicos, matrizes, arrays e até outras listas. No R, listas são criadas por meio da função `list()`. O acesso aos seus elementos pode ser feito tanto pelos operadores de colchetes (`[]`), que indicam a posição do elemento desejado, quanto pelo operador cifrão (`$`), que permite acessar componentes nomeados. Esses operadores não se limitam às listas, sendo amplamente utilizados também em matrizes, arrays e tabelas.
+
+
+![](https://raw.githubusercontent.com/ryallmeida/r_p_saude/main/modulos/img/sistema_array.png){width=544px, .center}
+
+O R é uma linguagem que possui em sua versão inicial diversos pacotes que possuem alguns tipos de funções. No entanto, existem muitas outras funções que podem ser obtidas através de pacotes que podem ser instalados.
+
+```{r, eval=FALSE}
+# PARA INSTALAR UM NOVO PACOTE, USE A FUNÇÃO
+install.packages("nome do pacote")
+
+# CARREGUE O PACOTE USANDO  
+library(nome do pacote) # OU
+require(nome do pacote)
+
+```
+
 # Introdução à Estatística Descritiva
 
 O R nasce na área da estatística. O potencial do R está justamente em unir o Data Science com toda a teoria da estatística e realizar todos os calculos complexos adjacentes à ela. Então, não podemos ser omissos e deixar de revisar o básico da área. 
@@ -468,6 +575,10 @@ A esse ponto, como você já deve saber, as característica de uma população o
 
 As principais medidas de posição são composta pelos "três Ms" da estatística, e certamente você ja ouviu falar deles na escola. Que são a média, mediana e a moda, também conhecidas como pedidas de tendência central (conceito sinônimo ao titulo da subssesão). Essas resumem um conjunto de dados em um único valor central que representa a "localização" ou o "ponto de equilíbrio" dos dados, podendo ser eles os quartis e percentis outros tipos de medidas de posição (tambem chamados de medidas separatrizes)
 
+### Média Aritimetica
+
+Considere uma amostra composta por $n$ observações numéricas $x_1, x_2, x_3, \dots, x_n$. A primeira medida descritiva fundamental é a média aritmética, que representa o valor central obtido ao distribuir igualmente a soma total dos dados entre todas as observações. Algebricamente, inicia-se somando todos os valores da amostra, o que pode ser representado pela soma $\sum_{i=1}^{n} x_i$. Em seguida, essa soma é dividida pelo número total de observações $ n$, resultando na média amostral, expressa por $\bar{x} = \frac{1}{n}\sum_{i=1}^{n}x_i$. Do ponto de vista algébrico, a média pode ser interpretada como o valor constante que, se substituísse todas as observações individuais, preservaria exatamente a mesma soma total dos dados.
+
 Em geral, utiliza-se $\bar{x}$ para denotar a média amostral e $\mu$ para denotar a média populacional.
 
 No R, a média de uma amostra é obtida por meio da função `mean()`. A média é uma medida de posição que é muito afetada por **outliers**. Outliers são observações que não correspondem aos valores esperados de uma população ou amostra. Em geral, são valores que estão muito acima ou muito abaixo da maioria dos valores observados.
@@ -478,7 +589,21 @@ Se você ainda não entendeu o que é outlier talvez essa metafora ajude: "Se um
 
 Então, se isso é um problema tão grande, como confiar em pesquisas que usam unicamente da média para demonstrar o comportamento dos dados? Por esse motivo é importante que uma medida de posição sempre esteja acompanhada de uma medida de dispersão.
 
-Dá uma olhada nesse quadro de fichamento:
+### Mediana
+
+A **mediana**, por sua vez, não depende da soma dos valores, mas da posição relativa de cada observação no conjunto de dados. Para calculá-la, é necessário ordenar a amostra em ordem crescente, obtendo-se a sequência $x_{(1)} \le x_{(2)} \le \dots \le x_{(n)}$. Se o número de observações for ímpar, isto é, $n = 2k + 1$, a mediana será o elemento que ocupa a posição central da sequência ordenada, dada por $x_{(k+1)}$. Caso o número de observações seja par, isto é, $n = 2k$, não há um único valor central; nesse caso, a mediana é definida como a média aritmética dos dois valores centrais, sendo calculada como $\frac{x_{(k)} + x_{(k+1)}}{2}$. Algebricamente, a mediana pode ser entendida como o ponto que divide a distribuição ordenada em duas partes com o mesmo número de observações, independentemente da magnitude dos valores extremos.
+
+### Moda
+
+A **moda** é a medida de tendência central mais simples do ponto de vista algébrico, pois não envolve operações aritméticas como soma ou divisão, mas sim a contagem de frequências (guarda essa informação no coração). Seja $f(x_i)$ a frequência absoluta associada ao valor $x_i$. A moda é definida como o valor da variável que maximiza essa frequência, podendo ser representada simbolicamente por:
+
+$$
+\text{Moda} = \arg\ max_{x_i} f(x_i) 
+$$
+
+Em termos algébricos, o procedimento consiste em identificar qual valor aparece o maior número de vezes no conjunto de dados. Dependendo da distribuição das frequências, o conjunto pode ser unimodal, bimodal, multimodal ou mesmo amodal, quando não existe um valor com frequência superior às demais.
+
+De todo modo, dá uma olhadinha nesse quadro de fichamento de fim de sessão:
 
 ```{r Medidas de Posição, echo=FALSE, warning=FALSE, message=FALSE, fig.align="center"}
 
@@ -502,6 +627,19 @@ knitr::kable(head(indicador_adequado, 10))
 
 
 ```
+
+No R, tem uma forma excelente de pedir todas essas informações via um comando nativo, ou como também chamam, via R base.
+
+```{r}
+# DIGITE
+
+x <- c(1, 5, 10, 15, 20, 25, 30, 35)
+base::summary(x)
+
+# OS OUTPUTS DO R SEMPRE SAIRÃO EM INGLÊS, ENTÃO NÃO SE ASSUSTE
+
+```
+
 ### Quartis
 
 Quartis podem ser compreendidos como “medidas que dividem os dados ordenados em quatro partes iguais: primeiro quartil (Q1), segundo quartil (Q2) e terceiro quartil (Q3).”
@@ -513,8 +651,17 @@ Pode-se dizer que 25% dos valores estão abaixo de Q1 e 75% dos valores estão a
 
 O k-ésimo percentil, denotado por Pk,é o valor na posição, de forma que k% das
 medidas são menores que a posição Pk, ou seja, (100-k)% das observações são maiores
-que Pk. O k-ésimo percentil é determinado por: Pk =  é o valor do kn/100 − ésimo termo no conjunto de dados ordenados, onde
-k é o percentil e n é o tamanho da amostra.
+que Pk. O k-ésimo percentil é determinado por: Pk =  é o valor do kn/100 − ésimo termo no conjunto de dados ordenados, onde k é o percentil e n é o tamanho da amostra. Para além dessa definição formal, a gente pode compreender percentil como a divisão em 100 partes iguais do banco de dados. E o percentil é a determinada unidade que você observa ou que está balisando em sua análise. O percentil serve para você entender um comportamento de uma proporção específica de seus dados. Por exemplo, o código abaixo tenta responder a seguinte hipotese: qual é o valor abaixo do qual se encontram 0,1% das observações válidas da variável x?
+
+
+```{r, eval=FALSE}
+# DIGITE 
+
+quantile(x, probs = 0.001, type = 4, na.rm = T)
+
+
+```
+Em resumo, essa função é utilizada para localizar um ponto muito baixo da distribuição dos dados (como outliers, por exemplo) ignorando valores ausentes e usando um método específico de definição de quantil. Ela é particularmente útil em análises exploratórias, diagnósticos de assimetria, estudo de caudas da distribuição e decisões metodológicas relacionadas à exclusão ou tratamento de valores extremos. Se você estiver se perguntando, porque em termos percentuais o argumento probs está escrito errado, mas não se preocupe, o cálculo desse argumento baseia-se em probabilidade não em proporção propriamente dita. 
 
 ## Medidas de Dispersão
 
@@ -524,20 +671,386 @@ k é o percentil e n é o tamanho da amostra.
 
 A amplitude é bastante influenciada por outliers. Por isso, não  é uma boa medida para dados que contenham outliers. Ainda, essa é uma medida de dispersão que utiliza somente 2 observações, independente do tamanho da amostra.
 
-### Variância
+### Variância e Desvio padrão
 
-### Desvio padrão
+A variância leva em consideração os valores extremos e os valores intermediários, isto é, expressa melhor os resultados obtidos. A variância relaciona os desvios em torno da média, ou, mais especificamente, é a média aritmética dos quadrados dos desvios. Sendo a variância calculada a partir dos quadrados dos desvios, ela é um número em unidade quadrada em relação à variável em questão, o que, sob o ponto de vista prático, é um inconveniente; por isso, tem pouca utilidade na estatística descritiva, mas é extremamente importante na inferência estatística e em combinações de amostras. 
+
+No cálculo da variância, os valores obtidos a partir da diferença entre cada observação e a média podem ser chamados de **resíduos** ou **desvios**. Esses resíduos possuem uma propriedade fundamental: quando somados diretamente, o resultado é obrigatoriamente zero. Isso ocorre porque a média aritmética é justamente o ponto de equilíbrio da distribuição. Diante disso, surge uma questão: se a soma simples dos desvios é sempre nula, ela não pode ser utilizada para medir a dispersão dos dados.
+
+A solução encontrada pela Estatística está na álgebra dos quadrados. Ao elevar os resíduos ao quadrado, elimina-se o cancelamento entre valores positivos e negativos, permitindo que todas as diferenças contribuam para a medida de variabilidade. Assim, trabalha-se com a **soma dos quadrados dos resíduos**, que será sempre um número positivo.
+
+No entanto, esse valor bruto (a soma dos quadrados dos resíduos) não pode ser interpretado isoladamente. Ele não possui significado substantivo direto, pois seu tamanho depende fortemente do tamanho da amostra: quanto maior o número de observações, maior tende a ser essa soma, ainda que a dispersão relativa dos dados permaneça a mesma. Por isso, é necessário padronizar esse valor por meio de uma média dos quadrados dos desvios, o que nos conduz ao conceito de variância.
+
+Nesse ponto, é essencial distinguir entre variância amostral e variância populacional. A variância populacional considera todos os elementos da população e divide a soma dos quadrados dos desvios pelo número total de observações. Já a variância amostral introduz um ajuste algébrico, dividindo essa soma por $n - 1$, de modo a corrigir o viés decorrente do uso de uma amostra para estimar a variabilidade da população.
+
+O **desvio padrão amostral** mede o grau de dispersão dos dados em torno da média e envolve uma sequência de operações algébricas bem definidas. O primeiro passo é calcular a média amostral $\bar{x}$. Em seguida, calcula-se, para cada observação, o desvio em relação à média, dado por $x_i - \bar{x}$. Esses desvios são então elevados ao quadrado, resultando em $(x_i - \bar{x})^2$, o que evita o cancelamento algébrico dos desvios positivos e negativos, já que a soma dos desvios simples em relação à média é sempre igual a zero. O passo seguinte consiste em somar todos os desvios quadráticos, obtendo-se $\sum_{i=1}^{n} (x_i - \bar{x})^2$. Essa soma é então dividida por $n - 1$, e não por $n$, como forma de corrigir o viés decorrente do fato de a média ter sido estimada a partir da própria amostra, o que implica a perda de um grau de liberdade. 
+
+Esse quociente define a variância amostral, $s^2=\frac{1}{n-1}\sum_{i=1}^{n}(x_i - \bar{x})^2$. Por fim, toma-se a raiz quadrada da variância para retornar à mesma unidade de medida dos dados originais, obtendo-se o desvio padrão amostral, expresso por $s = \sqrt{\frac{1}{n-1}\sum_{i=1}^{n} (x_i - \bar{x})^2}$. Dessa forma, o desvio padrão sintetiza, de maneira algébrica e conceitual, o quão afastados os valores da amostra estão, em média, da média aritmética.
+
+Por fim, o desvio padrão fornece uma medida de dispersão das observações ao redor da
+média.  Um desvio padrão pequeno indica que os dados possuem uma amplitude pequena ao redor da média. Já, um desvio padrão grande, indica que os dados possuem uma amplitude grande ao redor da média.
 
 ### Assimetria
 
-### Curtose
+Denomina-se assimetria o grau de afastamento de uma distribuição em relação à simetria perfeita.
+Quando representamos uma distribuição por meio de um histograma ou de um polígono de frequência, estamos, na prática, observando a forma com que os dados se organizam em torno de um valor central.
 
-O desvio padrão fornece uma medida de dispersão das observações ao redor da
-média.  Um desvio padrão pequeno indica que os dados possuem uma amplitude pequena ao redor da média. 
+Em uma distribuição simétrica, o lado esquerdo e o lado direito da curva são espelhos um do outro. Isso implica algo muito forte: a média é igual a mediana e igual a moda (mas não se assuste que na prática é rarissimo isso acontecer). Ou seja, todas as noções de centralidade coincidem.
 
-Já, um desvio padrão grande, indica que os dados possuem uma amplitude grande ao redor da média.
+Porque analisar essa assimetria (ou simetria raramente) importa? Porque muitas técnicas estatísticas assumem simetria (especialmente a normalidade em alguns modelos da estatísitica inferencial); porque a média deixa de ser representativa quando a distribuição é muito assimétrica; porque políticas públicas, análises sociais e indicadores podem ser distorcidos por poucos valores extremos; porque a assimetria revela tendÊncias e padrões, como concentração ou distorção estrutural nos dados.
 
-# Plottagem no R Base
+Em termos simples: a assimetria nos diz se a “a maioria das observações vive perto do centro” ou se “poucos puxam tudo para um lado”.
+
+Desde cedo, os estatísticos perceberam que duas distribuições podem ter a mesma média e, ainda assim, apresentarem comportamentos completamente distintos quando observadas graficamente por meio de um histograma ou de um polígono de frequências (como demonstra o gráfico abaixo). Essa diferença não está na posição central, mas na forma da curva, isto é, no modo como os valores se afastam para a esquerda ou para a direita. É exatamente esse afastamento que se convencionou chamar de assimetria.
+
+```{r, include=FALSE, warning=FALSE, message=FALSE, fig.align="center"}
+
+set.seed(123)
+
+# Distribuição simétrica
+x_simetrica <- rnorm(1000, mean = 50, sd = 10)
+
+# Distribuição assimétrica positiva
+x_assimetrica <- rexp(1000, rate = 1/50)
+
+# Forçando as duas a terem exatamente a mesma média
+mean(x_simetrica)
+mean(x_assimetrica)
+
+
+```
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.align="center"}
+
+
+par(mfrow = c(1, 2))
+
+p4 <- hist(
+  x_simetrica,
+  freq = FALSE,
+  col = "lightgray",
+  main = "Distribuição Simétrica",
+  xlab = "Valores",
+  ylab = "Densidade",
+  border = "white"
+)
+
+abline(
+  v = mean(x_simetrica),
+  col = "black",
+  lwd = 2
+)
+
+text(
+  mean(x_simetrica),
+  0.03,
+  "Média",
+  col = "black",
+  pos = 4
+)
+
+p5 <- hist(
+  x_assimetrica,
+  freq = FALSE,
+  col = "lightgray",
+  main = "Distribuição Assimétrica",
+  xlab = "Valores",
+  ylab = "Densidade",
+  border = "white"
+)
+abline(
+  v = mean(x_assimetrica),
+  col = "black",
+  lwd = 2
+)
+text(
+  mean(x_assimetrica),
+  0.03,
+  "Média",
+  col = "black",
+  pos = 4
+)
+
+
+print(p4)
+print(p5)
+
+par(mfrow = c(1, 1))
+
+```
+
+Na prática, a maioria das distribuições observadas em dados sociais, econômicos ou de saúde apresenta algum grau de deformação, sendo, portanto, assimétrica.
+
+Foi nesse contexto que Karl Pearson buscou uma forma de quantificar a assimetria, transformando uma percepção visual em uma medida numérica objetiva. A ideia central de Pearson era simples e engenhosa: se, em distribuições simétricas, média, mediana e moda coincidem, então o afastamento entre essas medidas poderia ser utilizado como um indicador do grau e da direção da assimetria.
+
+A primeira abordagem de Pearson parte da comparação entre a média e a moda. Ele observa que, em distribuições assimétricas à direita, a cauda longa empurra a média para valores maiores, enquanto a moda permanece próxima ao pico da distribuição. Já nas distribuições assimétricas à esquerda, ocorre o movimento oposto: a média é puxada para valores menores. Assim, a diferença entre a média e a moda,carrega informação direta sobre a direção da assimetria. No entanto, Pearson reconhece rapidamente uma limitação: essa diferença depende da escala dos dados. Um mesmo formato de distribuição pode gerar valores muito distintos apenas por mudança de unidade de medida. Para resolver esse problema, Pearson recorre a uma estratégia clássica da Estatística: a padronização. Ao dividir a diferença entre média e moda pelo desvio padrão 
+$s$, ele obtém uma medida adimensional, comparável entre diferentes conjuntos de dados. Dessa forma, surge o chamado Primeiro Coeficiente de Assimetria de Pearson, definido como
+
+\[
+AS_1 = \frac{\bar{x} - Mo}{s}
+\]
+
+Esse coeficiente não apenas indica a presença de assimetria, mas também sua direção: valores positivos indicam assimetria à direita, enquanto valores negativos indicam assimetria à esquerda.
+
+Apesar de conceitualmente elegante, o primeiro coeficiente enfrenta uma dificuldade prática importante: a moda nem sempre é facilmente identificável, especialmente em distribuições contínuas ou em amostras pequenas. Diante disso, Pearson propõe uma alternativa baseada na mediana, uma medida sempre bem definida e menos sensível a valores extremos.
+
+A solução se apoia em uma relação empírica amplamente observada em distribuições moderadamente assimétricas, segundo a qual a moda pode ser aproximada por
+
+\[
+Mo \approx 3Md - 2\bar{x}
+\]
+
+Ao substituir essa aproximação na expressão original do coeficiente, a diferença entre média e moda transforma-se em
+
+\[
+\bar{x} - Mo 
+= \bar{x} - (3Md - 2\bar{x}) 
+= \bar{x} - 3Md + 2\bar{x} 
+= 3\bar{x} - 3Md 
+= 3(\bar{x} - Md)
+\]
+
+Novamente, para eliminar o efeito da escala, Pearson divide essa expressão pelo desvio padrão, obtendo o Segundo Coeficiente de Assimetria de Pearson:
+
+\[
+AS_2 = \frac{3(\bar{x} - Md)}{s}
+\]
+
+Esse segundo coeficiente se torna particularmente popular por sua facilidade de aplicação e por dispensar o cálculo da moda.
+
+A interpretação dos coeficientes de Pearson é direta e intuitiva. Quando o coeficiente de assimetria é igual a zero, conclui-se que a distribuição é simétrica. Valores positivos indicam assimetria positiva, ou seja, uma cauda mais longa à direita da distribuição, situação em que se observa a relação (Moda < Mediana < Média). Por outro lado, valores negativos indicam assimetria negativa, caracterizada por uma cauda mais longa à esquerda, com a ordenação (Média < Mediana < Moda)
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.align="center"}
+
+set.seed(123)
+
+par(mfrow = c(1, 3))
+
+x_pos <- rexp(1000, 
+              rate = 0.1)
+
+hist(
+  x_pos,
+  freq = FALSE,
+  col = "lightgray",
+  main = "Assimetria Positiva (à direita)",
+  xlab = "Valores"
+)
+
+abline(v = mean(x_pos), 
+       col = "black", 
+       lwd = 2)
+abline(v = median(x_pos), 
+       col = "gray40", 
+       lwd = 2, 
+       lty = 2)
+
+
+x_simetrico <- rnorm(1000, 
+                     mean = 50, 
+                     sd = 10)
+
+hist(
+  x_simetrico,
+  freq = FALSE,
+  col = "lightgray",
+  border = "white",
+  main = "Distribuição Simétrica",
+  xlab = "Valores",
+  ylab = "Densidade",
+  panel.first = grid(col = "gray85", 
+                     lty = "dotted")
+)
+
+abline(v = mean(x_simetrico),   
+       col = "black",    
+       lwd = 2)
+abline(v = median(x_simetrico), 
+       col = "gray40",   
+       lwd = 2, lty = 2)
+
+legend(
+  "topright",
+  legend = c("Média", 
+             "Mediana"),
+  col    = c("black", 
+             "gray40"),
+  lwd    = 2,
+  lty    = c(1, 2),
+  bty    = "n"
+)
+
+x_neg <- -rexp(1000, 
+               rate = 0.1)
+
+hist(
+  x_neg,
+  freq = FALSE,
+  col = "lightgray",
+  main = "Assimetria Negativa (à esquerda)",
+  xlab = "Valores"
+)
+
+abline(v = mean(x_neg), 
+       col = "black", 
+       lwd = 2)
+abline(v = median(x_neg), 
+       col = "gray40", 
+       lwd = 2, 
+       lty = 2)
+
+
+par(mfrow = c(1, 1))
+
+```
+
+### Curtose {.tabset .tabset-fade}
+
+A curtose é uma medida descritiva que indica como a massa de probabilidade de uma distribuição se organiza em torno do centro quando comparada a uma distribuição de referência, tradicionalmente a curva normal. Mais do que “pico alto ou baixo”, a curtose informa como os dados se concentram no centro e nas caudas, permitindo avaliar se a distribuição é mais aberta, mais achatada ou mais concentrada do que o padrão normal. Analisar a curtose é importante porque distribuições com médias e desvios padrão idênticos podem apresentar comportamentos substantivamente distintos quanto à ocorrência de valores extremos, o que tem implicações diretas para inferência estatística
+
+#### Classificações da curtose
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.align="center"}
+
+
+set.seed(123)
+
+n <- 10000
+
+# Distribuições
+mesocurtica  <- rnorm(n, mean = 0, sd = 1)     # Normal
+platicurtica <- runif(n, min = -3, max = 3)    # Uniforme
+leptocurtica <- rt(n, df = 3)                  # t-Student
+
+coef_curtose <- function(x) {
+  Q1  <- quantile(x, 0.25)
+  Q3  <- quantile(x, 0.75)
+  P10 <- quantile(x, 0.10)
+  P90 <- quantile(x, 0.90)
+  
+  K <- (Q3 - Q1) / (2 * (P90 - P10))
+  return(K)
+}
+
+coef_curtose(mesocurtica)
+coef_curtose(platicurtica)
+coef_curtose(leptocurtica)
+
+dens_meso  <- density(mesocurtica)
+dens_plat  <- density(platicurtica)
+dens_lepto <- density(leptocurtica)
+
+par(mfrow = c(1, 3))
+
+plot(density(mesocurtica),
+     main = "Mesocúrtica",
+     xlab = "",
+     ylab = "Densidade")
+
+plot(density(platicurtica),
+     main = "Platicúrtica",
+     xlab = "",
+     ylab = "Densidade")
+
+plot(density(leptocurtica),
+     main = "Leptocúrtica",
+     xlab = "",
+     ylab = "Densidade")
+
+```
+
+
+#### Demonstração algébrica 
+
+Uma forma particularmente robusta de medir a curtose é por meio de quantis, o que reduz a sensibilidade da medida a outliers extremos. Considere uma amostra de tamanho $n$, ordenada de forma crescente como
+
+$$
+x_{(1)} \le x_{(2)} \le \cdots \le x_{(n)}
+$$
+
+A partir dessa ordenação, definem-se os quartis e percentis que servirão de base para o coeficiente de curtose. O primeiro quartil, denotado por Q1, corresponde ao percentil 25 da distribuição, enquanto o terceiro quartil, Q3, corresponde ao percentil 75.
+
+A diferença entre o terceiro quartil e o primeiro quartil, mede a amplitude interquartílica, que representa a dispersão dos dados na região central da distribuição.
+
+De forma complementar, consideram-se os percentis mais afastados do centro: o percentil 10, e o percentil 90. A diferença entre o percentil 90 e o percentil 10 expressa a dispersão associada às caudas da distribuição, isto é, aos valores relativamente extremos, mas ainda estáveis do ponto de vista estatístico. O coeficiente de curtose baseado em quantis é então definido pela razão entre a dispersão central e a dispersão das caudas, devidamente normalizada, sendo expresso por
+
+$$
+K = \frac{Q_3 - Q_1}{2\,(P_{90} - P_{10})}
+$$
+
+Algebricamente, essa razão compara quanto os dados se espalham no centro em relação ao quanto se espalham nos extremos. O fator 2 no denominador atua como um ajuste de escala que permite a comparação direta com a distribuição normal.
+
+A partir desse coeficiente, estabelece-se uma classificação objetiva das distribuições quanto ao seu grau de curtose. Quando o valor de $K$ é aproximadamente igual a 0,263, diz-se que a distribuição é mesocúrtica, isto é, apresenta um equilíbrio entre concentração central e caudas semelhante ao da curva normal. Quando 𝐾 > 0,263, a dispersão central é relativamente maior do que a dispersão nas caudas, caracterizando uma distribuição platicúrtica, mais achatada e aberta do que a normal. Por outro lado, quando 𝐾 < 0,263, a dispersão central é relativamente menor do que a dispersão nas caudas, indicando uma distribuição leptocúrtica, mais afilada no centro e com maior peso relativo nas caudas.
+
+
+#### Comparação dos comportamento
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.align="center"}
+
+dens_meso  <- density(mesocurtica)
+dens_plat  <- density(platicurtica)
+dens_lepto <- density(leptocurtica)
+
+plot(
+  dens_meso,
+  lwd = 2,
+  main = "",
+  xlab = "Valores",
+  ylab = "Densidade"
+)
+
+lines(dens_plat,  lwd = 2, lty = 2)
+lines(dens_lepto, lwd = 2, lty = 3)
+
+legend(
+  "topright",
+  legend = c(
+    "Mesocúrtica (Normal)",
+    "Platicúrtica (Uniforme)",
+    "Leptocúrtica (t-Student)"
+  ),
+  lwd = 2,
+  lty = c(1, 2, 3),
+  bty = "n"
+)
+
+
+```
+
+
+# Um summary mais pontente
+
+Lembra de quando usamos a função summary do R base? Pois é, tem formas mais robustas de pedir informações mais completas. Dá uma olhada no comando que segue. 
+
+```{r}
+# DIGITE
+
+if(!require("psych")) {
+  install.packages("psych")
+}
+
+x <- c(1, 5, 10, 15, 20, 25, 30, 35)
+psych::describe(x)
+
+# ESSE PACOTE É VOLTADO PARA PESQUISADORES DA PSICOLOGIA REALIZAREM ALGUMAS TÉCNICAS DE  PSICOMETRIA. ENTRETANTO, A FUNÇÃO describe() É MUITO MAIS POTENTE DO QUE FUNÇÕES NATIVAS DO R.
+
+# NOTAS PARA INTERPRETAÇÃO DO OUTPUT
+# Vars     POSIÇÃO DA VARIÁVEL
+# n        NÚMERO DE OBSERVAÇÕES
+# mean     MÉDIA
+# sd       DESVIO PADRÃO
+# median   MEDIANA
+# trimmed  MEDIA APARADA [INTERVALO ENTRE O PERCENTIL 10 E 90]
+# mad      DESVIO ABSOLUTO MEDIANO
+# min      OBSERVAÇÃO MINIMA
+# max      OBSERVAÇÃO MÁXIMA
+# range    AMPLITUDE TOTAL
+# skew     ASSIMETRIA DA DISTRIBUIÇÃO
+# kurtosis CURTOSE EM EXCESSO [CURTOSE - 3]
+# se       ERRO PADRÃO
+
+```
+
+# Plottagem em R base
 
 A visualização de dados é uma etapa fundamental e crítica em diversas áreas de análise, como estatística, química, física e biologia.
 
@@ -596,7 +1109,6 @@ plot(x, y)
 Conheça a seguir os principais argumentos da função ``plot()``, o que a literatura chama de "parâmetros de visualização gráfica"
 
 ## Parâmetros de visualização da função plot
-
 
 ```{r Parametros, echo=FALSE, warning=FALSE, message=FALSE, fig.align="center"}
 
@@ -917,42 +1429,189 @@ A função `legend()` funciona em conjunto com o com a função `plot()`
 
 ```{r Parametros da fonte, echo=FALSE, warning=FALSE, message=FALSE, fig.align="center"}
 
-# Criando um dataframe com parâmetros gráficos do R base
-parametros_fonte <- data.frame(
+# Criando um dataframe com parâmetros gráficos da função legend() do R base
+parametros_legend <- data.frame(
   
-  parametro = c("col", "pch", "type", "cex", "lty",
-                "xlim", "ylim", "xlab", "ylab", "main"),
+  parametro = c(
+    "x, y",
+    "legend",
+    "ncol",
+    "title",
+    "horiz",
+    "col",
+    "pch",
+    "lty",
+    "lwd",
+    "bty"
+  ),
   
   descricao = c(
-    "Cor dos elementos do gráfico (nome, número ou rgb())",
-    "Tipo de caractere/símbolo dos pontos",
-    "Tipo de gráfico (pontos, linhas, ambos etc.)",
-    "Tamanho do caractere ou ponto",
-    "Tipo de linha",
-    "Limites do eixo x (horizontal)",
-    "Limites do eixo y (vertical)",
-    "Título do eixo x",
-    "Título do eixo y",
-    "Título principal do gráfico"
+    "Posição da legenda no gráfico (ex.: 'bottomright', 'top', 'center', etc.)",
+    "Texto exibido na legenda",
+    "Número de colunas da legenda",
+    "Título da legenda",
+    "Se TRUE, a legenda é exibida horizontalmente",
+    "Cor dos pontos ou linhas na legenda",
+    "Tipo de símbolo (ponto) exibido na legenda",
+    "Tipo de linha exibida na legenda",
+    "Espessura da linha exibida na legenda",
+    "Tipo da caixa ao redor da legenda ('o' = com caixa, 'n' = sem caixa)"
   ),
   
   funcao_visual = c(
+    "Posicionamento",
+    "Rotulagem",
+    "Estrutura",
+    "Narrativa",
+    "Orientação",
     "Estética",
     "Forma",
-    "Estrutura",
-    "Escala visual",
     "Estilo",
-    "Escala do eixo",
-    "Escala do eixo",
-    "Rotulagem",
-    "Rotulagem",
-    "Narrativa"
+    "Escala visual",
+    "Estrutura"
   ),
   
   stringsAsFactors = FALSE
 )
 
-knitr::kable(head(parametros_fonte, 10))
+# Exibindo a tabela
+knitr::kable(head(parametros_legend, 10))
+
+```
+
+## Mudando a tipo de letra, cor e "grid"
+
+O grid aos que não conhecem é uma grade regular que fica no fundo do gráfico. Auxilia na visualização das coordenadas de um ponto particular. E adicionado ao gráfico pelo argumento panel.first
+
+```{r Parametros Grid, echo=FALSE, warning=FALSE, message=FALSE, fig.align="center"}
+
+# Criando um dataframe com parâmetros de fonte, cor do texto e grid no R base
+parametros_texto_grid <- data.frame(
+  
+  parametro = c(
+    "font",
+    "font.axis",
+    "font.lab",
+    "font.main",
+    "col",
+    "col.axis",
+    "col.lab",
+    "col.main",
+    "col.sub",
+    "fg",
+    "panel.first (grid)",
+    "nx, ny",
+    "col (grid)",
+    "lty (grid)",
+    "lwd (grid)"
+  ),
+  
+  descricao = c(
+    "Tipo de fonte usada no texto do gráfico (1 = padrão, 2 = negrito, 3 = itálico, 4 = negrito e itálico)",
+    "Tipo de fonte do texto dos eixos",
+    "Tipo de fonte dos nomes (rótulos) dos eixos",
+    "Tipo de fonte do título principal",
+    "Cor geral do texto e dos elementos do gráfico",
+    "Cor do texto dos eixos",
+    "Cor dos nomes (rótulos) dos eixos",
+    "Cor do texto do título principal",
+    "Cor do texto do subtítulo (se houver)",
+    "Cor das linhas dos eixos do gráfico",
+    "Argumento usado para adicionar o grid antes de desenhar os dados",
+    "Número de células do grid nas direções x e y",
+    "Cor das linhas do grid",
+    "Tipo de linha do grid",
+    "Espessura das linhas do grid"
+  ),
+  
+  funcao_visual = c(
+    "Tipografia",
+    "Tipografia",
+    "Tipografia",
+    "Tipografia",
+    "Estética",
+    "Estética",
+    "Estética",
+    "Narrativa",
+    "Narrativa",
+    "Estrutura",
+    "Estrutura",
+    "Escala espacial",
+    "Estética",
+    "Estilo",
+    "Escala visual"
+  ),
+  
+  stringsAsFactors = FALSE
+)
+
+# Exibindo a tabela
+knitr::kable(head(parametros_texto_grid, 15))
+
+
+```
+
+### Atividade: Faça seu próprio gráfico 
+
+Tente criar nove gráficos do mesmo conjunto de dados, alterando parâmetros gráficos com par(), para visualizar claramente como os parâmetros de visualização alteram a narrativa dos dados plottados, mesmo sem mudar os dados. Explique, se possível, nove histórias diferentes. 
+
+```{r, eval=FALSE}
+# DIGITE
+
+# Dados de exemplo
+
+x <- 1:10
+y <- c(2, 4, 3, 6, 7, 9, 8, 10, 9, 11)
+
+par(mfrow = c(3, 3))  # 3 linhas, 3 colunas
+
+plot(
+  x, y,
+  type = "b",
+  pch = 19,
+  col = "darkblue",
+  lty = 1,
+  lwd = 2,
+  cex = 1.3,
+  xlim = c(0, 11),
+  ylim = c(0, 12),
+  main = "Gráfico personalizado",
+  xlab = "",
+  ylab = "",
+  
+  # Tipografia
+  font.main = 2,
+  font.lab  = 3,
+  font.axis = 1,
+  
+  # Cores do texto
+  col.main = "darkred",
+  col.lab  = "darkgreen",
+  col.axis = "black",
+  
+  # Grid com panel.first
+  panel.first = grid(
+    nx  = NULL,
+    ny  = NULL,
+    col = "lightgray",
+    lty = "dotted",
+    lwd = 1
+  )
+)
+
+legend(
+  x = "bottomright",
+  legend = "Legenda",
+  col = "darkblue",
+  pch = 19,
+  lty = 1,
+  lwd = 2,
+  title = "Legenda",
+  horiz = FALSE,
+  bty = "n"
+)
+
+par(mfrow = c(1, 1))  # 1 linha, 1 colunas
 
 
 ```
@@ -1003,48 +1662,1076 @@ boxplot(y)
 
 ```
 
+## Histograma
+
+```{r, fig.align="center"}
+# USE
+
+hist(y)
+
+```
+
+# Conjunto de Dados, testes de hipotese e Introdução à Regressão Linear 
+
+## Conjunto de Dados
+
+Como usar um data.frame() ? 
+
+```{r, echo=FALSE}
+
+# DIGITE
+
+dados_imc <- data.frame(
+  Faixa_etaria = c(
+    "10–19 anos", "20–29 anos", "30–39 anos", "40–49 anos",
+    "50–59 anos", "60–69 anos", "70–79 anos", "80+ anos"
+  ),
+  IMC_medio = c(221, 246, 261, 273, 278, 269, 258, 249),
+  Consumo_frutas = c(23, 20, 19, 18, 19, 21, 24, 25),
+  Taxa_obesidade = c(87, 142, 195, 231, 250, 218, 186, 157)
+)
 
 
-# Referências e materiais de apoio
+```
+
+```{r, echo=FALSE}
+
+# DIGITE
+
+knitr::kable(head(dados_imc, 8))
+
+```
+
+Como acessar elementos de um data.frame? Use a estrutura que segue: nome_do__objeto$variavel
+
+```{r}
+
+# DIGITE
+
+dados_imc$Faixa_etaria
+
+dados_imc$IMC_medio
+
+dados_imc$Consumo_frutas
+
+dados_imc$Taxa_obesidade
+
+```
+Como remover informações do banco de dados? Suponha que, por algum motivo, não queiramos que a tabela gerada pelo R apresente indivíduos que tenham mais de 80 anos. No exemplo acima, precisamos retirar a oitava linha:
+
+
+```{r}
+
+# DIGITE
+
+dados_imc <- dados_imc[-8,]
+
+# BIZU DA MADRINHA: ANTES DA VIRGULA REPRESENTA AS OBSERVAÇÕES E DEPOIS DA LINHA REPRESENTAM AS COLUNAS
+
+```
+
+```{r, echo=FALSE}
+
+# DIGITE
+
+knitr::kable(head(dados_imc, 8))
+
+```     
+
+## Testes de Hipóteses
+
+H0 ⟶ Hipótese que nega a existência de relação entre as variáveis
+Ha(1) ⟶ Hipótese que se opõe a hipótese nula
+
+Exemplo:
+Ho ⟶não há mudança significativa devido ao plano alimentar
+Ha ⟶ o plano alimentar reduz o nível de colesterol LDL.
+
+Mas como comparar essas duas hipóteses? Em qual devemos acreditar? A resposta está no p-value (ou no português, p-valor). Essa medida estatística, determina a probabilidade de se obter um resultado igual ou mais extremo do que aquele observado na amostra, assumindo que a hipótese nula é verdadeira. Quando o p-valor é baixo, a hipótese nula deve ser rejeitada, para um nível de significância estatística de 5%. 
+
+<br>
+<br>
+```{r, echo=FALSE}
+
+tabela_pvalor <- data.frame(
+  Comparacao_pvalor = c(
+    "p-valor ≤ 0,01",
+    "p-valor ≤ 0,05",
+    "p-valor ≤ 0,1"
+  ),
+  
+  Nivel_Significancia = c(
+    "Altamente significativo",
+    "Significativo",
+    "Marginalmente significativo"
+  ),
+  
+  Interpretacao_Resultado = c(
+    "Fortes evidências contra H0",
+    "Evidências contra H0",
+    "Algumas evidências contra H0"
+  ),
+  
+  Confianca_Rejeitar_H0 = c(
+    "Muita confiança",
+    "Confiança",
+    "Pouca confiança"
+  ),
+  
+  stringsAsFactors = FALSE
+)
+
+
+
+knitr::kable(head(tabela_pvalor, 8))
+
+``` 
+
+<br>
+```{r, echo=FALSE}
+
+tabela_pvalor_nao_e <- data.frame(
+  Item = 1:7,
+  
+  Afirmacao = c(
+    "O p-valor não indica a probabilidade de que a hipótese nula seja verdadeira.",
+    "O p-valor não indica que os resultados foram produzidos aleatoriamente.",
+    "O p-valor não indica o tamanho do efeito observado.",
+    "O p-valor não mensura a importância substantiva dos resultados observados.",
+    "O p-valor não deve ser interpretado sozinho quando houver outras ferramentas disponíveis.",
+    "O p-valor não deve ser interpretado quando os pressupostos de seu cálculo forem violados.",
+    "O p-valor não deve ser interpretado quando se trabalha com a população (pois o teste de hipótese é sobre amostras)."
+  ),
+  
+  stringsAsFactors = FALSE
+)
+
+knitr::kable(head(tabela_pvalor_nao_e, 8))
+
+``` 
+<br>
+
+## Introdução à Regressão Linear
+
+Um método para modelar o relacionamento entre duas ou mais variáveis e serve para prever a variável resposta (y) com base nos valores das variáveis preditoras (x), a fim de quantificar a força dessa relação. Entretanto, qual é a hipótese da regressão linear? 
+
+Um exemplo possível na área da saúde: existe uma associação estatisticamente significativa entre a ingestão diária de sódio (variável preditora) e os níveis de pressão arterial sistólica (variável resposta) em um grupo de pacientes? Objetivo: Determinar se os dados fornecem evidências de que o sódio é um fator a ser considerado no manejo da hipertensão. Se a evidência for fraca, pode-se argumentar que, para aquele grupo, o foco deve estar em outros fatores.
+
+A equação
+
+$$
+\hat{Y}_i = \hat{\beta}_0 + \sum_{j=1}^{k} \hat{\beta}_j X_{ji} + \varepsilon_i
+$$
+
+representa um **modelo de regressão linear múltipla** e descreve como o valor estimado de uma variável dependente é explicado por um conjunto de variáveis independentes.
+
+Em primeiro lugar, $\hat{Y}_i$ indica o valor estimado da variável resposta para o indivíduo (ou observação) $i$. Trata-se do resultado que o modelo prevê com base nas informações disponíveis, e não do valor observado diretamente nos dados. O uso do “chapéu” (^) sinaliza que se trata de uma estimativa produzida pelo modelo estatístico.
+
+O termo $\hat{\beta}_0$ é o intercepto da regressão. Ele representa o valor esperado de $Y$ quando todas as variáveis explicativas $X_{ji}$ assumem valor zero. Em termos substantivos, o intercepto pode ser interpretado como um ponto de referência ou condição basal, ainda que, em muitos contextos empíricos, essa situação (todas as variáveis iguais a zero) não seja realista. Mesmo assim, o intercepto é fundamental para posicionar corretamente a reta (ou hiperplano) de regressão.
+
+O somatório
+
+$$
+\sum_{j=1}^{k} \hat{\beta}_j X_{ji}
+$$
+
+expressa a contribuição conjunta das $k$ variáveis independentes para explicar Y. Cada coeficiente $\hat{\beta}_j$ indica o efeito médio associado à variável $X_j$, mantendo todas as demais constantes. Em termos interpretativos, $\hat{\beta}_j$ informa quanto se espera que $\hat{Y}_i$ varie quando $X_{ji}$ aumenta uma unidade, assumindo que as outras variáveis do modelo não se alterem. Assim, os coeficientes capturam relações parciais, e não efeitos brutos ou isolados.
+
+O termo $\varepsilon_i$ representa o erro aleatório ou resíduo associado à observação i. Ele corresponde à parcela de $Y_i$ que não é explicada pelas variáveis incluídas no modelo. Em termos substantivos, o erro agrega fatores não observados, imprecisões de medida e variações aleatórias inevitáveis nos fenômenos sociais e empíricos.
+
+Ao interpretar o resultado de uma regressão linear, o foco recai principalmente sobre os coeficientes $\hat{\beta}_j$, seus sinais (positivos ou negativos), suas magnitudes e sua significância estatística. Um coeficiente positivo indica uma associação direta entre a variável explicativa e a variável dependente; um coeficiente negativo indica uma associação inversa. A significância estatística, por sua vez, informa se o efeito estimado é suficientemente distinto de zero para que não seja atribuído apenas ao acaso, dado um nível de confiança pré-estabelecido.
+
+Além dos coeficientes individuais, a regressão deve ser interpretada de forma global, observando-se medidas de ajuste do modelo, como o $R^2$, que indica a proporção da variância de (Y) explicada pelo conjunto das variáveis independentes. Em conjunto, esses elementos permitem avaliar tanto a força explicativa do modelo quanto a plausibilidade substantiva das relações estimadas.
+
+### Principais pressupostos da Regressão Linear
+
+Não esqueça: a violação dos pressupostos da regressão pode levar a estimativas enviesadas, erros-padrão incorretos, testes t e f inválidos, e conclusões estatísticas equivocadas.
+
+<br>
+
+```{r, echo=FALSE}
+
+tabela_pressupostos <- data.frame(
+  Pressuposto = c(
+    "Linearidade",
+    "Ausência de erro de mensuração",
+    "A expectativa da média do termo de erro é igual a zero",
+    "Homocedasticidade",
+    "Ausência de autocorrelação",
+    "A variável independente não deve ser correlacionada com o termo de erro",
+    "Nenhuma variável teoricamente relevante para explicar Y foi deixada de fora do modelo e nenhuma variável irrelevante para explicar Y foi incluída no modelo (Correta Especificação)",
+    "Ausência de multicolinearidade",
+    "Distribuição normal do termo de erro",
+    "Proporção adequada entre casos e variáveis"
+  ),
+  
+  `O que acontece se ele for violado?` = c(
+    "Erro de especificação do modelo (forma funcional equivocada). Os coeficientes serão inconsistentes (enviesados e ineficientes).",
+    "Diversos problemas podem surgir, desde ineficiência até viés, a depender do tipo de erro (aleatório ou sistemático) e do local do erro (variável dependente e/ou independente).",
+    "O intercepto do modelo será afetado.",
+    "Estimativas inconsistentes (ineficiência). Não poderemos confiar nos testes de significância.",
+    "Inconsistência dos testes de significância (intervalos de confiança e p-valor serão prejudicados).",
+    "Estimativas inconsistentes (viés).",
+    "Estimativas inconsistentes. Viés e ineficiência. Pior cenário do mundo.",
+    "Inconsistência dos testes de significância (intervalos de confiança e p-valor serão prejudicados).",
+    "Estimativas inconsistentes. Depende da natureza do problema. Poderão ocorrer viés e/ou ineficiência.",
+    "Ineficiência. Testes de significância serão muito instáveis. Quanto menor a amostra, pior."
+  ),
+  
+  `O que pode ser feito?` = c(
+    "Adotar outra forma funcional. Transformar as variáveis.",
+    "Usar modelos de equações estruturais. Estimar indicadores compostos (análise fatorial). Utilizar outras variáveis com maior nível de validade e confiabilidade.",
+    "Procurar ajuda na literatura sobre o tema em questão com o objetivo de garantir que todas as variáveis teoricamente relevantes foram incluídas no modelo e que nenhuma variável irrelevante foi considerada.",
+    "Utilizar correções estatísticas para melhorar a qualidade das estimativas.",
+    "Diferentes modalidades de autocorrelação exigem tratamentos distintos. No caso da autocorrelação serial, o mais adequado é utilizar modelos de séries temporais.",
+    "Garantir correta especificação do modelo. Utilizar variáveis instrumentais.",
+    "Garantir correta especificação do modelo.",
+    "Verificar a codificação e a transformação das variáveis. Aumentar o tamanho da amostra. Utilizar alguma técnica de redução de dados. Melhorar especificação do modelo.",
+    "Aumentar o tamanho da amostra.",
+    "Aumentar a quantidade de observações. Melhorar a especificação do modelo. Reduzir a quantidade de variáveis independentes."
+  ),
+  
+  stringsAsFactors = FALSE
+)
+
+knitr::kable(tabela_pressupostos, align = "l")
+
+```
+
+<br>
+
+### Será que dieta melhora a saúde? 
+
+Vamos testar essa hipótese utilizando o método da regressão linear estimado por mínimos quadrados ordinários para modular a relação entre as váriáveis "Score de Saúde" e "Índice de Qualidade de Vida" que pertence ao banco de dados "Health and Lifestyle Data for Regression". Baixe-o baixe diretamente na fonte em [Kaggle](https://www.kaggle.com/datasets/pratikyuvrajchougule/health-and-lifestyle-data-for-regression?resource=download)
+
+```{r}
+
+# VAMOS TESTAR, USE OS DADOS QUE SEGUEM
+
+bd <- read.csv("https://raw.githubusercontent.com/ryallmeida/r_p_saude/refs/heads/main/database/synthetic_health_data.csv")
+
+# DÁ UMA OLHADA NO BANCO DE DADOS
+
+```
+
+```{r, echo=FALSE}
+
+library(rmarkdown)
+paged_table(dados)
+
+```
+
+
+```{r, echo=FALSE, fig.align='center'}
+
+
+# PLOT INICIAL SEM LINHA DE REGRESSÃO
+plot(bd$Diet_Quality, bd$Health_Score, ylab = "Health score", xlab = "Indice qualidade da dieta")
+
+
+```
+
+```{r}
+
+# O MODELO DE REGRESSÃO SEGUE O SEGUINTE COMANDO
+modelo <- lm(Health_Score ~ Diet_Quality, data = bd) 
+
+# ACESSE OS RESULTADOS DO MODELO DA SEGUINTE FORMA
+summary(modelo)
+
+```
+
+## Método dos Mínimos Quadrados Ordinários {.tabset .tabset-fade}
+
+O Método dos Mínimos Quadrados Ordinários (MQO) é o fundamento matemático e estatístico que permite transformar um conjunto de dados observados em um modelo linear estimado. A sua importância decorre do fato de que ele fornece um critério claro, operacional e teoricamente justificado para escolher os coeficientes $\beta_0, \beta_1, \ldots, \beta_k$ que melhor descrevem a relação entre as variáveis.
+
+A primeira expressão
+
+$$
+\min_{\beta_0, \beta_1, \dots, \beta_k}\sum_{i=1}^{n}\left( Y_i - \beta_0 - \sum_{j=1}^{k} \beta_j X_{ji} \right)^2
+$$
+
+define o **problema de otimização central do MQO**. O que se busca é encontrar os valores dos parâmetros que minimizam a soma dos quadrados dos resíduos. O termo entre parênteses representa a diferença entre o valor observado (Y_i) e o valor ajustado pelo modelo linear. Ao elevar essa diferença ao quadrado, o método garante que erros positivos e negativos não se anulem e, ao mesmo tempo, penaliza erros grandes de forma mais severa do que erros pequenos. Assim, o MQO escolhe os coeficientes que produzem, no conjunto, o **melhor ajuste médio possível** aos dados.
+
+A importância dessa minimização está no fato de que ela fornece uma **regra objetiva** para estimar os parâmetros. Não se trata de um ajuste visual ou arbitrário, mas de uma solução única (sob condições padrão) derivada de um critério matemático explícito. Em termos geométricos, o MQO projeta o vetor de valores observados (Y) sobre o espaço gerado pelas variáveis explicativas, garantindo que os resíduos sejam ortogonais a esse espaço. Isso confere ao modelo uma propriedade central: não há informação linear adicional nas variáveis explicativas que possa reduzir ainda mais os erros.
+
+A segunda expressão
+
+$$
+\hat{\varepsilon}_i = Y_i - \hat{\beta}_0 - \sum_{j=1}^{k} \hat{\beta}_j X_{ji}
+$$
+
+define o resíduo estimado para cada observação. O resíduo mede exatamente aquilo que o modelo não consegue explicar. A importância desse termo é dupla. Primeiro, ele permite avaliar a qualidade do ajuste, pois resíduos pequenos indicam que o modelo descreve bem os dados, enquanto resíduos grandes sugerem omissões, má especificação ou alta variabilidade não explicada. Segundo, os resíduos são a base para toda a inferência estatística associada à regressão: testes de hipóteses, intervalos de confiança e diagnósticos do modelo dependem diretamente do seu comportamento.
+
+Do ponto de vista teórico, o MQO é especialmente importante porque, sob hipóteses relativamente fracas (linearidade, exogeneidade, variância constante e ausência de multicolinearidade perfeita), os estimadores obtidos possuem propriedades desejáveis. Eles são não viesados, consistentes e, pelo Teorema de Gauss–Markov, apresentam a menor variância possível entre todos os estimadores lineares não viesados. Isso significa que, dentro dessa classe, nenhum outro método produz estimativas mais precisas em média.
+
+Além disso, o MQO cria uma ponte direta entre álgebra, geometria e estatística aplicada. Ele pode ser interpretado como um problema de minimização, como uma projeção em espaços vetoriais ou como um procedimento inferencial probabilístico. 
+
+Em síntese, a importância dos Mínimos Quadrados Ordinários reside em três aspectos centrais: ele fornece um critério matemático rigoroso para estimar coeficientes, permite quantificar sistematicamente o erro por meio dos resíduos e garante propriedades estatísticas ótimas sob condições bem definidas. 
+
+
+```{r, echo=FALSE, fig.align='center'}
+
+plot(bd$Diet_Quality, bd$Health_Score, ylab = "Health score", xlab = "Indice qualidade da dieta")
+
+# PLOTA LINHA DE REGRESSÃO
+abline(modelo, col = "red", lwd = 3.5)
+
+# ADICIONA OS PRINCIPAIS RESULTADOS DIRETAMENTE AO GRÁFICO
+intercepto <- round(coef(modelo)[1], 2)
+coeficiente <- round(coef(modelo)[2], 2)
+r2 <- round(summary(modelo)$r.squared, 3)
+p_valor <- round(summary(modelo)$coefficients[2, 4], 4)
+
+legend("topleft",
+       legend = c(
+         paste("Intercepto =", intercepto),
+         paste("Coeficiente =", coeficiente),
+         paste("R^2 =", r2),
+         paste("p-valor =", format.pval(p_valor, digits = 3))
+       ),
+       bty = "n",
+       text.col = "blue",
+       cex = 0.8)
+
+```
+
+### Modelo com R2 alto
+
+```{r, echo=FALSE, fig.align='center'}
+
+# -----------------------------
+# 1. Gerando dados simulados
+# -----------------------------
+set.seed(123)
+
+x <- 1:100
+y <- 2 + 0.8 * x + rnorm(100, mean = 0, sd = 2)
+
+# -----------------------------
+# 2. Ajustando o modelo OLS
+# -----------------------------
+modelo <- lm(y ~ x)
+
+# -----------------------------
+# 3. Plot dos dados
+# -----------------------------
+plot(x, y,
+     pch = 16,
+     col = "black",
+     xlab = "Variavel independente (x)",
+     ylab = "Variavel dependente (y)",
+     main = "")
+
+# -----------------------------
+# 4. Reta de regressão
+# -----------------------------
+abline(modelo, col = "red", lwd = 3)
+
+# -----------------------------
+# 5. Desenhando os resíduos
+# -----------------------------
+y_hat <- fitted(modelo)
+
+segments(x0 = x, y0 = y,
+         x1 = x, y1 = y_hat,
+         col = "gray")
+
+# -----------------------------
+# 6. Legenda explicativa
+# -----------------------------
+legend("topleft",
+       legend = c(
+         "Observacoes",
+         "Reta de regressao (OLS)",
+         "Residuos (erros)"
+       ),
+       col = c("black", "red", "gray"),
+       pch = c(16, NA, NA),
+       lwd = c(NA, 3, 1),
+       lty = c(NA, 1, 1),
+       bty = "n")
+
+
+```
+
+### Modelo de R2 mais baixo
+
+```{r, echo=FALSE, fig.align='center'}
+
+# -----------------------------
+# 1. Gerando dados simulados
+# -----------------------------
+set.seed(123)
+
+x <- runif(200, min = 0, max = 100)
+y <- 2 + 0.8 * x + rnorm(200, 0, 10)
+
+# -----------------------------
+# 2. Ajustando o modelo OLS
+# -----------------------------
+modelo <- lm(y ~ x)
+
+# -----------------------------
+# 3. Plot dos dados
+# -----------------------------
+plot(x, y,
+     pch = 16,
+     col = "black",
+     xlab = "Variavel independente (x)",
+     ylab = "Variavel dependente (y)",
+     main = "")
+
+# -----------------------------
+# 4. Reta de regressão
+# -----------------------------
+abline(modelo, col = "red", lwd = 3)
+
+# -----------------------------
+# 5. Desenhando os resíduos
+# -----------------------------
+y_hat <- fitted(modelo)
+
+segments(x0 = x, y0 = y,
+         x1 = x, y1 = y_hat,
+         col = "gray")
+
+# -----------------------------
+# 6. Legenda explicativa
+# -----------------------------
+legend("topleft",
+       legend = c(
+         "Observacoes",
+         "Reta de regressao (OLS)",
+         "Residuos (erros)"
+       ),
+       col = c("black", "red", "gray"),
+       pch = c(16, NA, NA),
+       lwd = c(NA, 3, 1),
+       lty = c(NA, 1, 1),
+       bty = "n")
+
+
+```
+
+
+# Anexo: traduções de pacotes utilizados {.tabset .tabset-fade}
+
+Cf. Nota dos autores sobre as traduções dos respectivos pacotes [^1]
+
+[^1]: Traduzido por Ryan Almeida, com o auxílio de Inteligência Artificial, como parte da monitoria do “Curso de Extensão - R para Saúde: Informática Aplicada à Pesquisa Científica” ocorrido entre os dias 3 e 7 de novembro de 2025 no Programa de Pós-Graduação em Nutrição da Universidade Federal de Pernambuco. Uso exclusivo para sala de aula. Reprodução não recomendada.
+
+## {NHANES} NHANES 
+
+### Descrição
+
+Estes são dados de pesquisa coletados pelo National Center for Health Statistics (NCHS) dos Estados Unidos, que conduz uma série de levantamentos sobre saúde e nutrição desde o
+início da década de 1960. Desde 1999, aproximadamente 5.000 indivíduos de todas as idades são entrevistados anualmente em suas casas e realizam exames de saúde em centros móveis de exame (Mobile Examination Centers — MECs). Conjunto de dados em formato data frame, contendo versões brutas e reamostradas dos dados do NHANES. Veja abaixo os detalhes e descrições das variáveis.
+
+### Detalhes
+
+A população-alvo do NHANES é “a população civil residente não institucionalizada dos Estados
+Unidos”. O NHANES (Pesquisa Nacional de Saúde e Nutrição dos EUA) utiliza um desenho amostral complexo, que super-representa certas subpopulações, como minorias raciais. Uma análise ingênua dos dados originais do NHANES pode levar a conclusões erradas — por exemplo, as proporções de cada grupo racial nos dados são diferentes das proporções reais da população.
+
+Os conjuntos NHANES e NHANESraw incluem 75 variáveis para os anos de amostragem 2009–2010
+e 2011–2012. O NHANESraw contém 20.293 observações dessas variáveis, além de quatro variáveis
+adicionais que descrevem o esquema de ponderação da amostra. O NHANES contém 10.000 linhas de dados reamostrados de NHANESraw para corrigir os efeitos da superamostragem.
+
+Assim, o NHANES pode ser tratado, para fins educacionais, como se fosse uma amostra aleatória simples da população americana. Uma lista das variáveis e descrições segue abaixo, com links para a documentação original do NHANES.
+
+### Variáveis do estudo
+
+
+```{r, echo=FALSE}
+
+dicionario_variaveis <- data.frame(
+  Categoria = c(
+    # Identificação
+    rep("Identificação", 2),
+    
+    # Variáveis Demográficas
+    rep("Variáveis Demográficas", 10),
+    
+    # Medidas Físicas
+    rep("Medidas Físicas", 8),
+    
+    # Variáveis de Saúde
+    rep("Variáveis de Saúde", 8),
+    
+    # Variáveis de Estilo de Vida
+    rep("Variáveis de Estilo de Vida", 7)
+  ),
+  
+  Variavel = c(
+    # Identificação
+    "SurveyYr", "ID",
+    
+    # Demográficas
+    "Gender", "Age", "AgeDecade", "AgeMonths",
+    "Race1 / Race3", "Education", "MaritalStatus",
+    "HHIncome / HHIncomeMid", "Poverty",
+    "HomeRooms / HomeOwn",
+    
+    # Medidas Físicas
+    "Weight", "Height / Length", "HeadCirc", "BMI",
+    "BMICatUnder20yrs / BMI_WHO",
+    "Pulse / BPSysAve / BPDiaAve",
+    "BPSys1–3 / BPDia1–3",
+    "Testosterone",
+    
+    # Saúde
+    "DirectChol / TotChol",
+    "UrineVol1–2 / UrineFlow1–2",
+    "Diabetes / DiabetesAge",
+    "HealthGen",
+    "DaysPhysHlthBad / DaysMentHlthBad",
+    "LittleInterest / Depressed",
+    "nPregnancies / nBabies / PregnantNow / Age1stBaby",
+    "SleepHrsNight / SleepTrouble",
+    
+    # Estilo de Vida
+    "PhysActive / PhysActiveDays",
+    "TVHrsDay / CompHrsDay",
+    "Alcohol12PlusYr / AlcoholDay / AlcoholYear",
+    "Smoke100 / SmokeNow / SmokeAge",
+    "Marijuana / AgeFirstMarij / RegularMarij / AgeRegMarij",
+    "HardDrugs",
+    "SexEver / SexAge / SexNumPartnLife / SexNumPartYear / SameSex / SexOrientation"
+  ),
+  
+  Descricao = c(
+    # Identificação
+    "Ano da pesquisa em que o participante foi incluído.",
+    "Identificador único do participante.",
+    
+    # Demográficas
+    "Sexo do participante (masculino ou feminino).",
+    "Idade em anos no momento da triagem (80 anos ou mais registrados como 80).",
+    "Categoria etária por décadas (0–9, 10–19, ..., 70+).",
+    "Idade em meses (detalhada para algumas faixas etárias).",
+    "Raça ou etnia informada (Mexicano, Hispânico, Branco, Negro, Asiático, Outro).",
+    "Nível educacional (Fundamental, Ensino Médio, Faculdade, etc.).",
+    "Estado civil (Casado, Viúvo, Divorciado, Solteiro, etc.).",
+    "Faixa e valor médio da renda familiar anual (em dólares).",
+    "Razão entre renda familiar e linha de pobreza.",
+    "Número de cômodos e tipo de posse da moradia (própria, alugada ou outra).",
+    
+    # Medidas Físicas
+    "Peso corporal em quilogramas.",
+    "Altura em pé ou comprimento deitado em centímetros.",
+    "Circunferência da cabeça em centímetros.",
+    "Índice de Massa Corporal (IMC).",
+    "Categorias de IMC conforme idade ou classificação da OMS.",
+    "Frequência cardíaca e médias da pressão arterial sistólica e diastólica.",
+    "Leituras consecutivas da pressão arterial sistólica e diastólica.",
+    "Nível de testosterona total (ng/dL).",
+    
+    # Saúde
+    "Colesterol HDL direto e colesterol total (mmol/L).",
+    "Volume e fluxo urinário (mL e mL/min).",
+    "Diagnóstico de diabetes e idade ao diagnóstico.",
+    "Autoavaliação geral da saúde.",
+    "Número de dias com saúde física ou mental ruim nos últimos 30 dias.",
+    "Sintomas de depressão ou falta de interesse.",
+    "Histórico reprodutivo.",
+    "Padrões e dificuldades relacionadas ao sono.",
+    
+    # Estilo de Vida
+    "Prática de atividades físicas e número de dias por semana.",
+    "Tempo médio diário assistindo TV ou usando computador/jogos.",
+    "Consumo de álcool (frequência e quantidade).",
+    "Hábito de fumar e idade de início.",
+    "Uso de maconha e idade de início ou uso regular.",
+    "Uso de drogas pesadas (cocaína, heroína, etc.).",
+    "Histórico e comportamento sexual."
+  ),
+  
+  stringsAsFactors = FALSE
+)
+
+knitr::kable(head(dicionario_variaveis, 35))
+
+```
+
+## {diet} MASS
+Dados sobre Dieta e Coração
+
+### Descrição
+
+O data frame diet possui 337 linhas e 14 colunas. Os dados dizem respeito a uma subamostra de indivíduos extraída de estudos de coorte maiores sobre a incidência de doenças cardíacas  coronarianas (CHD — Coronary Heart Disease). Esses indivíduos completaram uma pesquisa
+dietética de sete dias com pesagem dos alimentos, enquanto participavam de estudos de validação de métodos de questionários alimentares. Após o encerramento da MRC Social Medicine Unit, de onde esses estudos eram conduzidos, constatou-se que 46 eventos de CHD haviam ocorrido nesse grupo — o que possibilitou um estudo fortuito sobre a relação entre dieta e incidência de doenças cardíacas coronarianas.
+
+### Variáveis do estudo
+
+```{r, echo=FALSE}
+
+dicionario_chd <- data.frame(
+  Variavel = c(
+    "id",
+    "doe",
+    "dox",
+    "dob",
+    "y",
+    "fail",
+    "job",
+    "month",
+    "energy",
+    "height",
+    "weight",
+    "fat",
+    "fibre",
+    "energy.grp",
+    "chd"
+  ),
+  
+  Tipo = c(
+    "Numérico",
+    "Data",
+    "Data",
+    "Data",
+    "Numérico",
+    "Numérico",
+    "Fator",
+    "Numérico",
+    "Numérico",
+    "Numérico",
+    "Numérico",
+    "Numérico",
+    "Numérico",
+    "Fator",
+    "Numérico"
+  ),
+  
+  Descricao = c(
+    "Identificador do participante.",
+    "Data de entrada no estudo de acompanhamento.",
+    "Data de saída do estudo de acompanhamento.",
+    "Data de nascimento do participante.",
+    "Número de anos em risco.",
+    "Status na saída do estudo (códigos 1, 3 e 13 representam eventos de CHD).",
+    "Ocupação do participante (Driver = motorista, Conductor = cobrador, Bank worker = bancário).",
+    "Mês da pesquisa dietética.",
+    "Ingestão total de energia (kCal por dia / 100).",
+    "Altura em centímetros.",
+    "Peso em quilogramas.",
+    "Ingestão de gordura (10 g/dia).",
+    "Ingestão de fibras alimentares (10 g/dia).",
+    "Grupo de consumo energético diário (≤2750 KCal ou >2750 KCal).",
+    "Ocorrência de evento coronariano (1 = evento CHD, 0 = sem evento)."
+  ),
+  
+  stringsAsFactors = FALSE
+)
+
+
+knitr::kable(head(dicionario_chd, 20))
+
+```
+
+Os dados foram descritos e amplamente utilizados por Clayton e Hills em Statistical Models in Epidemiology (Oxford University Press, Oxford, 1993). Eles foram resgatados da destruição por David Clayton e reintroduzidos a partir de impressões em papel.
+
+## {Epi} DMepi
+Taxas epidemiológicas de diabetes na Dinamarca (1996–2015)
+
+### Descrição
+
+Contagens e anos-pessoa baseados em registros para a incidência de diabetes e mortalidade com e
+sem diabetes.
+
+### Variáveis do estudo
+Um data frame com 4.200 observações sobre as seguintes 8 variáveis
+
+```{r, echo=FALSE}
+
+dicionario_diabetes <- data.frame(
+  Variavel = c(
+    "sex",
+    "A",
+    "P",
+    "X",
+    "D.nD",
+    "Y.nD",
+    "D.DM",
+    "Y.DM"
+  ),
+  
+  Tipo = c(
+    "Fator",
+    "Numérico",
+    "Numérico",
+    "Numérico",
+    "Numérico",
+    "Numérico",
+    "Numérico",
+    "Numérico"
+  ),
+  
+  Descricao = c(
+    "Sexo do indivíduo (M = masculino, F = feminino).",
+    "Classe etária (0–99 anos).",
+    "Ano do calendário (1996–2016).",
+    "Número de novos diagnósticos de diabetes entre pessoas sem diabetes.",
+    "Número de mortes entre pessoas sem diabetes.",
+    "Anos-pessoa entre pessoas sem diabetes.",
+    "Número de mortes entre pessoas com diabetes.",
+    "Anos-pessoa entre pessoas com diabetes."
+  ),
+  
+  stringsAsFactors = FALSE
+)
+
+knitr::kable(head(dicionario_diabetes, 20))
+
+```
+
+Os dados são baseados em registros da população dinamarquesa. Incluídos apenas para fins ilustrativos, não podendo ser usados como dados cientificamente validados, pois números pequenos foram aleatoriamente permutados entre as unidades.
+
+# Anexo: Atividades extras e desafios
+
+**QUESTÃO 1**<br>
+Qual a diferença entre os dois códigos abaixo?
+```{r, eval=FALSE}
+# CÓDIGO 1
+4 / 2
+
+```
+
+```{r, eval=FALSE}
+# CODIGO 2
+divisao <- 4 / 2
+
+```
+
+**QUESTÃO 2**<br>
+Escreva um código que guarde em um objeto chamado
+nome uma string com seu nome completo.
+
+**QUESTÃO 3**<br>
+Escreva um código, seguindo as orientações abaixo. 
+Crie um objeto chamado segredo que vai guardar um número inteiro de 0 a 10. Sem olhar qual número foi guardado no objeto, resolva:
+
+* Verifique se o segredo é maior ou igual a 0;
+* Verifique se o segredo é menor ou igual a 10;
+* Verifique se o segredo é maior que 5;
+* Verifique se o segredo * 5 é maior que a sua
+idade;
+* Qual o valor guardado no objeto segredo?
+
+**QUESTÃO 4**<br>
+Escreva um código seguindo o passo a passo abaixo:
+
+* Crie um objeto que guarde a informação de sua sua idade;
+* Multiplique sua idade por 12 e guarde o valor num objeto chamado idade_em_meses;
+* Agora multiplique sua idade em meses por 30 para obter sua idade em dias e salve o resultado no objeto idade_em_dias
+
+**QUESTÃO 5**<br>
+Explique por que o código abaixo resulta num erro.
+
+```{r, eval=FALSE}
+
+meu - objeto <- 1
+
+```
+
+**QUESTÃO 6**<br>
+Procure na Internet qual é o “número de ouro” e na sequência calcule ele usando o comando function() no R.
+
+```{r, eval=FALSE}
+
+# Selecione 5 fórmulas muito utilizadas na graduação, ou na sua vivência profissional, ou que seja afim à sua área de pesquisa e a esboce no R usando de funções como o function(), cat(), os operadores lógicos e matemáticos, e estruturas condicionais.
+
+```
+
+**QUESTÃO 7**<br>
+Por que é preferível escrevermos sempre o nosso código no script e não no Console?
+
+**QUESTÃO 8**<br>
+Marque verdadeiro ou falso para as questões que seguem
+<br>
+
+```{r, echo=FALSE}
+
+df_afirmacoes <- data.frame(
+  Item = 1:8,
+  Afirmacao = c(
+    "Ao criar um vetor chamado tempo com os valores de minutos gastos para chegar a cada unidade de coleta — por exemplo, tempo <- c(18, 14, 14, 15, 14, 34, 16, 17, 21, 26) — é possível calcular o tempo máximo, mínimo e médio das visitas usando as funções max(), min() e mean().",
+    
+    "Se o valor 34 do vetor tempo for um erro de digitação e o correto for 15, é necessário digitar todos os valores novamente no R.",
+    
+    "O uso de colchetes [ ] permite modificar apenas um valor específico dentro de um vetor já existente, sem precisar recriá-lo.",
+    
+    "Ao executar x <- c(1,3,5,7,9) e y <- c(2,3,5,7,11,13), o R impedirá qualquer operação entre x e y porque eles têm comprimentos diferentes.",
+    
+    "O cálculo de módulo, como em abs(23 - 3 * 2), pode representar diferenças absolutas de valores, por exemplo, diferenças entre medidas de pressão arterial em duas consultas.",
+    
+    "A simulação de jogadas de dado com sample(1:6, 25, replace = TRUE) pode representar a geração aleatória de dados em um experimento ou simulação de probabilidades em saúde.",
+    
+    "Dado o vetor temp <- c(9, 0, 10, 13, 15, 17, 18, 17, 22, 11, 15), é possível aplicar transformações matemáticas como sqrt(temp), log(temp), log(temp+1) e temp^2, úteis para normalizar dados de temperatura corporal ou valores de exames.",
+    
+    "Um objeto do tipo info pode armazenar informações pessoais e antropométricas de um indivíduo, como nome, idade, altura e peso, bastando criar info <- c(\"Nome\", idade, altura, peso, \"email\", \"telefone\")."
+  ),
+  stringsAsFactors = FALSE
+)
+
+```   
+
+```{r, echo=FALSE}
+
+# DIGITE
+
+knitr::kable(head(df_afirmacoes))
+
+```     
+
+
+**QUESTÃO 9**<br>
+Use a função rnorm() para gerar dois conjuntos de dados aleatórios com 100 valores e faça um gráfico plotando um dos conjuntos contra o outro. Existem milhares de outros comandos para alterar a aparência de gráficos, veja esta página do help (?par) para ver alguns comandos sobre como alterar a aparência de gráficos. Não se preocupe se você ficar confuso sobre as opções do help(par), apenas praticando você irá começar a dominar estes comandos. Coloque um título no gráfico Use Bolinhas cheias e azuis como símbolo. Coloque as legendas no eixo-x e no eixo-y. O padrão do R é fazer uma “caixa” em torno do gráfico, faça uma alteração para que apareça apenas as linhas do eixo-x e do eixo-y. veja bty em ?par
+
+**QUESTÃO 10**<br>
+Marque verdadeiro ou falso para as questões que seguem
+<br>
+```{r, echo=FALSE}
+
+df_afirmacoes_2 <- data.frame(
+  Item = 1:6,
+  Afirmacao = c(
+    "A função length() permite verificar o número de observações em um vetor, o que é útil para saber, por exemplo, quantas amostras foram coletadas em um determinado estudo.",
+    
+    "As funções union(), intersect() e setdiff() podem ser usadas em R para comparar listas de pacientes de duas unidades de saúde, encontrando nomes que aparecem em ambas (interseção), em apenas uma (diferença) ou em qualquer uma delas (união) em um estudo.",
+    
+    "A função rep() é útil para criar vetores que repetem categorias, como 5 amostras da “Unidade A” e 5 da “Unidade B”, em estudos comparativos de ambientes ou populações.",
+    
+    "A função sample() pode ser usada para selecionar aleatoriamente amostras de pacientes ou unidades de saúde, simulando uma amostragem probabilística, como em um sorteio de números da Mega-Sena.",
+    
+    "Para criar uma sequência apenas com números ímpares de 1 a 30, pode-se usar seq(1, 30, by = 2). Essa função é útil para gerar identificadores ordenados de pacientes ou visitas em estudos.",
+    
+    "Ao fechar o R com o comando q(), o programa pergunta se deseja salvar o ambiente de trabalho (workspace). Caso o usuário salve, os objetos criados podem ser verificados após reabrir o R com ls()."
+  ),
+  stringsAsFactors = FALSE
+)
+
+
+```   
+
+```{r, echo=FALSE}
+
+# DIGITE
+
+knitr::kable(head(df_afirmacoes_2))
+
+```     
+
+## Desafios {.tabset .tabset-fade}
+
+Cf. Nota dos autores sobre os respectivos desafios [^2]
+
+[^2]: Para ter acesso integral aos dados desses respectivos desafios entre em contato com os autores dessa apostila. 
+
+### Opção 1
+
+```{r, echo=FALSE}
+
+tabela_plano_analise <- data.frame(
+  Topico = c(
+    "Tema",
+    "Banco de Dados",
+    "Objetivo da Análise",
+    "Instruções R",
+    "Links úteis"
+  ),
+  
+  Detalhe = c(
+    "Perfil Antropométrico e de Risco de Doenças em Escolares",
+    
+    "PeNSE (Pesquisa Nacional de Saúde do Escolar) - IBGE (Dados sobre peso, altura, estilo de vida e consumo alimentar de escolares).",
+    
+    "Descrever o estado nutricional (IMC) de adolescentes e comparar a frequência de consumo de alimentos não saudáveis entre aqueles com e sem excesso de peso.",
+    
+    "Preparação/Objetos: importação, limpeza e preparação do banco para a análise (verifique se as colunas estão nos formatos adequados e se o tipo de dado é condizente com o objetivo); Codificação/Lógica: Use operadores lógicos (if_else ou ifelse) para criar uma variável binária (0/1) indicando o consumo regular de refrigerante; Estatística Descritiva: Calcule a proporção de adolescentes acima do peso que consomem regularmente refrigerante e que não consomem; Visualização: Gere um gráfico de barras mostrando a proporção de consumo de alimentos ultraprocessados por estado nutricional.",
+    
+    "https://www.ibge.gov.br/estatisticas/sociais/educacao/9134-pesquisa-nacional-de-saude-do-escolar.html"
+  ),
+  
+  stringsAsFactors = FALSE
+)
+
+knitr::kable(head(tabela_plano_analise))
+
+```  
+
+### Opção 2
+
+```{r, echo=FALSE}
+
+tabela_plano_sisvan <- data.frame(
+  Topico = c(
+    "Tema",
+    "Banco de Dados",
+    "Objetivo da Análise",
+    "Instruções R"
+  ),
+  
+  Detalhe = c(
+    "Análise da Cobertura de Vigilância Alimentar e Nutricional (SISVAN)",
+    
+    "SISVAN (Sistema de Vigilância Alimentar e Nutricional) - Banco simulado",
+    
+    "Explorar e Manipular os dados de avaliação antropométrica, calculando a cobertura e identificando discrepâncias na distribuição etária da população acompanhada.",
+    
+    "Pacotes/Importação: Instale e carregue o banco para acessar os dados (verifique se as colunas estão nos formatos adequados e se o tipo de dado é condizente com o objetivo); Funções: Crie uma função que receba a Idade e retorne a fase da vida (\"Criança\", \"Adolescente\", \"Adulto\", \"Idoso\"); Manipulação de Dados: Aplique a função criada para classificar a população e use o resultado para criar um data.frame resumo que mostre a contagem de indivíduos por faixa etária em cada região"
+  ),
+  
+  stringsAsFactors = FALSE
+)
+
+knitr::kable(head(tabela_plano_sisvan))
+
+```  
+
+### Opção 3
+
+```{r, echo=FALSE}
+
+tabela_plano_sinasc <- data.frame(
+  Topico = c(
+    "Tema",
+    "Banco de Dados",
+    "Objetivo da Análise",
+    "Instruções R"
+  ),
+  
+  Detalhe = c(
+    "Fatores Associados à Mortalidade Infantil",
+    
+    "SINASC (Sistema de Informações sobre Nascidos Vivos) - DATASUS (Dados sobre nascimentos, incluindo peso ao nascer, idade gestacional e características maternas).",
+    
+    "Modelar a relação entre o peso ao nascer (variável resposta) e fatores maternos (e.g., idade da mãe, número de consultas de pré-natal), e visualizar essas relações.",
+    
+    "Data Handling: Filtre o conjunto de dados para uma região ou faixa etária materna específica (e.g., mães com menos de 18 anos); Regressão Simples: Realize a Análise de Regressão Linear Simples do Peso ao Nascer pela Idade da Mãe; Regressão Múltipla: Construa o modelo de Regressão Linear Múltipla utilizando: Peso ao Nascer (Idade da Mãe + Número de Consultas Pré-natal + Tipo de Parto); Análise do Modelo: Interprete o coeficiente de regressão para o Número de Consultas Pré-natal, e avalie a significância estatística; Visualização: Crie um gráfico de dispersão mostrando a relação Peso ao Nascer vs. Número de Consultas, colorindo os pontos pelo Tipo de Parto"
+  ),
+  
+  stringsAsFactors = FALSE
+)
+
+knitr::kable(head(tabela_plano_sinasc))
+
+``` 
+
+
+### Opção 4
+
+```{r, echo=FALSE}
+
+tabela_plano_pns <- data.frame(
+  Topico = c(
+    "Tema",
+    "Banco de Dados",
+    "Objetivo da Análise",
+    "Instruções R"
+  ),
+  
+  Detalhe = c(
+    "Distribuição de Risco Nutricional e Doenças Crônicas por Região Geográfica em Idosos",
+    
+    "PNS (Pesquisa Nacional de Saúde) - IBGE (Dados sobre condições de saúde, antropometria, hábitos alimentares e nível de atividade física, com foco na população idosa).",
+    
+    "Quantificar a prevalência de duas condições de risco (Baixo Consumo de Frutas/Hortaliças e Sedentarismo) e descrever como a co-ocorrência dessas condições varia entre as grandes Regiões Brasileiras.",
+    
+    "Data Handling e Lógica: Filtre o dataset para incluir apenas indivíduos com 60 anos ou mais e crie uma variável categórica binária (Risco_Nutricional) utilizando operadores lógicos para classificar indivíduos com IMC < 22; Criação de Variável Composta: Crie uma nova variável chamada Risco_Comportamental que assuma o valor \"Sim\" quando o indivíduo for sedentário E apresentar baixo consumo de frutas/hortaliças; Tabulação: Calcule a prevalência do Risco_Comportamental por Grande Região do Brasil; Visualização: Construa um gráfico (por exemplo, gráfico de barras) que permita comparar visualmente a distribuição do risco comportamental entre as regiões."
+  ),
+  
+  stringsAsFactors = FALSE
+)
+
+knitr::kable(head(tabela_plano_pns))
+
+```
+
+
+### Opção 5
+
+```{r, echo=FALSE}
+
+tabela_plano_vigitel <- data.frame(
+  Topico = c(
+    "Tema",
+    "Banco de Dados",
+    "Objetivo da Análise",
+    "Instruções R"
+  ),
+  
+  Detalhe = c(
+    "Análise Longitudinal Simplificada: Mudança na Prevalência de Excesso de Peso ao Longo do Tempo (4 Anos)",
+    
+    "VIGITEL (Série Histórica) - Ministério da Saúde (Dados de diferentes anos, por exemplo, 2019 a 2023, das capitais brasileiras, incluindo a variável categórica Excesso de Peso e informações sobre Consumo de Álcool).",
+    
+    "Rastrear a tendência da prevalência de excesso de peso em duas regiões distintas (por exemplo, Sul e Norte) ao longo de 5 anos e comparar a média de consumo de álcool entre essas regiões.",
+    
+    "Data Handling (Unificação): Importe e una os 4 datasets anuais do VIGITEL em um único data.frame utilizando uma função de união de linhas, como rbind() ou bind_rows(); Estatística Descritiva e Estrutura de Repetição: Utilize uma estrutura de repetição (for ou lapply) para calcular a prevalência de Excesso de Peso separadamente para cada um dos 5 anos; Comparação Regional: Calcule a média de consumo de álcool para as Regiões Sul e Norte; Visualização: Crie um gráfico de linhas que mostre a evolução da prevalência de Excesso de Peso ao longo dos 4 anos, com uma linha representando a Região Sul e outra a Região Norte."
+  ),
+  
+  stringsAsFactors = FALSE
+)
+
+knitr::kable(head(tabela_plano_vigitel))
+
+```
+
+
+# Referências, notas e materiais de apoio
 
 1. [ANJOS, Adilson dos. Estatística básica com uso do software R. Curitiba: Departamento de Estatística – UFPR, 2010.](https://docs.ufpr.br/~aanjos/TRI/R/rbasico.pdf)
 
 2. [BOLFARINE, Heleno; SANDOVAL, Mônica Carneiro. Introdução à inferência estatística. São Paulo: Blucher, 2018.](https://docs.ufpr.br/~lucambio/CE210/LIVRO%20de%20infer%EAncia%20bolfarine.pdf)
 
-3. [CHAOUBAH, A. A importância da Bioestatística na formação de um profissional de Saúde. Revista Brasileira de Oftalmologia](https://www.scielo.br/j/rbof/a/ZnvJ63VgxhbhWthX9nVBWgg/?format=html&lang=pt)
+3. [CASELLA, George; BERGER, Roger L. Statistical inference. 2nd ed. Belmont, CA: Duxbury Press, 2002.](https://www.amazon.com.br/Statistical-Inference-George-Casella/dp/1032593032/ref=sr_1_1?__mk_pt_BR=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=32UCM6L87P7E1&dib=eyJ2IjoiMSJ9.Ax3SRemiZDkg6JQcCEjJyvkHFeo9-o-Z8AwK3hLco-p9p1QN5dOVAGYp-1RLcf0wX5z0QLCKtHCJXsXauosVYrzAX5WOG4kYqeJPoTC-M9U8evy8ED_8XzKushqfNV4-0qSUPZJoSDMvHHf9QgkfYZfShcnEblFie46_09JPowIsR77rDAaw3oHsj0MwLZxl.G8t2XqvTavTKwvfQPgVAJ4QK2bSzEZiEhoypCq-SWDI&dib_tag=se&keywords=Statistical+Inference+ByGeorge+Casella%2C+Roger+Berger&qid=1761863452&sprefix=statistical+inference+bygeorge+casella+roger+berger%2Caps%2C229&sr=8-1&ufe=app_do%3Aamzn1.fos.4bddec23-2dcf-4403-8597-e1a02442043d)
 
-4. [CASELLA, George; BERGER, Roger L. Statistical inference. 2nd ed. Belmont, CA: Duxbury Press, 2002.](https://www.amazon.com.br/Statistical-Inference-George-Casella/dp/1032593032/ref=sr_1_1?__mk_pt_BR=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=32UCM6L87P7E1&dib=eyJ2IjoiMSJ9.Ax3SRemiZDkg6JQcCEjJyvkHFeo9-o-Z8AwK3hLco-p9p1QN5dOVAGYp-1RLcf0wX5z0QLCKtHCJXsXauosVYrzAX5WOG4kYqeJPoTC-M9U8evy8ED_8XzKushqfNV4-0qSUPZJoSDMvHHf9QgkfYZfShcnEblFie46_09JPowIsR77rDAaw3oHsj0MwLZxl.G8t2XqvTavTKwvfQPgVAJ4QK2bSzEZiEhoypCq-SWDI&dib_tag=se&keywords=Statistical+Inference+ByGeorge+Casella%2C+Roger+Berger&qid=1761863452&sprefix=statistical+inference+bygeorge+casella+roger+berger%2Caps%2C229&sr=8-1&ufe=app_do%3Aamzn1.fos.4bddec23-2dcf-4403-8597-e1a02442043d)
+4. [CHAOUBAH, A. A importância da Bioestatística na formação de um profissional de Saúde. Revista Brasileira de Oftalmologia](https://www.scielo.br/j/rbof/a/ZnvJ63VgxhbhWthX9nVBWgg/?format=html&lang=pt)
 
-5. [Curso: Ciência de Dados em R](https://livro.curso-r.com/index.html)
+5. [Correa, S. M. B. B. (2003). Probabilidade e estatística.](https://d1wqtxts1xzle7.cloudfront.net/40496861/livro_probabilidade_estatistica_2a_ed-libre.pdf?1448876315=&response-content-disposition=inline%3B+filename%3DLivro_texto_de_Probabilidade_e_Estatisti.pdf&Expires=1768007441&Signature=Ew5ysdtztFVdPGD9rBU-jJFIlRQlwIkt1-xvU9sUgOlIahl99Jv88SDSjq6iBqSSKf4SuA0SDT1~lGU6D-OdmqgHC8l822eHlQBr9XtHpWvQWtaa5~qYfoK2JYIdDAyFxABfmgd6T3vrNHu5lTEgxw2Nkis7I8e91dfxzt61CqZGDbTK3EH8yfwDFy8ci6jUDajPxFQFlEKHANeBNRxLC~O4CsuOnvuQZYgw7PHVi33E1C17eudUXXSMA1VByE96myzok8RGTegetxZal7MaNCC8I-byQBlm9zEDLJGTS0pOL1nhiR-fnmZV2osCsHi6lq83cWcOEo-foJgafuuxlA__&Key-Pair-Id=APKAJLOHF5GGSLRBV4ZA)
 
-6. [Figueiredo Filho, Dalson, et al. "O que fazer e o que não fazer com a regressão: pressupostos e aplicações do modelo linear de Mínimos Quadrados Ordinários (MQO)." Revista Política Hoje 20.1 (2011): 44-99.](https://www.academia.edu/8169376/O_que_Fazer_e_o_que_N%C3%A3o_Fazer_com_a_Regress%C3%A3o_pressupostos_e_aplica%C3%A7%C3%B5es_do_modelo_linear_de_M%C3%ADnimos_Quadrados_Ordin%C3%A1rios_MQO)
+6. [Curso: Ciência de Dados em R](https://livro.curso-r.com/index.html)
 
-7. [Grolemund, Garrett. Hands-on programming with R. " O'Reilly Media, Inc.", 2014.](https://rstudio-education.github.io/hopr/basics.html)
+7. [Figueiredo Filho, Dalson, et al. "O que fazer e o que não fazer com a regressão: pressupostos e aplicações do modelo linear de Mínimos Quadrados Ordinários (MQO)." Revista Política Hoje 20.1 (2011): 44-99.](https://www.academia.edu/8169376/O_que_Fazer_e_o_que_N%C3%A3o_Fazer_com_a_Regress%C3%A3o_pressupostos_e_aplica%C3%A7%C3%B5es_do_modelo_linear_de_M%C3%ADnimos_Quadrados_Ordin%C3%A1rios_MQO)
 
-8. [Hadley Wickham (2010): Uma gramática em camadas de gráficos, Journal of Computational and Graphical Statistics](https://byrneslab.net/classes/biol607/readings/wickham_layered-grammar.pdf)
+8. [Grolemund, Garrett. Hands-on programming with R. " O'Reilly Media, Inc.", 2014.](https://rstudio-education.github.io/hopr/basics.html)
 
-9. [JAMES, Gareth et al. An Introduction to Statistical Learning: with Applications in R. Second Edition. (S.l.): (s.n.), 2023.](https://www.statlearning.com/)
+9. [Hadley Wickham (2010): Uma gramática em camadas de gráficos, Journal of Computational and Graphical Statistics](https://byrneslab.net/classes/biol607/readings/wickham_layered-grammar.pdf)
 
-10. [Kuhn, Max, and Julia Silge. Tidy modeling with R: A framework for modeling in the tidyverse. " O'Reilly Media, Inc.", 2022.](https://www.tmwr.org/)
+10. [JAMES, Gareth et al. An Introduction to Statistical Learning: with Applications in R. Second Edition. (S.l.): (s.n.), 2023.](https://www.statlearning.com/)
 
-11. [LANDEIRO, Victor Lemes. Introdução ao uso do programa R. Manaus: Instituto Nacional de Pesquisas da Amazônia, Programa de Pós-Graduação em Ecologia](https://cran.r-project.org/doc/contrib/Landeiro-Introducao.pdf)
+11. [Kuhn, Max, and Julia Silge. Tidy modeling with R: A framework for modeling in the tidyverse. " O'Reilly Media, Inc.", 2022.](https://www.tmwr.org/)
 
-12. MARTIN, Peter. Linear Regression: an introduction to statistical models. London: SAGE Publications, 2021. 978-1-5264-2417-4. (The SAGE Quantitative Research Kit).
+12. [LANDEIRO, Victor Lemes. Introdução ao uso do programa R. Manaus: Instituto Nacional de Pesquisas da Amazônia, Programa de Pós-Graduação em Ecologia](https://cran.r-project.org/doc/contrib/Landeiro-Introducao.pdf)
 
-13. [The R Graph Gallery (Site para ver modelos de possíveis gráficos no R)](https://r-graph-gallery.com/index.html)
+13. MARTIN, Peter. Linear Regression: an introduction to statistical models. London: SAGE Publications, 2021. 978-1-5264-2417-4. (The SAGE Quantitative Research Kit).
 
-14. [Wickham H (2014). Dados organizados. Journal of Statistical Software. Volume 59, Edição 10.](https://vita.had.co.nz/papers/tidy-data.pdf)
+14. [The R Graph Gallery (Site para ver modelos de possíveis gráficos no R)](https://r-graph-gallery.com/index.html)
 
-15. [Wickham, Hadley, Mine Çetinkaya-Rundel, and Garrett Grolemund. R für Data Science: Daten importieren, bereinigen, umformen und visualisieren. O'Reilly, 2024.](https://pt.r4ds.hadley.nz/)
+15. [Wickham H (2014). Dados organizados. Journal of Statistical Software. Volume 59, Edição 10.](https://vita.had.co.nz/papers/tidy-data.pdf)
 
-16. Mais informações podem ser encontradas em [tidyverse.org](https://tidyverse.org/)
+16. [Wickham, Hadley, Mine Çetinkaya-Rundel, and Garrett Grolemund. R für Data Science: Daten importieren, bereinigen, umformen und visualisieren. O'Reilly, 2024.](https://pt.r4ds.hadley.nz/)
+
+17. Mais informações podem ser encontradas em [tidyverse.org](https://tidyverse.org/)
 
 Mais informações sobre **Regressão Linear** na área de **Nutrição e Saúde** podem sem encontradas abaixo
 
-17. [Costa et tal. Evolução do excesso de peso e fatores associados em mulheres de 10 a 49 anos em Pernambuco, Nordeste, Brasil. Revista de Nutrição](https://www.scielo.br/j/rn/a/4SnTxv5qmCP4kjgPRNBN3QC/?lang=pt)
+18. [Costa et tal. Evolução do excesso de peso e fatores associados em mulheres de 10 a 49 anos em Pernambuco, Nordeste, Brasil. Revista de Nutrição](https://www.scielo.br/j/rn/a/4SnTxv5qmCP4kjgPRNBN3QC/?lang=pt)
 
-18. [Pinho et tal. Excesso de peso em adultos do Estado de Pernambuco, Brasil: magnitude e fatores associados. Cadernos de Saúde Pública´](https://www.scielo.br/j/csp/a/yVJSvdS5Xptjh3dHZL4c7GS/?lang=pt)
+19. [Pinho et tal. Excesso de peso em adultos do Estado de Pernambuco, Brasil: magnitude e fatores associados. Cadernos de Saúde Pública´](https://www.scielo.br/j/csp/a/yVJSvdS5Xptjh3dHZL4c7GS/?lang=pt)
 
-19. [Silva et tal. Situação de insegurança alimentar em domicílios de Pernambuco, Região Nordeste do Brasil: contribuições para discussão da violação do direito à alimentação. Saúde e Sociedade](https://www.scielo.br/j/sausoc/a/MJNKgg3CTPMLt8DMm3RwjQH/abstract/?lang=pt)
+20. [Silva et tal. Situação de insegurança alimentar em domicílios de Pernambuco, Região Nordeste do Brasil: contribuições para discussão da violação do direito à alimentação. Saúde e Sociedade](https://www.scielo.br/j/sausoc/a/MJNKgg3CTPMLt8DMm3RwjQH/abstract/?lang=pt)
+
+<br>
+<a href="https://github.com/ryallmeida/r_p_saude/blob/main/LICENSE"
+   target="_blank"
+   rel="noopener noreferrer">
+  <img
+    src="https://raw.githubusercontent.com/ryallmeida/r_p_saude/main/modulos/img/mit_license.jpeg"
+    alt="MIT License"
+    height="50"
+  />
+</a>
+<br>
 
 ![](https://raw.githubusercontent.com/ryallmeida/r_p_saude/main/modulos/img/realizacao.png){width=544px, .center}
